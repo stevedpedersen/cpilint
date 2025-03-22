@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<cpilint>
+  <rules>
+    
+    <!-- ##########  NAMING CONVENTIONS  ########## -->
+
+    <default-names-not-allowed-rule>
+			<exclude>Exception Subprocess</exclude>
+		</default-names-not-allowed-rule>
+		<iflow-matches-name>
+		 <naming-pattern>IF_(S2P|FnA|FIN|F2I|M2C|COM|LEGAL|Common|InterfaceName|MessageMappingsUnitTest|GQA|H2R|MD|RnD|CRM|CPI|Batch|Customer|DIMA|Done|ExchangeRates|FirmedPlanned|Forecast|GlobalPart|KinaxisRR|OnHand|Part|PlannedOrder|PlannedParameters|S4_IDOC_LogPayload|SalesOrder|SendAlert|Shipment|SnOP|Source|Supplier|ForceIflow|Domain|ExecuteSQLPSA|FetchCPITraces|JDBCHealthCheck|EchoResponse|ReprocessingAutomation|Salesforce|IDocAcknowledgment)(.*)(Publish|Subscribe|MAIN|Retry_SFTP|_TPM_ReceiverCommunication|_TPM_SenderIDOCCommunication|_S4|_Salesforce_SOQL|_Salesforce_CustomObjectUpsert|_Salesforce_Credentials|_Salesforce_TPM_PartnerDirectoryXSLTMapping|_TPM_MAGReplacement|_DynamicInterfaceTransformAndRoute|_TPM_SenderAS2Communication|_TPM_SenderAS2ToIDOCCommunication|_TPM_PartnerDirectoryXSLTMapping|_Veeva_User|_LookupValues|_UserRoleValues|Coupa_SyncExported|ErrorHandler|ErrorNotification|EventMesh_DeadMessageQueueHandler|EventMesh_ErrorQueueHandler|TPM_InterchangeProcessing|_Template|Test|Tool|Notification|ErroneousRecordsHandler|LastLoadUpdate|Publish_RUN|Subscribe_RUN|MAIN_RUN|Retry_SFTP_RUN|_LookupValues_RUN|_UserRoleValues_RUN|Coupa_SyncExported_RUN|ErrorHandler_RUN|ErrorNotification_RUN|_Template_RUN|Test_RUN|Tool_RUN|Notification_RUN|ErroneousRecordsHandler_RUN|LastLoadUpdate_RUN|_TPM_ReceiverCommunication_RUN|_TPM_SenderIDOCCommunication_RUN|_TPM_PartnerDirectoryXSLTMapping_RUN|_TPM_MAGReplacement_RUN|_DynamicInterfaceTransformAndRoute_RUN|_TPM_SenderAS2Communication_RUN|_TPM_SenderAS2ToIDOCCommunication_RUN|EventMesh_DeadMessageQueueHandler_RUNr|EventMesh_ErrorQueueHandler_RUN|TPM_InterchangeProcessing_RUN|_Salesforce_CustomRequest)$</naming-pattern>
+		 <!--<naming-pattern>IF_(S2P|FnA|F2I|M2C|Common|InterfaceName|MessageMappingsUnitTest|GQA|H2R|MD|RnD|CRM|CPI|SendAlert_Error)(.*)(Publish|Subscribe|MAIN|Retry_SFTP|_LookupValues|_UserRoleValues|Coupa_SyncExported|ErrorHandler|ErrorNotification|_Template|Test|Tool|Notification)$</naming-pattern>-->
+		 <!--<naming-pattern>IF_(S2P|FnA|F2I|M2C|Common|InterfaceName|MessageMappingsUnitTest|GQA|H2R|MD|RnD|CRM|CPI|Batch|Customer|DIMA|Done|ExchangeRates|FirmedPlanned|Forecast|GlobalPart|KinaxisRR|OnHand|Part|PlannedOrder|PlannedParameters|S4_IDOC_LogPayload|SalesOrder|SendAlert|Shipment|SnOP|Source|Supplier|ForceIflow|Domain)(.*)(Publish|Subscribe|MAIN|Retry_SFTP|_LookupValues|_UserRoleValues|Coupa_SyncExported|ErrorHandler|ErrorNotification|_Template|Test|Tool|Notification)$</naming-pattern>-->
+		</iflow-matches-name>
+    <naming>
+        <scheme>
+            <starts-with>HTTP_RCV_</starts-with>
+        </scheme>
+        <message>HTTP receiver channel names must start with HTTP_RCV_</message>
+        <apply-to>http-receiver-channel.name</apply-to>
+    </naming>
+    <naming>
+        <scheme>
+            <starts-with>R_</starts-with>
+        </scheme>
+        <message>Receiver Participant names must start with R_</message>
+        <apply-to>receiver.name</apply-to>
+    </naming>    
+    <naming>
+        <scheme>
+            <starts-with>S_</starts-with>
+        </scheme>
+        <message>Sender Participant names must start with S_</message>
+        <apply-to>sender.name</apply-to>
+    </naming>   
+    <naming>
+        <scheme>
+            <starts-with>XSL_</starts-with>
+        </scheme>
+        <message>XSLT mapping step names must start with XSL_</message>
+        <apply-to>xslt-mapping.name</apply-to>
+    </naming>
+
+    <!-- ##########  END NAMING CONVENTIONS  ########## -->
+
+
+
+    <!-- ##########  ARTIFACT RULES  ########## -->
+
+		<disallowed-scripting-languages>
+      <disallow>javascript</disallow>
+    </disallowed-scripting-languages>
+
+		<cleartext-basic-auth-not-allowed/>
+
+    <!-- Doesn't work with cross-package references -->
+		<!-- <matching-process-direct-channels-required/> -->
+
+		<disallowed-receiver-adapters>
+			<disallow>facebook</disallow>
+			<disallow>ftp</disallow>
+			<disallow>twitter</disallow>
+		</disallowed-receiver-adapters>
+
+		<disallowed-sender-adapters>
+			<disallow>ftp</disallow>
+		</disallowed-sender-adapters>
+
+		<unencrypted-data-store-write-not-allowed/>
+
+		<unencrypted-endpoints-not-allowed/>
+
+		<csrf-protection-required-with-exclude>
+			<exclude>IF_Framework_Master_JMS_Listener</exclude>
+			<exclude>IF_Framework_Notifications_JMS_Listener</exclude>
+		</csrf-protection-required-with-exclude>
+
+    <!-- Message Mapping and XSLT are the two allowed mapping types. -->
+    <allowed-mapping-types>
+        <allow>message-mapping</allow>
+        <allow>xslt-mapping</allow>
+    </allowed-mapping-types>
+
+    <!-- Make sure that all data store writes are encrypted. -->
+    <unencrypted-data-store-write-not-allowed/>
+
+    <!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
+    <multi-condition-type-routers-not-allowed/>
+
+		<iflow-description-required/>
+
+		<unused-parameters-rule/>
+
+		<allowed-headers-empty><include>(.*)(Publish|Subscribe)$</include></allowed-headers-empty>
+
+		<response-headers-allowed><exclude>\*</exclude></response-headers-allowed>
+
+		<undeclared-data-type/>
+
+    <!-- ##########  END ARTIFACT RULES  ########## -->
+  </rules>
+</cpilint>
