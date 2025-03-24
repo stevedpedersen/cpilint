@@ -40,6 +40,8 @@ import org.cpilint.auth.AuthorizationServer;
 import org.cpilint.consumers.ConsoleIssueConsumer;
 import org.cpilint.consumers.ExemptionFilteringIssueConsumer;
 import org.cpilint.consumers.IssueConsumer;
+import org.cpilint.consumers.FileIssueConsumer;
+import org.cpilint.consumers.JsonFileIssueConsumer;
 import org.cpilint.rules.RuleFactoryError;
 import org.cpilint.suppliers.DirectoryIflowArtifactSupplier;
 import org.cpilint.suppliers.FileIflowArtifactSupplier;
@@ -81,6 +83,7 @@ public final class CliClient {
 	private static final String CLI_OPTION_VERCHECK = "vercheck";
 	private static final String CLI_OPTION_SKIPVERCHECK = "skipvercheck";
 	private static final String CLI_OPTION_KEY = "key";
+	private static final String CLI_OPTION_OUTPUT = "output";
 	private static final String CPILINT_WIKI_URL = "https://github.com/mwittrock/cpilint/wiki";
 	private static final String SERVICE_KEY_FIELD_OAUTH = "oauth";
 	private static final String SERVICE_KEY_FIELD_CLIENTSECRET = "clientsecret";
@@ -100,6 +103,10 @@ public final class CliClient {
 		TENANT_SUPPLIER_SINGLE_MODE,
 		TENANT_SUPPLIER_MULTI_MODE,
 		TENANT_SUPPLIER_PACKAGES_MODE
+	}
+
+	private static enum IssueConsumerType {
+		CONSOLE, JSON
 	}
 	
 	private CliClient() {
@@ -155,13 +162,33 @@ public final class CliClient {
 		 */
 		RulesFile rulesFile = rulesFileFromCommandLine(cl);
 		IflowArtifactSupplier supplier = supplierFromCommandLine(mode, cl);
+
+		// Default to CONSOLE if not specified or invalid
+		String outputType = cl.getOptionValue(CLI_OPTION_OUTPUT, "console").toUpperCase();
+		IssueConsumerType consumerType;
+
+		try {
+				consumerType = IssueConsumerType.valueOf(outputType);
+		} catch (IllegalArgumentException e) {
+				logger.warn("Invalid output type '{}', defaulting to CONSOLE.", outputType);
+				consumerType = IssueConsumerType.CONSOLE;
+		}
+		// Initialize correct consumer based on the enum
+		IssueConsumer consumer;
+		switch (consumerType) {
+				case JSON:
+						consumer = new JsonFileIssueConsumer("cpilint-results.json");
+						break;
+				default:
+						consumer = new ConsoleIssueConsumer();
+		}
 		/*
 		 * If there are any exemptions, use the IssueConsumer that filters out
 		 * issues based on exemptions. Otherwise use the default IssueConsumer.
 		 */
-		IssueConsumer consumer = rulesFile.getExemptions().isEmpty() 
-			? new ConsoleIssueConsumer()
-			: new ExemptionFilteringIssueConsumer(rulesFile.getExemptions(), new ConsoleIssueConsumer());
+		consumer = rulesFile.getExemptions().isEmpty() 
+				? consumer
+				: new ExemptionFilteringIssueConsumer(rulesFile.getExemptions(), consumer);
 		// Print the version banner and ASCII art (unless we're in boring mode).
 		printVersionBanner();
 		System.out.println();
@@ -177,10 +204,14 @@ public final class CliClient {
 			logger.info("Performing version check");
 			versionCheck(false);
 		}
+
 		// Now, create a CpiLint object and run the test.
-		CpiLint linter = new CpiLint(supplier, rulesFile.getRules(), consumer);
-		try {
-			linter.run();
+    CpiLint linter = new CpiLint(supplier, rulesFile.getRules(), consumer);
+    try {
+        linter.run();
+        if (consumer instanceof FileIssueConsumer) {
+            ((FileIssueConsumer) consumer).writeIssuesToFile(); // explicitly save at end
+        }
 		} catch (IflowArtifactSupplierError e) {
 			logger.error("Iflow artifact supplier error", e);
 			exitWithErrorMessage("There was an error while retrieving iflow artifacts: " + e.getMessage());
@@ -188,11 +219,14 @@ public final class CliClient {
 			logger.error("CPILint error", e);
 			exitWithErrorMessage("An error occurred: " + e.getMessage());
 		}
+
 		logger.info("Iflow artifacts supplied: {}", supplier.artifactsSupplied());
 		logger.info("Issues found: {}", consumer.issuesConsumed());
+		
 		if (consumer.issuesConsumed() > 0) {
 			System.out.println();
 		}
+
 		System.out.println(resultMessage(supplier, consumer));
 		int exitStatus = consumer.issuesConsumed() > 0 ? EXIT_STATUS_ISSUES : EXIT_STATUS_SUCCESS;  
 		logger.info("Exiting CliClient with status {}", exitStatus);
@@ -586,6 +620,8 @@ public final class CliClient {
 		System.out.println();
 		System.out.println("To create a debug log file, add the -debug option.");
 		System.out.println();
+		System.out.println("To specify the linting output type, add the -output <json|console> option. Console is used by default.");
+		System.out.println();
 		System.out.println("To skip the automatic version check, add the -skipvercheck option.");
 		System.out.println();
 		System.out.println("The full CPILint documentation is available in the project wiki: " + CPILINT_WIKI_URL);
@@ -764,6 +800,14 @@ public final class CliClient {
             .argName("file")
             .desc("Use this service key for authentication")
             .build());
+        // Add the output type option.
+				options.addOption(Option.builder()
+						.longOpt(CLI_OPTION_OUTPUT)
+						.required(false)
+						.hasArg(true)
+						.argName("console|json")
+						.desc("Specify output format: 'console' (default) or 'json'")
+						.build());
 		// All done.
         return options;
     }
