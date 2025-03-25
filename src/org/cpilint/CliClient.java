@@ -168,19 +168,46 @@ public final class CliClient {
 		IssueConsumerType consumerType;
 
 		try {
-				consumerType = IssueConsumerType.valueOf(outputType);
+			consumerType = IssueConsumerType.valueOf(outputType);
 		} catch (IllegalArgumentException e) {
-				logger.warn("Invalid output type '{}', defaulting to CONSOLE.", outputType);
-				consumerType = IssueConsumerType.CONSOLE;
+			logger.warn("Invalid output type '{}', defaulting to CONSOLE.", outputType);
+			consumerType = IssueConsumerType.CONSOLE;
 		}
+		
+		// Determine output filename for JSON output type
+		String outputFilename = "cpilint-results.json";
+		
+		// If packages were specified, use the first package name
+		if (cl.hasOption(CLI_OPTION_PACKAGES)) {
+			String[] packageNames = cl.getOptionValues(CLI_OPTION_PACKAGES);
+			if (packageNames.length > 0) {
+				outputFilename = "cpilint-" + packageNames[0] + ".json";
+				if (packageNames.length > 1) {
+					logger.info("Multiple packages specified, using first package name '{}' for output filename", packageNames[0]);
+				}
+			}
+		} 
+		// If specific iflows were specified, use the first iflow name
+		else if (cl.hasOption(CLI_OPTION_IFLOWS)) {
+			String[] iflowNames = cl.getOptionValues(CLI_OPTION_IFLOWS);
+			if (iflowNames.length > 0) {
+				outputFilename = "cpilint-" + iflowNames[0] + ".json";
+				if (iflowNames.length > 1) {
+					logger.info("Multiple iflows specified, using first iflow name '{}' for output filename", iflowNames[0]);
+				}
+			}
+		}
+		
+		logger.info("Output filename: {}", outputFilename);
+		
 		// Initialize correct consumer based on the enum
 		IssueConsumer consumer;
 		switch (consumerType) {
-				case JSON:
-						consumer = new JsonFileIssueConsumer("cpilint-results.json");
-						break;
-				default:
-						consumer = new ConsoleIssueConsumer();
+			case JSON:
+				consumer = new JsonFileIssueConsumer(outputFilename);
+				break;
+			default:
+				consumer = new ConsoleIssueConsumer();
 		}
 		/*
 		 * If there are any exemptions, use the IssueConsumer that filters out
