@@ -206,12 +206,12 @@ public final class CliClient {
 		}
 
 		// Now, create a CpiLint object and run the test.
-    CpiLint linter = new CpiLint(supplier, rulesFile.getRules(), consumer);
-    try {
-        linter.run();
-        if (consumer instanceof FileIssueConsumer) {
-            ((FileIssueConsumer) consumer).writeIssuesToFile(); // explicitly save at end
-        }
+		CpiLint linter = new CpiLint(supplier, rulesFile.getRules(), consumer);
+		try {
+			linter.run();
+			if (consumer instanceof FileIssueConsumer) {
+				((FileIssueConsumer) consumer).writeIssuesToFile(); // explicitly save at end
+			}
 		} catch (IflowArtifactSupplierError e) {
 			logger.error("Iflow artifact supplier error", e);
 			exitWithErrorMessage("There was an error while retrieving iflow artifacts: " + e.getMessage());
@@ -801,13 +801,13 @@ public final class CliClient {
             .desc("Use this service key for authentication")
             .build());
         // Add the output type option.
-				options.addOption(Option.builder()
-						.longOpt(CLI_OPTION_OUTPUT)
-						.required(false)
-						.hasArg(true)
-						.argName("console|json")
-						.desc("Specify output format: 'console' (default) or 'json'")
-						.build());
+		options.addOption(Option.builder()
+				.longOpt(CLI_OPTION_OUTPUT)
+				.required(false)
+				.hasArg(true)
+				.argName("console|json")
+				.desc("Specify output format: 'console' (default) or 'json'")
+				.build());
 		// All done.
         return options;
     }
@@ -853,11 +853,10 @@ public final class CliClient {
     	 * + boring
     	 * + debug
 		 * + skipvercheck
-    	 * 
-    	 * The -files option must have at least one argument.
-    	 */    	
+		 * + output
+    	 */
     	Collection<String> mandatory = List.of(CLI_OPTION_RULES, CLI_OPTION_FILES);
-    	Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+    	Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
     	return checkOptions(cl, mandatory, optional) && cl.getOptionValues(CLI_OPTION_FILES).length >= 1;
     }
 
@@ -872,12 +871,11 @@ public final class CliClient {
          *
          * + boring
          * + debug
-         * + skipvercheck
-         *
-         * The -unpacked-files option must have at least one argument.
+		 * + skipvercheck
+		 * + output
          */
         Collection<String> mandatory = List.of(CLI_OPTION_RULES, CLI_OPTION_UNPACKED_FILES);
-        Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+        Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
         return checkOptions(cl, mandatory, optional) && cl.getOptionValues(CLI_OPTION_UNPACKED_FILES).length >= 1;
     }
 
@@ -893,11 +891,10 @@ public final class CliClient {
     	 * + boring
     	 * + debug
 		 * + skipvercheck
-    	 * 
-    	 * The -directory option must have exactly one argument.
+		 * + output
     	 */
     	Collection<String> mandatory = List.of(CLI_OPTION_RULES, CLI_OPTION_DIRECTORY);
-    	Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+    	Collection<String> optional = List.of(CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
     	return checkOptions(cl, mandatory, optional) && cl.getOptionValues(CLI_OPTION_DIRECTORY).length == 1;
     }
     
@@ -917,11 +914,12 @@ public final class CliClient {
     	 * + boring
     	 * + debug
 		 * + skipvercheck
+		 * + output
 		 *
 		 * Either a service key or a hostname and a username must be provided.
     	 */
 		Collection<String> mandatory = List.of(CLI_OPTION_RULES, CLI_OPTION_IFLOWS);
-		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
 		return checkOptions(cl, mandatory, optional) && authAndHostProvided(cl);
     }
 
@@ -944,11 +942,12 @@ public final class CliClient {
     	 * + boring
     	 * + debug
 		 * + skipvercheck
+		 * + output
 		 *
 		 * Either a service key or a hostname and a username must be provided.
     	 */
 		Collection<String> mandatory = List.of(CLI_OPTION_RULES);
-		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_SKIP_SAP_PACKAGES, CLI_OPTION_SKIP_IFLOWS, CLI_OPTION_SKIP_PACKAGES, CLI_OPTION_SKIP_DRAFTS, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_SKIP_SAP_PACKAGES, CLI_OPTION_SKIP_IFLOWS, CLI_OPTION_SKIP_PACKAGES, CLI_OPTION_SKIP_DRAFTS, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
 		return checkOptions(cl, mandatory, optional) && authAndHostProvided(cl);
     }
     
@@ -970,11 +969,12 @@ public final class CliClient {
     	 * + boring
     	 * + debug
 		 * + skipvercheck
+		 * + output
 		 *
 		 * Either a service key or a hostname and a username must be provided.
     	 */
 		Collection<String> mandatory = List.of(CLI_OPTION_RULES, CLI_OPTION_PACKAGES);
-		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_SKIP_IFLOWS, CLI_OPTION_SKIP_DRAFTS, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK);
+		Collection<String> optional = List.of(CLI_OPTION_KEY, CLI_OPTION_HOST, CLI_OPTION_USERNAME, CLI_OPTION_PASSWORD, CLI_OPTION_SKIP_IFLOWS, CLI_OPTION_SKIP_DRAFTS, CLI_OPTION_BORING, CLI_OPTION_DEBUG, CLI_OPTION_SKIPVERCHECK, CLI_OPTION_OUTPUT);
 		return checkOptions(cl, mandatory, optional) && authAndHostProvided(cl);
     }
     
