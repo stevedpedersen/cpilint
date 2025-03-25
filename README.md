@@ -27,7 +27,7 @@ ant dependencies
 ant compile
 ant jar
 
-.\scripts\run.bat   
+.\scripts\build.bat   
 
 .\scripts\cpilint.bat -debug -rules dist-files\samples\misc-rules.xml -key .env.trial -packages Experiments -output json
 ```
