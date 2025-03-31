@@ -102,18 +102,12 @@
 
 <target name="docker-release" depends="jar" description="Creates a Docker release archive with runtime artifacts">
     <mkdir dir="${docker.release.dir}"/>
-    <zip destfile="${docker.release.dir}/${app.name.versioned}-docker.zip">
-        <!-- Include the CPILint jar from build/lib -->
+    <zip destfile="${docker.release.dir}/${app.name.versioned}.zip">
         <zipfileset dir="${build.lib}" includes="${jar}" prefix="${release.root}/lib"/>
-        <!-- Include runtime dependencies -->
         <zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="${release.root}/lib"/>
-        <!-- Include Xerces runtime jars if needed -->
-        <zipfileset dir="${dist.files.dir}" includes="xerces-runtime-jars/*.jar" prefix="${release.root}/lib"/>
-        <!-- Include scripts folder (for launch wrappers) -->
+        <zipfileset dir="${xerces.dir}" includes="*.jar" prefix="${release.root}/lib"/> 
         <zipfileset dir="${scripts.dir}" prefix="${release.root}/bin"/>
-        <!-- Include logback config (if not packaged in the jar) -->
         <zipfileset dir="${logback.dir}" prefix="${release.root}/logback"/>
-        <!-- Include rulesets (to allow external rule customization) -->
         <zipfileset dir="${rulesets.dir}" prefix="${release.root}/rulesets"/>
     </zip>
 </target>
