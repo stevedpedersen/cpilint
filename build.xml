@@ -103,12 +103,12 @@
 <target name="docker-release" depends="jar" description="Creates a Docker release archive with runtime artifacts">
     <mkdir dir="${docker.release.dir}"/>
     <zip destfile="${docker.release.dir}/${app.name.versioned}.zip">
-        <zipfileset dir="${build.lib}" includes="${jar}" prefix="${release.root}/lib"/>
-        <zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="${release.root}/lib"/>
-        <zipfileset dir="${xerces.dir}" includes="*.jar" prefix="${release.root}/lib"/> 
-        <zipfileset dir="${scripts.dir}" prefix="${release.root}/bin"/>
-        <zipfileset dir="${logback.dir}" prefix="${release.root}/logback"/>
-        <zipfileset dir="${rulesets.dir}" prefix="${release.root}/rulesets"/>
+        <zipfileset dir="${build.lib}" includes="${jar}" prefix="lib"/>
+        <zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="lib"/>
+        <zipfileset dir="${xerces.dir}" includes="*.jar" prefix="lib"/> 
+        <zipfileset dir="${scripts.dir}" prefix="bin"/>
+        <zipfileset dir="${logback.dir}" prefix="logback"/>
+        <zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
     </zip>
 </target>
 
