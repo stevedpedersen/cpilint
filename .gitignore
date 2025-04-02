@@ -18,3 +18,7 @@ temp/
 .env*
 
 .DS_Store
+
+cpilint.log
+
+cpilint-result.json
