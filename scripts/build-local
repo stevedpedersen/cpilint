@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status.
+
+# Get the base directory dynamically
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+echo "Setting environment variables..."
+
+export CPILINT_HOME="$BASE_DIR"
+
+# Check JAVA_HOME and log warnings if necessary
+if [ -z "$JAVA_HOME" ] || [[ ! "$JAVA_HOME" == *"17"* ]]; then
+    echo "Warning: JAVA_HOME is not set or does not contain '17': $JAVA_HOME"
+else
+    echo "Java 17 found at $JAVA_HOME"
+    export CPILINT_JAVA_HOME="$JAVA_HOME"
+fi
+
+LAUNCH_SCRIPT="$CPILINT_HOME/scripts/cpilint"
+
+echo "Copying runtime jars... $LAUNCH_SCRIPT"
+mkdir -p "$CPILINT_HOME/lib"
+cp "$BASE_DIR/build/lib/cpilint-1.0.5.jar" "$CPILINT_HOME/lib/"
+cp "$BASE_DIR/lib/runtime/"*.jar "$CPILINT_HOME/lib/"
+cp "$BASE_DIR/dist-files/xerces-runtime-jars/"*.jar "$CPILINT_HOME/lib/"
+
+echo ""
+echo "------ Example Commands ------"
+echo ""
+echo "./scripts/cpilint -help"
+echo "./scripts/cpilint -debug -output json -rules rulesets/default.xml -key .env.json"
+echo "./scripts/cpilint -debug -boring -output json -rules rulesets/default.xml -key .env.json -packages SPJPMTests"
+echo "./scripts/cpilint -rules rulesets/default.xml -key .env.json -output json"
