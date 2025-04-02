@@ -21,4 +21,4 @@ temp/
 
 cpilint.log
 
-cpilint-result.json
+cpilint-results.json
