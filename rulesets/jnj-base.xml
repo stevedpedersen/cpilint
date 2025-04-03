@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpilint>
+    <rules>
+        <!-- 
+        ========================================================================
+        Basic Integration Flow Requirements
+        ========================================================================
+        -->
+
+        <!-- Require that all iflows have a description. -->
+        <iflow-description-required/>
+
+        <!-- 
+        ========================================================================
+        Security-Related Rules
+        ========================================================================
+        -->
+
+        <!-- Prevent cleartext basic authentication on unencrypted connections -->
+        <cleartext-basic-auth-not-allowed/>
+
+        <!-- Ensure all data store writes are encrypted -->
+        <unencrypted-data-store-write-not-allowed/>
+
+        <!-- Ensure all endpoints are encrypted -->
+        <unencrypted-endpoints-not-allowed/>
+
+        <!-- Ensure CSRF protection is enabled for HTTPS sender channels -->
+        <csrf-protection-required/>
+
+        <!-- 
+        ========================================================================
+        Routing & Process Configuration Rules
+        ========================================================================
+        -->
+
+        <!-- Ensure all ProcessDirect receiver channels have matching sender channels -->
+        <matching-process-direct-channels-required/>
+
+        <!-- Don't allow Router steps configured with both XML and non-XML conditions -->
+        <multi-condition-type-routers-not-allowed/>
+
+        <!-- 
+        ========================================================================
+        Adapter-Related Rules
+        ========================================================================
+        -->
+
+        <!-- Restrict usage of receiver adapters - default: disallow social media adapters -->
+        <disallowed-receiver-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-receiver-adapters>
+
+        <!-- Restrict usage of sender adapters - uncomment and configure as needed
+        <disallowed-sender-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-sender-adapters>
+        -->
+
+        <!-- 
+        ========================================================================
+        Mapping & Scripting Rules
+        ========================================================================
+        -->
+
+        <!-- Only allow specific mapping types -->
+        <allowed-mapping-types>
+            <allow>message-mapping</allow>
+            <allow>xslt-mapping</allow>
+            <allow>operation-mapping</allow>
+        </allowed-mapping-types>
+
+        <!-- Restrict scripting languages - uncomment if needed
+        <disallowed-scripting-languages>
+            <disallow>javascript</disallow>
+        </disallowed-scripting-languages>
+        -->
+
+        <!-- 
+        ========================================================================
+        Resource Management Rules
+        ========================================================================
+        -->
+
+        <!-- Prevent duplicate resources across integration flows -->
+        <duplicate-resources-not-allowed>
+            <resource-type>groovy-script</resource-type>
+            <resource-type>javascript-script</resource-type>
+            <resource-type>message-mapping</resource-type>
+            <resource-type>xslt-mapping</resource-type>
+            <resource-type>operation-mapping</resource-type>
+            <resource-type>java-archive</resource-type>
+            <resource-type>edmx</resource-type>
+            <resource-type>wsdl</resource-type>
+            <resource-type>xml-schema</resource-type>
+        </duplicate-resources-not-allowed>
+
+        <!-- Control which Java archives are allowed -->
+        <!-- Uncomment and configure as needed
+        <disallowed-java-archives>
+            <disallow>your-unwanted-library-*.jar</disallow>
+        </disallowed-java-archives>
+        -->
+
+        <!-- 
+        ========================================================================
+        User Role Rules
+        ========================================================================
+        -->
+
+        <!-- Control which user roles can be used -->
+        <!-- Uncomment and configure as needed
+        <allowed-user-roles>
+            <allow>JnJApproved</allow>
+        </allowed-user-roles>
+        -->
+
+        <!-- 
+        ========================================================================
+        JnJ Naming Conventions
+        Based on JnJ-NamingConventions.pdf and practice examples
+        ========================================================================
+        -->
+
+        <!-- Integration Flow Naming Conventions -->
+        <naming>
+            <scheme>
+                <regex>^[A-Z0-9].*_[A-Z0-9].*$</regex>
+            </scheme>
+            <message>Integration flow names should follow [SOURCE]_[TARGET] format</message>
+            <apply-to>iflow.name</apply-to>
+        </naming>
+
+        <!-- Participant Naming Conventions -->
+        <naming>
+            <scheme>
+                <or>
+                    <starts-with>OP_</starts-with>
+                    <starts-with>B2B_</starts-with>
+                    <starts-with>CP_</starts-with>
+                </or>
+            </scheme>
+            <message>Participant names must start with OP_ (on-premise), B2B_ (business partner), or CP_ (cloud provider)</message>
+            <apply-to>sender.name</apply-to>
+            <apply-to>receiver.name</apply-to>
+        </naming>
+
+        <!-- Channel Naming Conventions -->
+        <!-- HTTP Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>HTTP_RCV_</starts-with>
+            </scheme>
+            <message>HTTP receiver channel names must start with HTTP_RCV_</message>
+            <apply-to>http-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- HTTPS Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>HTTPS_RCV_</starts-with>
+            </scheme>
+            <message>HTTPS receiver channel names must start with HTTPS_RCV_</message>
+            <apply-to>https-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- ProcessDirect Sender Channels -->
+        <naming>
+            <scheme>
+                <starts-with>PD_SND_</starts-with>
+            </scheme>
+            <message>ProcessDirect sender channel names must start with PD_SND_</message>
+            <apply-to>processdirect-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- ProcessDirect Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>PD_RCV_</starts-with>
+            </scheme>
+            <message>ProcessDirect receiver channel names must start with PD_RCV_</message>
+            <apply-to>processdirect-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- SFTP Sender Channels -->
+        <naming>
+            <scheme>
+                <starts-with>SFTP_SND_</starts-with>
+            </scheme>
+            <message>SFTP sender channel names must start with SFTP_SND_</message>
+            <apply-to>sftp-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- SFTP Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>SFTP_RCV_</starts-with>
+            </scheme>
+            <message>SFTP receiver channel names must start with SFTP_RCV_</message>
+            <apply-to>sftp-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- SOAP Sender Channels -->
+        <naming>
+            <scheme>
+                <starts-with>SOAP_SND_</starts-with>
+            </scheme>
+            <message>SOAP sender channel names must start with SOAP_SND_</message>
+            <apply-to>soap-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- SOAP Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>SOAP_RCV_</starts-with>
+            </scheme>
+            <message>SOAP receiver channel names must start with SOAP_RCV_</message>
+            <apply-to>soap-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Mail Sender Channels -->
+        <naming>
+            <scheme>
+                <starts-with>MAIL_SND_</starts-with>
+            </scheme>
+            <message>Mail sender channel names must start with MAIL_SND_</message>
+            <apply-to>mail-sender-channel.name</apply-to>
+        </naming>
+
+        <!-- Mail Receiver Channels -->
+        <naming>
+            <scheme>
+                <starts-with>MAIL_RCV_</starts-with>
+            </scheme>
+            <message>Mail receiver channel names must start with MAIL_RCV_</message>
+            <apply-to>mail-receiver-channel.name</apply-to>
+        </naming>
+
+        <!-- Flow Step Naming Conventions -->
+        <!-- Content Modifier Steps -->
+        <naming>
+            <scheme>
+                <starts-with>CM_</starts-with>
+            </scheme>
+            <message>Content Modifier step names must start with CM_</message>
+            <apply-to>content-modifier.name</apply-to>
+        </naming>
+
+        <!-- Router Steps -->
+        <naming>
+            <scheme>
+                <starts-with>RT_</starts-with>
+            </scheme>
+            <message>Router step names must start with RT_</message>
+            <apply-to>router.name</apply-to>
+        </naming>
+
+        <!-- XSLT Mapping Steps -->
+        <naming>
+            <scheme>
+                <starts-with>XSL_</starts-with>
+            </scheme>
+            <message>XSLT mapping step names must start with XSL_</message>
+            <apply-to>xslt-mapping.name</apply-to>
+        </naming>
+
+        <!-- Message Mapping Steps -->
+        <naming>
+            <scheme>
+                <starts-with>MSG_</starts-with>
+            </scheme>
+            <message>Message Mapping step names must start with MSG_</message>
+            <apply-to>message-mapping.name</apply-to>
+        </naming>
+
+        <!-- Filter Steps -->
+        <naming>
+            <scheme>
+                <starts-with>FLT_</starts-with>
+            </scheme>
+            <message>Filter step names must start with FLT_</message>
+            <apply-to>filter.name</apply-to>
+        </naming>
+
+        <!-- Groovy Script Steps -->
+        <naming>
+            <scheme>
+                <starts-with>GRV_</starts-with>
+            </scheme>
+            <message>Groovy script step names must start with GRV_</message>
+            <apply-to>groovy-script.name</apply-to>
+        </naming>
+
+        <!-- JavaScript Script Steps -->
+        <naming>
+            <scheme>
+                <starts-with>JS_</starts-with>
+            </scheme>
+            <message>JavaScript script step names must start with JS_</message>
+            <apply-to>js-script.name</apply-to>
+        </naming>
+
+        <!-- Data Store Operations Steps -->
+        <naming>
+            <scheme>
+                <starts-with>DS_</starts-with>
+            </scheme>
+            <message>Data Store Operations step names must start with DS_</message>
+            <apply-to>data-store-operations.name</apply-to>
+        </naming>
+
+        <!-- XML Validator Steps -->
+        <naming>
+            <scheme>
+                <starts-with>XSD_</starts-with>
+            </scheme>
+            <message>XML Validator step names must start with XSD_</message>
+            <apply-to>xml-validator.name</apply-to>
+        </naming>
+
+        <!-- No Default Names for Message Mappings -->
+        <naming>
+            <scheme>
+                <not>
+                    <regex>Message Mapping \d+</regex>
+                </not>
+            </scheme>
+            <message>Don't use the default Message Mapping step names</message>
+            <apply-to>message-mapping.name</apply-to>
+        </naming>
+
+        <!-- No Default Names for Content Modifiers -->
+        <naming>
+            <scheme>
+                <not>
+                    <regex>Content Modifier \d+</regex>
+                </not>
+            </scheme>
+            <message>Don't use the default Content Modifier step names</message>
+            <apply-to>content-modifier.name</apply-to>
+        </naming>
+
+        <!-- No Default Names for Scripts -->
+        <naming>
+            <scheme>
+                <not>
+                    <regex>Groovy Script \d+</regex>
+                </not>
+            </scheme>
+            <message>Don't use the default Groovy Script step names</message>
+            <apply-to>groovy-script.name</apply-to>
+        </naming>
+
+        <naming>
+            <scheme>
+                <not>
+                    <regex>JavaScript Script \d+</regex>
+                </not>
+            </scheme>
+            <message>Don't use the default JavaScript Script step names</message>
+            <apply-to>js-script.name</apply-to>
+        </naming>
+    </rules>
+</cpilint>
