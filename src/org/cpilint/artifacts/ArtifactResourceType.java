@@ -12,7 +12,8 @@ public enum ArtifactResourceType {
 	EDMX("EDMX"),
 	WSDL("WSDL"),
 	XSD("XML Schema"),
-	JSON("JSON");
+	JSON("JSON"),
+	METAINFO("metainfo.prop");
 
 	private final String name;
 	

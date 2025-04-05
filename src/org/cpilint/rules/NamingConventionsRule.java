@@ -1,5 +1,21 @@
 package org.cpilint.rules;
 
+import org.cpilint.IflowXml;
+import org.cpilint.artifacts.ArtifactResource;
+import org.cpilint.artifacts.ArtifactResourceType;
+import org.cpilint.artifacts.IflowArtifact;
+import org.cpilint.artifacts.IflowArtifactTag;
+import org.cpilint.issues.NamingConventionsRuleIssue;
+import org.cpilint.model.XmlModel;
+import org.cpilint.model.XmlModelFactory;
+import net.sf.saxon.s9api.XdmValue;
+import net.sf.saxon.s9api.XdmItem;
+import net.sf.saxon.s9api.XdmNode;
+import java.io.IOException;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,25 +24,17 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.cpilint.IflowXml;
-import org.cpilint.artifacts.IflowArtifact;
-import org.cpilint.artifacts.IflowArtifactTag;
-import org.cpilint.issues.NamingConventionsRuleIssue;
 import org.cpilint.model.ChannelDirection;
 import org.cpilint.model.DataStoreOperation;
 import org.cpilint.model.MappingType;
 import org.cpilint.model.Nameable;
-import org.cpilint.model.ReceiverAdapter;
 import org.cpilint.model.ScriptingLanguage;
-import org.cpilint.model.SenderAdapter;
 import org.cpilint.model.XmlModel;
 import org.cpilint.model.XmlModelFactory;
+import org.cpilint.model.SenderAdapter;
+import org.cpilint.model.ReceiverAdapter;
 import org.cpilint.rules.naming.NamingScheme;
-import net.sf.saxon.s9api.XdmItem;
-import net.sf.saxon.s9api.XdmNode;
+import org.cpilint.rules.naming.NamingSchemeFactory;
 
 final class NamingConventionsRule extends RuleBase {
 	
@@ -177,8 +185,8 @@ final class NamingConventionsRule extends RuleBase {
 		nameableToNameFunctionMap.put(Nameable.HUBSPOT_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.IDOC_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.JDBC_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
-		nameableToNameFunctionMap.put(Nameable.JMS_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.JIRA_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.JMS_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.KAFKA_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.LDAP_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.MAIL_RECEIVER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
@@ -347,47 +355,41 @@ final class NamingConventionsRule extends RuleBase {
 		IflowXml iflowXml = iflow.getIflowXml();
 		XmlModel model = XmlModelFactory.getModelFor(iflowXml);
 		IflowArtifactTag tag = iflow.getTag();
-		for (Nameable n : applyTo) {
-			/*
-			 *  Iflow name and ID are special cases, since they're the only
-			 *  ones that are not extracted with XPath from the iflow XML.
-			 */
-			if (n == Nameable.IFLOW_NAME) {
-				String iflowName = tag.getName();
-				logger.debug("Checking {} name '{}'", n, iflowName);
-				if (!scheme.test(iflowName)) {
-					logger.debug("Name is not compliant ('{}')", message);
-					consumer.consume(new NamingConventionsRuleIssue(ruleId, tag, errorMessage("iflow name"), iflowName));
-				}
-				continue;
+		
+		// Get source and target from metainfo.properties
+		Properties props = new Properties();
+		for (ArtifactResource resource : iflow.getResourcesByType(ArtifactResourceType.METAINFO)) {
+			try {
+				props.load(resource.getContents());
+			} catch (IOException e) {
+				logger.warn("Error reading metainfo.properties: {}", e.getMessage());
 			}
-			if (n == Nameable.IFLOW_ID) {
-				String iflowId = tag.getId();
-				logger.debug("Checking {} name '{}'", n, iflowId);
-				if (!scheme.test(iflowId)) {
-					logger.debug("Name is not compliant ('{}')", message);
-					consumer.consume(new NamingConventionsRuleIssue(ruleId, tag, errorMessage("iflow ID"), iflowId));
-				}
-				continue;
-			}
-			/*
-			 * Since we've already asserted that the keys of the three maps are
-			 * identical, we only need to assert that the current Nameable
-			 * is a key in one of them. Since we got this far, the current
-			 * Nameable is not the iflow name or ID.
-			 */
-			assert nameableToXpathFunctionMap.containsKey(n);
-			String xpath = nameableToXpathFunctionMap.get(n).apply(model);
-			for (XdmItem i : iflowXml.evaluateXpath(xpath)) {
-				assert i.isNode();
-				XdmNode node = (XdmNode)i;
+			break;
+		}
+		
+		String source = props.getProperty("source");
+		String target = props.getProperty("target");
+		
+		// Check each nameable type
+		for (Nameable n : Nameable.values()) {
+			XdmValue names = iflowXml.evaluateXpath(nameableToXpathFunctionMap.get(n).apply(model));
+			for (XdmItem item : names) {
+				XdmNode node = (XdmNode)item;
 				String name = nameableToNameFunctionMap.get(n).apply(node, model);
-				logger.debug("Checking {} name '{}'", n, name);
-				if (!scheme.test(name)) {
-					// This name does not follow the naming scheme.
-					logger.debug("Name is not compliant ('{}')", message);
-					String ident = nameableToIdentFunctionMap.get(n).apply(node, model);
-					consumer.consume(new NamingConventionsRuleIssue(ruleId, tag, errorMessage(ident), name));
+				String ident = nameableToIdentFunctionMap.get(n).apply(node, model);
+				
+				// Get the naming scheme for this nameable type
+				String schemeName = props.getProperty("naming.scheme." + n.name().toLowerCase());
+				if (schemeName != null) {
+					NamingScheme scheme = NamingSchemeFactory.create(schemeName);
+					if (!scheme.test(name)) {
+						consumer.consume(new NamingConventionsRuleIssue(
+							ruleId, 
+							tag, 
+							"Name does not match naming scheme: " + name,
+							name
+						));
+					}
 				}
 			}
 		}

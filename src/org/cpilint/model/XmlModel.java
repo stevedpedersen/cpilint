@@ -110,6 +110,63 @@ public interface XmlModel {
 	
 	public String xqueryForMultiConditionTypeRouters();
 	
+	// ILCD Framework validation related methods
+	
+	/**
+	 * Gets XPath expression to return all steps in process order.
+	 * @return XPath expression string
+	 */
+	public String xpathForAllStepsInProcessOrder();
+	
+	/**
+	 * Gets XPath expression to return all steps regardless of order.
+	 * @return XPath expression string
+	 */
+	public String xpathForAllSteps();
+	
+	/**
+	 * Gets XPath expression to find steps of a specific type.
+	 * @param stepType The type of the step to find
+	 * @return XPath expression string
+	 */
+	public String xpathForStepsByType(String stepType);
+	
+	/**
+	 * Gets XPath expression to find properties in a specific step.
+	 * @param stepId The ID of the step to search properties in
+	 * @return XPath expression string
+	 */
+	public String xpathForPropertiesInStep(String stepId);
+	
+	/**
+	 * Gets the property name from a property element node.
+	 * @param propertyNode The property node
+	 * @return The property name
+	 */
+	public String getPropertyNameFromElement(XdmNode propertyNode);
+	
+	/**
+	 * Gets the property value from a property element node.
+	 * @param propertyNode The property node
+	 * @return The property value
+	 */
+	public String getPropertyValueFromElement(XdmNode propertyNode);
+	
+	// ContentModifierPositionRule related methods
+	
+	/**
+	 * Gets XPath expression to find Content Modifier steps with position rule.
+	 * @return XPath expression string
+	 */
+	public String xpathForContentModifierStepsWithPositionRule();
+	
+	/**
+	 * Gets XPath expression to find Content Modifier steps with position rule in a specific position.
+	 * @param position The position of the Content Modifier step
+	 * @return XPath expression string
+	 */
+	public String xpathForContentModifierStepsWithPositionRule(String position);
+	
 	// Participant related.
 
 	public String xpathForSenderParticipants();

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.cpilint.util.JarResourceUtil;
+import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmNodeKind;
 
@@ -490,6 +491,51 @@ final class DefaultXmlModel implements XmlModel {
 	public String getParticipantIdFromElement(XdmNode node) {
 		nodeMustBeAnElement(node);
 		return node.attribute("id");
+	}
+
+	// ILCD Framework validation related methods implementation
+	
+	@Override
+	public String xpathForAllStepsInProcessOrder() {
+		return "//bpmn2:process/bpmn2:sequenceFlow";
+	}
+	
+	@Override
+	public String xpathForAllSteps() {
+		return "//bpmn2:process/bpmn2:task";
+	}
+	
+	@Override
+	public String xpathForStepsByType(String stepType) {
+		return xpathForFlowSteps(propertyKeyValuePredicate(ACTIVITY_TYPE_PROPERTY_KEY, stepType));
+	}
+	
+	@Override
+	public String xpathForPropertiesInStep(String stepId) {
+		return String.format("//bpmn2:process/bpmn2:task[@id='%s']/bpmn2:extensionElements/ifl:property", stepId);
+	}
+	
+	@Override
+	public String getPropertyNameFromElement(XdmNode propertyNode) {
+		nodeMustBeAnElement(propertyNode);
+		return propertyNode.getChildElement(new QName(PROPERTY_KEY_ELEMENT_NAME)).getStringValue();
+	}
+	
+	@Override
+	public String getPropertyValueFromElement(XdmNode propertyNode) {
+		nodeMustBeAnElement(propertyNode);
+		return propertyNode.getChildElement(new QName(PROPERTY_VALUE_ELEMENT_NAME)).getStringValue();
+	}
+	
+	@Override
+	public String xpathForContentModifierStepsWithPositionRule() {
+		return xpathForFlowSteps(stepPredicateForContentModifierSteps());
+	}
+	
+	@Override
+	public String xpathForContentModifierStepsWithPositionRule(String position) {
+		String positionPredicate = String.format("[position() = %s]", position);
+		return xpathForFlowSteps(stepPredicateForContentModifierSteps()) + positionPredicate;
 	}
 
 }
