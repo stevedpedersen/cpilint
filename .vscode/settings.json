@@ -1,0 +1,41 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "build/classes",
+    "java.project.resourcePaths": [
+        "resources"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/compile/**/*.jar",
+        "lib/runtime/**/*.jar",
+        "dist-files/xerces-runtime-jars/**/*.jar",
+        "logback/**/*.jar",
+        "build/lib/**/*.jar"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.compile.problems": {
+        "maxProblems": 1000,
+        "maxPerFile": 100
+    },
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.debug.settings.console": "internalConsole",
+    "java.debug.settings.breakpoints": {
+        "skipClasses": [
+            "java.*",
+            "javax.*",
+            "com.sun.*",
+            "jdk.*",
+            "org.eclipse.*",
+            "org.springframework.*"
+        ]
+    },
+    "java.jdt.ls.java.home": "${env:JAVA_HOME}",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "${env:JAVA_HOME}",
+            "default": true
+        }
+    ]
+}

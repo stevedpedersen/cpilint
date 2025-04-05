@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug Help",
+            "request": "launch",
+            "mainClass": "org.cpilint.CliClient",
+            "projectName": "cpilint",
+            "args": ["-help"],
+            "console": "internalConsole",
+            "classPath": [
+                "build/classes",
+                "lib/compile/*",
+                "lib/runtime/*",
+                "dist-files/xerces-runtime-jars/*",
+                "logback/*",
+                "build/lib/*"
+            ]
+        }
+    ]
+}
