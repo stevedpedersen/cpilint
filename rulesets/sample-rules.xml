@@ -23,6 +23,8 @@
         <!-- Make sure that all data store writes are encrypted. -->
         <unencrypted-data-store-write-not-allowed/>
 
+        <!-- Require Content Modifier step within first 1-5 steps of an iFlow with specific properties -->
+        <content-modifier-position/>
+
     </rules>
 </cpilint>
-

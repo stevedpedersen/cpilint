@@ -30,6 +30,7 @@
 	<property name="rulesets.dir" value="rulesets"/>
 
 	<path id="classpath.build">
+		<fileset dir="${dependencies.dir}" includes="*.jar"/>
 		<fileset dir="${compile.dependencies.dir}" includes="*.jar"/>
 	</path>
 
