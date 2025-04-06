@@ -22,6 +22,7 @@ public final class ContentModifierPositionRuleFactory implements RuleFactory {
             throw new RuleFactoryError("Cannot create ContentModifierPositionRule from element: " + e.getName());
         }
         
+        // return new org.cpilint.rules.IflowDescriptionRequiredRule();
         return new ContentModifierPositionRule();
     }
 }

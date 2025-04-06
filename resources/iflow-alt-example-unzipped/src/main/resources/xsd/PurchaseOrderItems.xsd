@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PurchaseOrderItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="PurchaseOrderItem">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="OrderDetails">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PurchaseOrderDate" type="xs:string" />
+                    <xs:element name="PurchaseOrderNumber" type="xs:unsignedInt" />
+                    <xs:element name="Supplier" type="xs:unsignedInt" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ItemDetails">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SupplierMaterialGroup" type="xs:string" />
+                    <xs:element name="Item" type="xs:unsignedByte" />
+                    <xs:element name="PriceTotal" type="xs:unsignedShort" />
+                    <xs:element name="ItemWeightUnit" type="xs:string" />
+                    <xs:element name="ItemNetWeight" type="xs:decimal" />
+                    <xs:element name="PricePerUnit" type="xs:decimal" />
+                    <xs:element name="OrderQuantityUnit" type="xs:string" />
+                    <xs:element name="SupplierMaterial" type="xs:string" />
+                    <xs:element name="OrderQuantity" type="xs:unsignedByte" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

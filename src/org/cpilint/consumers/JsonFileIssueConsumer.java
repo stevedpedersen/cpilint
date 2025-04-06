@@ -4,7 +4,6 @@ import org.cpilint.issues.Issue;
 import org.cpilint.issues.IflowDescriptionRequiredIssue;
 import org.cpilint.issues.NamingConventionsRuleIssue;
 import org.cpilint.issues.DisallowedMappingTypeIssue;
-import org.cpilint.artifacts.IflowArtifactTag;
 import org.cpilint.suppliers.IflowArtifactSupplierError;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonFileIssueConsumer extends FileIssueConsumer {
+public final class JsonFileIssueConsumer extends FileIssueConsumer {
 
     public JsonFileIssueConsumer(String outputFilePath) {
         super(outputFilePath);

@@ -1,0 +1,96 @@
+<cpilint>
+    <rules>
+        <naming>
+            <scheme><regex>^[A-Z0-9].*_[A-Z0-9].*$</regex></scheme>
+            <message>Integration flow names should follow [SOURCE]_[TARGET] format</message>
+            <apply-to>iflow.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><or>
+                <starts-with>S_</starts-with>
+                <starts-with>R_</starts-with>
+                <starts-with>OP_</starts-with>
+                <starts-with>B2B_</starts-with>
+                <starts-with>CP_</starts-with>
+            </or></scheme>
+            <message>Participant names must start with S_, R_, OP_, B2B_, or CP_</message>
+            <apply-to>sender.name</apply-to>
+            <apply-to>receiver.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>CM_</starts-with></scheme>
+            <message>Content Modifier step names must start with CM_</message>
+            <apply-to>content-modifier.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><not><regex>Content Modifier \d+</regex></not></scheme>
+            <message>Don't use the default Content Modifier step names</message>
+            <apply-to>content-modifier.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>XSLT_</starts-with></scheme>
+            <message>XSLT mapping step names must start with XSLT_</message>
+            <apply-to>xslt-mapping.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>MM_</starts-with></scheme>
+            <message>Message Mapping step names must start with MM_</message>
+            <apply-to>message-mapping.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><not><regex>Message Mapping \d+</regex></not></scheme>
+            <message>Don't use the default Message Mapping step names</message>
+            <apply-to>message-mapping.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>SCR_</starts-with></scheme>
+            <message>Groovy or JavaScript script step names must start with SCR_</message>
+            <apply-to>groovy-script.name</apply-to>
+            <apply-to>js-script.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><or>
+                <not><regex>Groovy Script \d+</regex></not>
+                <not><regex>JavaScript Script \d+</regex></not>
+            </or></scheme>
+            <message>Don't use the default Groovy Script step names</message>
+            <apply-to>groovy-script.name</apply-to>
+            <apply-to>js-script.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>FLT_</starts-with></scheme>
+            <message>Filter step names must start with FLT_</message>
+            <apply-to>filter.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><or><starts-with>VAL_</starts-with><starts-with>VAL_XSD_</starts-with><starts-with>VAL_EDI_</starts-with></or></scheme>
+            <message>XML Validator step names must start with VAL_, VAL_XSD_, or VAL_EDI_</message>
+            <apply-to>xml-validator.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>DS_</starts-with></scheme>
+            <message>Data Store Operations step names must start with DS_</message>
+            <apply-to>data-store-operations.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>DS_GET_</starts-with></scheme>
+            <message>Data Store Get step names must start with DS_GET_</message>
+            <apply-to>get-data-store-operations.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>DS_SEL_</starts-with></scheme>
+            <message>Data Store Select step names must start with DS_SEL_</message>
+            <apply-to>select-data-store-operations.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>DS_DEL_</starts-with></scheme>
+            <message>Data Store Delete step names must start with DS_DEL_</message>
+            <apply-to>delete-data-store-operations.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>DS_WRT_</starts-with></scheme>
+            <message>Data Store Write step names must start with DS_WRT_</message>
+            <apply-to>write-data-store-operations.name</apply-to>
+        </naming>
+    </rules>
+</cpilint>
