@@ -73,6 +73,23 @@
                 "dist-files/xerces-runtime-jars/xercesImpl.jar",
                 "logback/logback.xml"
             ]
+        },
+        {
+            "type": "Debug Basic",
+            "name": "Debug Help",
+            "request": "launch",
+            "mainClass": "org.cpilint.CliClient",
+            "projectName": "cpilint",
+            "args": ["-help"],
+            "console": "internalConsole",
+            "classPaths": [
+                "build/classes",
+                "lib/compile/*",
+                "lib/runtime/*",
+                "dist-files/xerces-runtime-jars/*",
+                "logback/*",
+                "build/lib/*"
+            ]
         }
     ]
 }

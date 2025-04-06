@@ -37,5 +37,5 @@
         }
     ],
     "java.search.scope": "all",
-    "DockerRun.DisableAutoGenerateConfig": true
+    "DockerRun.DisableAutoGenerateConfig": true,
 }
