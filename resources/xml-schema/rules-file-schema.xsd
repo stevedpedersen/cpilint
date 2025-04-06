@@ -49,6 +49,12 @@
 			<xs:element name="naming" type="namingType" minOccurs="0" maxOccurs="unbounded"/> <!-- Unlike the other rules, the naming rule can occur multiple times. -->
 			<xs:element name="allowed-user-roles" type="allowedUserRolesType" minOccurs="0"/>
 			<xs:element name="disallowed-user-roles" type="disallowedUserRolesType" minOccurs="0"/>
+			<xs:element name="content-modifier-position-rule" type="baseRuleType" minOccurs="0"/>
+			<xs:element name="iflow-name-matches" type="iflowNameMatchesType" minOccurs="0"/>
+			<xs:element name="default-names-not-allowed" type="baseRuleType" minOccurs="0"/>
+			<xs:element name="naming-conventions" type="baseRuleType" minOccurs="0"/>
+			<xs:element name="undeclared-content-modifier-datatype-not-allowed" type="baseRuleType" minOccurs="0"/>
+			<xs:element name="unused-parameters-not-allowed" type="baseRuleType" minOccurs="0"/>
 		</xs:all>
 		<!-- At least one rule must be present. -->
 		<xs:assert test="count(*) gt 0"/>
@@ -513,6 +519,16 @@
 			<xs:extension base="baseRuleType">
 				<xs:sequence minOccurs="1" maxOccurs="unbounded">
 					<xs:element name="disallow" type="nonEmptyString"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="iflowNameMatchesType">
+		<xs:complexContent>
+			<xs:extension base="baseRuleType">
+				<xs:sequence>
+					<xs:element name="pattern" type="xs:string"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

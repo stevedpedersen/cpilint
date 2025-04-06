@@ -372,6 +372,14 @@ final class NamingConventionsRule extends RuleBase {
 		
 		// Check each nameable type
 		for (Nameable n : Nameable.values()) {
+			// Skip if the map doesn't contain this nameable type
+			if (!nameableToXpathFunctionMap.containsKey(n) || 
+				!nameableToNameFunctionMap.containsKey(n) || 
+				!nameableToIdentFunctionMap.containsKey(n)) {
+				logger.debug("Skipping nameable type {} as it's not configured in the maps", n);
+				continue;
+			}
+			
 			XdmValue names = iflowXml.evaluateXpath(nameableToXpathFunctionMap.get(n).apply(model));
 			for (XdmItem item : names) {
 				XdmNode node = (XdmNode)item;

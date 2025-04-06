@@ -1,10 +1,101 @@
 <cpilint>
     <rules>
+        <!-- Ensure Content Modifier datatypes are properly declared -->
+        <undeclared-content-modifier-datatype-not-allowed/>
 
-        <!-- 
-        ========================================================================
-        Basic Integration Flow Requirements
-        ========================================================================
+        <!-- ===== SECURITY RULES ===== -->
+        <!-- Disallow cleartext basic authentication -->
+        <cleartext-basic-auth-not-allowed/>
+        
+        <!-- Disallow client certificate sender channel authentication -->
+        <client-cert-sender-channel-auth-not-allowed/>
+        
+        <!-- Require CSRF protection -->
+        <csrf-protection-required/>
+        
+        <!-- Disallow unencrypted endpoints -->
+        <unencrypted-endpoints-not-allowed/>
+        
+        <!-- Make sure that all data store writes are encrypted. -->
+        <unencrypted-data-store-write-not-allowed/>
+
+        <!-- ===== ADAPTER RULES ===== -->
+        <!-- Disallow specific receiver adapters -->
+        <disallowed-receiver-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-receiver-adapters>
+        
+        <!-- Disallow specific sender adapters -->
+        <!--
+        <disallowed-sender-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-sender-adapters>
+        -->
+
+        <!-- ===== NAMING RULES ===== -->
+        <!-- Disallow default names -->
+        <default-names-not-allowed/>
+        
+        <!-- Ensure iFlow name matches specific pattern -->
+        <!--
+        <iflow-name-matches>
+            <pattern>^[A-Z][a-zA-Z0-9_]*$</pattern>
+        </iflow-name-matches>
+        -->
+        
+        <!-- Enforce naming conventions (configured in jnj-naming.xml) -->
+        <!-- <naming-conventions/> -->
+
+        <!-- ===== ROUTER RULES ===== -->
+        <!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
+        <multi-condition-type-routers-not-allowed/>
+        
+        <!-- ===== MAPPING RULES ===== -->
+        <!-- Message Mapping and XSLT are the two allowed mapping types. -->
+        <allowed-mapping-types>
+            <allow>message-mapping</allow>
+            <allow>xslt-mapping</allow>
+        </allowed-mapping-types>
+        
+        <!--
+        <allowed-xslt-versions>
+            <allow>1.0</allow>
+            <allow>2.0</allow>
+        </allowed-xslt-versions>
+        -->
+
+        <!-- ===== CHANNEL RULES ===== -->
+        <matching-process-direct-channels-required/>
+
+        <!-- ===== RESOURCE RULES ===== -->
+        <!-- Disallow duplicate resources -->
+        <duplicate-resources-not-allowed/>
+        
+        <!--
+        <java-archives>
+            <disallow>.*</disallow>
+        </java-archives>
+        -->
+
+        <!-- ===== SCRIPTING RULES ===== -->
+        <!--
+        <scripting-languages>
+            <allow>groovy</allow>
+            <allow>javascript</allow>
+        </scripting-languages>
+        -->
+
+        <!-- ===== PARAMETER RULES ===== -->
+        <!-- Disallow unused parameters -->
+        <unused-parameters-not-allowed/>
+
+        <!--
+        <user-roles>
+            <allow>ESBMessageAdmin</allow>
+            <allow>Developer</allow>
+        </user-roles>
         -->
 
         <!-- Require that all iflows have a description. -->

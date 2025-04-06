@@ -9,7 +9,7 @@ import org.dom4j.Element;
  */
 public final class ContentModifierPositionRuleFactory implements RuleFactory {
     
-    private static final String ELEMENT_NAME = "content-modifier-position";
+    private static final String ELEMENT_NAME = "content-modifier-position-rule";
     
     @Override
     public boolean canCreateFrom(Element e) {
@@ -21,8 +21,6 @@ public final class ContentModifierPositionRuleFactory implements RuleFactory {
         if (!canCreateFrom(e)) {
             throw new RuleFactoryError("Cannot create ContentModifierPositionRule from element: " + e.getName());
         }
-        
-        // return new org.cpilint.rules.IflowDescriptionRequiredRule();
         return new ContentModifierPositionRule();
     }
 }

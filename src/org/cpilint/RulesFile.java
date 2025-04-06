@@ -34,7 +34,9 @@ import org.xml.sax.SAXParseException;
 
 import org.cpilint.rules.CleartextBasicAuthNotAllowedRuleFactory;
 import org.cpilint.rules.ClientCertSenderChannelAuthNotAllowedRuleFactory;
+import org.cpilint.rules.ContentModifierPositionRuleFactory;
 import org.cpilint.rules.CsrfProtectionRequiredRuleFactory;
+import org.cpilint.rules.DefaultNamesNotAllowedRuleFactory;
 import org.cpilint.rules.DuplicateResourcesNotAllowedRuleFactory;
 import org.cpilint.rules.IflowDescriptionRequiredRuleFactory;
 import org.cpilint.rules.IflowNameMatchesRuleFactory;
@@ -48,8 +50,10 @@ import org.cpilint.rules.Rule;
 import org.cpilint.rules.RuleFactory;
 import org.cpilint.rules.ScriptingLanguagesRuleFactory;
 import org.cpilint.rules.SenderAdaptersRuleFactory;
+import org.cpilint.rules.UndeclaredContentModifierDatatypeRuleFactory;
 import org.cpilint.rules.UnencryptedDataStoreWriteNotAllowedRuleFactory;
 import org.cpilint.rules.UnencryptedEndpointsNotAllowedRuleFactory;
+import org.cpilint.rules.UnusedParametersRuleFactory;
 import org.cpilint.rules.UserRolesRuleFactory;
 import org.cpilint.rules.XsltVersionsRuleFactory;
 
@@ -69,7 +73,9 @@ public final class RulesFile {
 		ruleFactories = new ArrayList<>();
 		ruleFactories.add(new CleartextBasicAuthNotAllowedRuleFactory());
 		ruleFactories.add(new ClientCertSenderChannelAuthNotAllowedRuleFactory());
+		ruleFactories.add(new ContentModifierPositionRuleFactory());
 		ruleFactories.add(new CsrfProtectionRequiredRuleFactory());
+		ruleFactories.add(new DefaultNamesNotAllowedRuleFactory());
 		ruleFactories.add(new DuplicateResourcesNotAllowedRuleFactory());
 		ruleFactories.add(new IflowDescriptionRequiredRuleFactory());
 		ruleFactories.add(new IflowNameMatchesRuleFactory());
@@ -81,8 +87,10 @@ public final class RulesFile {
 		ruleFactories.add(new ReceiverAdaptersRuleFactory());
 		ruleFactories.add(new ScriptingLanguagesRuleFactory());
 		ruleFactories.add(new SenderAdaptersRuleFactory());
+		ruleFactories.add(new UndeclaredContentModifierDatatypeRuleFactory());
 		ruleFactories.add(new UnencryptedDataStoreWriteNotAllowedRuleFactory());
 		ruleFactories.add(new UnencryptedEndpointsNotAllowedRuleFactory());
+		ruleFactories.add(new UnusedParametersRuleFactory());
 		ruleFactories.add(new UserRolesRuleFactory());
 		ruleFactories.add(new XsltVersionsRuleFactory());
 		Iterator<RuleFactory> extensionRules = loader.iterator();

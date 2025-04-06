@@ -13,6 +13,7 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,18 +30,10 @@ final class IflowDescriptionRequiredRule extends RuleBase {
         XdmValue descriptionNodes = iflowXml.evaluateXpath(model.xpathForIflowDescription());
         boolean hasDescriptionInXml = descriptionNodes.size() > 0;
         
-        // Check metainfo.properties
-        Properties props = new Properties();
-        for (ArtifactResource resource : iflow.getResourcesByType(ArtifactResourceType.METAINFO)) {
-            try {
-                props.load(resource.getContents());
-            } catch (IOException e) {
-                logger.warn("Error reading metainfo.properties: {}", e.getMessage());
-            }
-            break;
-        }
-        String description = props.getProperty("description");
-        boolean hasDescriptionInMeta = description != null;
+        // Check metainfo.prop
+        Map<String, String> metainfo = iflow.getMetainfo();
+        String description = metainfo.get("description");
+        boolean hasDescriptionInMeta = description != null && !description.trim().isEmpty();
         
         // If neither XML nor metainfo.properties has a description, create an issue
         if (!hasDescriptionInXml && !hasDescriptionInMeta) {

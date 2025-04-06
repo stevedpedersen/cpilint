@@ -1,5 +1,6 @@
 package org.cpilint.issues;
 
+import java.util.Optional;
 import org.cpilint.artifacts.IflowArtifactTag;
 
 /**
@@ -23,6 +24,7 @@ public final class ContentModifierPositionIssue extends IssueBase {
     private final int position;
     private final boolean missingProjectName;
     private final boolean missingIntegrationID;
+    protected final IflowArtifactTag tag;
     
     /**
      * Constructor for MISSING issue type
@@ -31,8 +33,8 @@ public final class ContentModifierPositionIssue extends IssueBase {
      * @param tag The iFlow artifact tag
      * @param issueType Must be MISSING
      */
-    public ContentModifierPositionIssue(String ruleId, IflowArtifactTag tag, IssueType issueType) {
-        super(ruleId, tag);
+    public ContentModifierPositionIssue(Optional<String> ruleId, IflowArtifactTag tag, IssueType issueType) {
+        super(ruleId, tag, String.format("iFlow %s does not have a Content Modifier step, which is required by the ILCD Framework", tag.getName()));
         if (issueType != IssueType.MISSING) {
             throw new IllegalArgumentException("This constructor should only be used for MISSING issue type");
         }
@@ -42,6 +44,7 @@ public final class ContentModifierPositionIssue extends IssueBase {
         this.position = -1;
         this.missingProjectName = false;
         this.missingIntegrationID = false;
+        this.tag = tag;
     }
     
     /**
@@ -54,9 +57,10 @@ public final class ContentModifierPositionIssue extends IssueBase {
      * @param stepId The ID of the Content Modifier step
      * @param position The actual position of the Content Modifier step
      */
-    public ContentModifierPositionIssue(String ruleId, IflowArtifactTag tag, IssueType issueType, 
+    public ContentModifierPositionIssue(Optional<String> ruleId, IflowArtifactTag tag, IssueType issueType, 
             String stepName, String stepId, int position) {
-        super(ruleId, tag);
+        super(ruleId, tag, String.format("Content Modifier step '%s' is at position %d in the flow. It should be within the first 5 steps according to ILCD Framework guidelines", 
+                stepName, position));
         if (issueType != IssueType.WRONG_POSITION) {
             throw new IllegalArgumentException("This constructor should only be used for WRONG_POSITION issue type");
         }
@@ -66,6 +70,7 @@ public final class ContentModifierPositionIssue extends IssueBase {
         this.position = position;
         this.missingProjectName = false;
         this.missingIntegrationID = false;
+        this.tag = tag;
     }
     
     /**
@@ -79,9 +84,9 @@ public final class ContentModifierPositionIssue extends IssueBase {
      * @param missingProjectName Whether the projectName property is missing
      * @param missingIntegrationID Whether the integrationID property is missing
      */
-    public ContentModifierPositionIssue(String ruleId, IflowArtifactTag tag, IssueType issueType, 
+    public ContentModifierPositionIssue(Optional<String> ruleId, IflowArtifactTag tag, IssueType issueType, 
             String stepName, String stepId, boolean missingProjectName, boolean missingIntegrationID) {
-        super(ruleId, tag);
+        super(ruleId, tag, generateMissingPropertiesMessage(stepName, missingProjectName, missingIntegrationID));
         if (issueType != IssueType.MISSING_PROPERTIES) {
             throw new IllegalArgumentException("This constructor should only be used for MISSING_PROPERTIES issue type");
         }
@@ -91,6 +96,22 @@ public final class ContentModifierPositionIssue extends IssueBase {
         this.position = -1;
         this.missingProjectName = missingProjectName;
         this.missingIntegrationID = missingIntegrationID;
+        this.tag = tag;
+    }
+    
+    private static String generateMissingPropertiesMessage(String stepName, boolean missingProjectName, boolean missingIntegrationID) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Content Modifier step '%s' is missing required ILCD Framework properties: ", stepName));
+        
+        if (missingProjectName && missingIntegrationID) {
+            sb.append("projectName and integrationID");
+        } else if (missingProjectName) {
+            sb.append("projectName");
+        } else if (missingIntegrationID) {
+            sb.append("integrationID");
+        }
+        
+        return sb.toString();
     }
     
     @Override

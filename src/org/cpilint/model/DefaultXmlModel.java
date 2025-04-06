@@ -518,13 +518,27 @@ final class DefaultXmlModel implements XmlModel {
 	@Override
 	public String getPropertyNameFromElement(XdmNode propertyNode) {
 		nodeMustBeAnElement(propertyNode);
-		return propertyNode.getChildElement(new QName(PROPERTY_KEY_ELEMENT_NAME)).getStringValue();
+		// Find the child element with name "key"
+		for (XdmNode child : propertyNode.children()) {
+			if (child.getNodeKind() == XdmNodeKind.ELEMENT && 
+				PROPERTY_KEY_ELEMENT_NAME.equals(child.getNodeName().getLocalName())) {
+				return child.getStringValue();
+			}
+		}
+		return "";
 	}
 	
 	@Override
 	public String getPropertyValueFromElement(XdmNode propertyNode) {
 		nodeMustBeAnElement(propertyNode);
-		return propertyNode.getChildElement(new QName(PROPERTY_VALUE_ELEMENT_NAME)).getStringValue();
+		// Find the child element with name "value"
+		for (XdmNode child : propertyNode.children()) {
+			if (child.getNodeKind() == XdmNodeKind.ELEMENT && 
+				PROPERTY_VALUE_ELEMENT_NAME.equals(child.getNodeName().getLocalName())) {
+				return child.getStringValue();
+			}
+		}
+		return "";
 	}
 	
 	@Override
