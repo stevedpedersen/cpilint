@@ -1,0 +1,4 @@
+#Store metainfo properties
+description=Description found in the metainfo.prop file
+source=S4
+target=JJCC

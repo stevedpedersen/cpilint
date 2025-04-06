@@ -129,7 +129,13 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 			// No manifest means that this is not a valid iflow artifact.
 			throw new IflowArtifactError("No manifest found");
 		}
-		IflowArtifactTag tag = createTag(contents.get(MANIFEST_PATH));
+		// IflowArtifactTag tag = createTag(contents.get(MANIFEST_PATH));
+		byte[] manifestcontents = contents.get(MANIFEST_PATH);
+		// If no Manifest in zipfile, not an iflow package;
+		if (manifestcontents == null) {
+			throw new SaxonApiException("Not an iflow zip package");
+		}
+		IflowArtifactTag tag = createTag(manifestcontents);
 		// Replace external parameters in the iflow XML, if this iflow artifact
 		// actually contains an external parameters file (this is not always the case).
 		if (externalParametersPresent(contents)) {

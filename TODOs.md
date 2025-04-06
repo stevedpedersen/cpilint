@@ -41,6 +41,8 @@
   - Allow rules to have customizable parameters
   - Support parameter overrides in ruleset XML files
 
+- [ ] 
+
 ### User Experience Improvements
 - [ ] Implement HTML report generation
   - Create a visually appealing HTML report template

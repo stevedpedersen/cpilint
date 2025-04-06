@@ -62,10 +62,14 @@ echo.
 echo ------ Example Commands ------
 echo.
 echo .\scripts\cpilint.bat -help
-echo .\scripts\cpilint.bat -skipvercheck -debug -output json -rules rulesets\default.xml -key .env.json
-echo .\scripts\cpilint.bat -skipvercheck -debug -boring -output json -rules rulesets\default.xml -key .env.json -packages SPJPMTests
-echo .\scripts\cpilint.bat -skipvercheck -rules rulesets\default.xml -key .env.json -output json
-echo .\scripts\cpilint.bat -skipvercheck -debug -boring -output json -rules rulesets\default.xml -key .env.json -iflows IF_LINT -packages SP_JPM_Tests
-echo .\scripts\cpilint.bat -debug -boring -output json -rules rulesets\default.xml -directory D:\workspace\cpilint_project\CPILint_With_JPM\sp_dev_package\IntegrationContent\
+echo .\scripts\cpilint.bat -skipvercheck -debug -output json -rules rulesets\jnj-base.xml -key .env.json
+echo .\scripts\cpilint.bat -skipvercheck -debug -boring -output json -rules rulesets\jnj-base.xml -key .env.json -packages SPJPMTests
+echo .\scripts\cpilint.bat -skipvercheck -rules rulesets\jnj-base.xml -key .env.json -output json
+echo .\scripts\cpilint.bat -skipvercheck -debug -boring -output json -rules rulesets\jnj-base.xml -key .env.json -iflows IF_LINT -packages SP_JPM_Tests
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -unpacked-files resources\iflow-example-unzipped
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -unpacked-files resources\iflow-example-unzipped
+echo Lint the whole dang tenant. 431 issues last time running it
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -key .env.json -skip-sap-packages -skip-drafts
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -key .env.json -packages SPJPMTests
 
 endlocal

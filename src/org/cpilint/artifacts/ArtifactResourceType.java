@@ -7,6 +7,7 @@ public enum ArtifactResourceType {
 	OPERATION_MAPPING("operation mapping"),
 	JAVASCRIPT_SCRIPT("JavaScript script"),
 	GROOVY_SCRIPT("Groovy script"),
+	EXTERNAL_PARAMETERS("External Parameters"),
 	JAVA_ARCHIVE("Java archive"),
 	IFLOW("integration flow"),
 	EDMX("EDMX"),
@@ -23,5 +24,4 @@ public enum ArtifactResourceType {
 	public String getName() {
 		return name;
 	}
-	
 }
