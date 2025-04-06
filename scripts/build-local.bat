@@ -71,5 +71,8 @@ echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -unp
 echo Lint the whole dang tenant. 431 issues last time running it
 echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -key .env.json -skip-sap-packages -skip-drafts
 echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -key .env.json -packages SPJPMTests
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -directory resources\IntegrationContent
 
+echo To lint a directory of unzipped iflows which each exist in their own subdir, specify each dir after the -unpacked-files flag:
+echo .\scripts\cpilint.bat -debug -output json -rules rulesets\jnj-base.xml -unpacked-files .\resources\IntegrationContent\IF_Common_ExampleHappyPath\ .\resources\IntegrationContent\IF_LINT\
 endlocal
