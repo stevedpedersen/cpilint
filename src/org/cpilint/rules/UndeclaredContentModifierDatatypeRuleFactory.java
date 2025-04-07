@@ -9,7 +9,7 @@ public final class UndeclaredContentModifierDatatypeRuleFactory implements RuleF
 
 	@Override
 	public boolean canCreateFrom(Element e) {
-		return e.getName().equals("undeclared-data-type");  
+		return e.getName().equals("undeclared-content-modifier-datatype-not-allowed");  
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public final class DefaultNamesNotAllowedRuleFactory implements RuleFactory {
 
 	@Override
 	public boolean canCreateFrom(Element e) {
-		return e.getName().equals("default-names-not-allowed-rule");
+		return e.getName().equals("default-names-not-allowed");
 	}
 
 	@Override

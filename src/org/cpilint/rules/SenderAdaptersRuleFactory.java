@@ -19,6 +19,7 @@ public final class SenderAdaptersRuleFactory extends AllowDisallowRuleFactoryBas
 		senderAdapters.put("azurestorage", SenderAdapter.AZURESTORAGE);
 		senderAdapters.put("data store", SenderAdapter.DATASTORE);
 		senderAdapters.put("dropbox", SenderAdapter.DROPBOX);
+		senderAdapters.put("facebook", SenderAdapter.FACEBOOK);
 		senderAdapters.put("ftp", SenderAdapter.FTP);
 		senderAdapters.put("https", SenderAdapter.HTTPS);
 		senderAdapters.put("idoc", SenderAdapter.IDOC);
@@ -35,6 +36,7 @@ public final class SenderAdaptersRuleFactory extends AllowDisallowRuleFactoryBas
 		senderAdapters.put("soap", SenderAdapter.SOAP);
 		senderAdapters.put("splunk", SenderAdapter.SPLUNK);
 		senderAdapters.put("successfactors", SenderAdapter.SUCCESSFACTORS);
+		senderAdapters.put("twitter", SenderAdapter.TWITTER);
 		senderAdapters.put("xi", SenderAdapter.XI);
 	}
 	

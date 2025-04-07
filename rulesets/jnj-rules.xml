@@ -9,6 +9,101 @@
         <!-- Check for Content Modifier step within first 1-5 steps with required properties -->
         <content-modifier-position-rule/>
         
+        <!-- Ensure Content Modifier datatypes are properly declared -->
+        <undeclared-content-modifier-datatype-not-allowed/>
 
+        <!-- ===== SECURITY RULES ===== -->
+        <!-- Disallow cleartext basic authentication -->
+        <cleartext-basic-auth-not-allowed/>
+        
+        <!-- Disallow client certificate sender channel authentication -->
+        <client-cert-sender-channel-auth-not-allowed/>
+        
+        <!-- Require CSRF protection -->
+        <csrf-protection-required/>
+        
+        <!-- Disallow unencrypted endpoints -->
+        <unencrypted-endpoints-not-allowed/>
+        
+        <!-- Make sure that all data store writes are encrypted. -->
+        <unencrypted-data-store-write-not-allowed/>
+
+        <!-- ===== ADAPTER RULES ===== -->
+        <!-- Disallow specific receiver adapters -->
+        <disallowed-receiver-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+            <disallow>ftp</disallow>
+        </disallowed-receiver-adapters>
+        
+		<disallowed-sender-adapters>
+			<disallow>ftp</disallow>
+		</disallowed-sender-adapters>
+        <!-- Disallow specific sender adapters -->
+        <!-- <disallowed-sender-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-sender-adapters> -->
+
+
+        <!-- ===== ROUTER RULES ===== -->
+        <!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
+        <multi-condition-type-routers-not-allowed/>
+        
+        <allowed-mapping-types>
+            <allow>message-mapping</allow>
+            <allow>xslt-mapping</allow>
+            <allow>operation-mapping</allow>
+        </allowed-mapping-types>
+
+        <allowed-xslt-versions>
+            <allow>1.0</allow>
+            <allow>2.0</allow>
+        </allowed-xslt-versions>
+
+        <!-- ===== CHANNEL RULES ===== -->
+        <matching-process-direct-channels-required/>
+
+        <!-- ===== RESOURCE RULES ===== -->
+        <!-- Disallow duplicate resources -->
+        <!-- <duplicate-resources-not-allowed/> -->
+
+        <unused-parameters-not-allowed/>
+
+        <!-- <user-roles>
+            <allow>ESBMessage.send</allow>
+            <allow>Developer</allow>
+        </user-roles> -->
+        
+        <!-- <disallowed-scripting-languages>
+            <disallow>groovy</disallow>
+        </disallowed-scripting-languages> -->
+
+
+        <allowed-scripting-languages>
+            <allow>groovy</allow>
+            <!-- <allow>javascript</allow> -->
+        </allowed-scripting-languages>
+
+
+        <disallowed-java-archives>
+            <disallow>.*</disallow>
+        </disallowed-java-archives>
+
+        <duplicate-resources-not-allowed>
+            <resource-type>groovy-script</resource-type>
+            <resource-type>javascript-script</resource-type>
+            <resource-type>message-mapping</resource-type>
+            <resource-type>xslt-mapping</resource-type>
+            <resource-type>operation-mapping</resource-type>
+            <resource-type>java-archive</resource-type>
+            <resource-type>edmx</resource-type>
+            <resource-type>wsdl</resource-type>
+            <resource-type>xml-schema</resource-type>
+        </duplicate-resources-not-allowed>
+
+        <!-- <unused-parameters-not-allowed>
+            <disallow>unused-parameters</disallow>
+        </unused-parameters-not-allowed> -->
     </rules>
 </cpilint>

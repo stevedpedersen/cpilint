@@ -5,6 +5,9 @@
             <message>Integration flow names should follow [SOURCE]_[TARGET] format</message>
             <apply-to>iflow.name</apply-to>
         </naming>
+
+        <!-- <default-names-not-allowed/> -->
+
         <naming>
             <scheme><or>
                 <starts-with>S_</starts-with>
@@ -92,5 +95,50 @@
             <message>Data Store Write step names must start with DS_WRT_</message>
             <apply-to>write-data-store-operations.name</apply-to>
         </naming>
+        <naming>
+            <scheme><starts-with>PD_SND_</starts-with></scheme>
+            <message>ProcessDirect sender channel names must start with PD_SND_</message>
+            <apply-to>processdirect-sender-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>PD_RCV_</starts-with></scheme>
+            <message>ProcessDirect receiver channel names must start with PD_RCV_</message>
+            <apply-to>processdirect-receiver-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>SFTP_SND_</starts-with></scheme>
+            <message>SFTP sender channel names must start with SFTP_SND_</message>
+            <apply-to>sftp-sender-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>SFTP_RCV_</starts-with></scheme>
+            <message>SFTP receiver channel names must start with SFTP_RCV_</message>
+            <apply-to>sftp-receiver-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>SOAP_SND_</starts-with></scheme>
+            <message>SOAP sender channel names must start with SOAP_SND_</message>
+            <apply-to>soap-sender-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>SOAP_RCV_</starts-with></scheme>
+            <message>SOAP receiver channel names must start with SOAP_RCV_</message>
+            <apply-to>soap-receiver-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>MAIL_SND_</starts-with></scheme>
+            <message>Mail sender channel names must start with MAIL_SND_</message>
+            <apply-to>mail-sender-channel.name</apply-to>
+        </naming>
+        <naming>
+            <scheme><starts-with>MAIL_RCV_</starts-with></scheme>
+            <message>Mail receiver channel names must start with MAIL_RCV_</message>
+            <apply-to>mail-receiver-channel.name</apply-to>
+        </naming>
+        <!-- <naming>
+            <scheme><starts-with>RTR_</starts-with></scheme>
+            <message>Router step names must start with RTR_</message>
+            <apply-to>router.name</apply-to>
+        </naming> -->
     </rules>
 </cpilint>

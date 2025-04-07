@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import org.cpilint.artifacts.ArtifactResourceType;
 import org.cpilint.artifacts.IflowArtifact;
 import org.cpilint.artifacts.IflowArtifactTag;
 import org.cpilint.issues.UnusedParameterIssue;
-import org.cpilint.rules.RuleBase;
 
 final class UnusedParametersRule extends RuleBase {
 
@@ -56,11 +53,15 @@ final class UnusedParametersRule extends RuleBase {
 		Collection<ArtifactResource> externalParameters = iflow
 				.getResourcesByType(ArtifactResourceType.EXTERNAL_PARAMETERS);
 		for (ArtifactResource externalParam : externalParameters) {
-			if (!"parameters.propdef".equals(externalParam.getName())) {
+			if (!"parameters.propdef".equals(externalParam.getName()) && !"parameters.prop".equals(externalParam.getName())) {
 				continue;
 			}
 			try {
 				String fileContentsStr = loadFileInStringFormat(externalParam.getName(), externalParam.getContents());
+
+				if (!"parameters.propdef".equals(externalParam.getName())) {
+					continue;
+				}
 
 				Document contents = loadXMLFromString(fileContentsStr);
 				NodeList nodeList = contents.getFirstChild().getChildNodes();

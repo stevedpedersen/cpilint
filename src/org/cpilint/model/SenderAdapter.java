@@ -12,6 +12,7 @@ public enum SenderAdapter {
 	AZURESTORAGE("AzureStorage"),
 	DATASTORE("Data Store"),
 	DROPBOX("Dropbox"),
+	FACEBOOK("Facebook"),
 	FTP("FTP"),
 	HTTPS("HTTPS"),
 	IDOC("IDoc"),
@@ -28,6 +29,7 @@ public enum SenderAdapter {
 	SOAP("SOAP"),
 	SPLUNK("Splunk"),
 	SUCCESSFACTORS("SuccessFactors"),
+	TWITTER("Twitter"),
 	XI("XI");
 	
 	private final String name;

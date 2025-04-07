@@ -41,6 +41,7 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	private static final String ID_MANIFEST_HEADER = "Bundle-SymbolicName";
 	private static final String IFLOW_RESOURCES_BASE_PATH = "src/main/resources/";
 	private static final String EXT_PARAMS_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.prop";
+	private static final String EXT_PARAMS_DEF_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.propdef";
 	private static final Map<ArtifactResourceType, Predicate<String>> typePredicates;
 	
 	static {
@@ -57,6 +58,7 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 		typePredicates.put(ArtifactResourceType.OPERATION_MAPPING, s -> s.startsWith(IFLOW_RESOURCES_BASE_PATH + "mapping/") && s.endsWith(".opmap"));
 		typePredicates.put(ArtifactResourceType.JSON, s -> s.startsWith(IFLOW_RESOURCES_BASE_PATH + "json/") && s.endsWith(".json"));
 		typePredicates.put(ArtifactResourceType.METAINFO, s -> !s.contains("/") && s.equals("metainfo.prop"));
+		typePredicates.put(ArtifactResourceType.EXTERNAL_PARAMETERS, s -> s.equals(EXT_PARAMS_PATH) || s.equals(EXT_PARAMS_DEF_PATH));
 	}
 	
 	private final IflowArtifactTag tag;
@@ -195,7 +197,7 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	}
 
 	private static boolean externalParametersPresent(Map<String, byte[]> contents) {
-		return contents.containsKey(EXT_PARAMS_PATH);
+		return contents.containsKey(EXT_PARAMS_PATH) || contents.containsKey(EXT_PARAMS_DEF_PATH);
 	}
 
 	private static void replaceExternalParameters(Map<String, byte[]> contents) throws IOException, SaxonApiException {
@@ -235,7 +237,12 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 
 	private static Map<String, String> getExternalParamsMap(Map<String, byte[]> contents) throws IOException {
 		Properties props = new Properties();
-		props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_PATH)));
+		if (contents.containsKey(EXT_PARAMS_PATH)) {
+			props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_PATH)));
+		}
+		if (contents.containsKey(EXT_PARAMS_DEF_PATH)) {
+			props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_DEF_PATH)));
+		}
 		Map<String, String> parametersMap = new HashMap<>();
 		props.forEach((k, v) -> parametersMap.put((String)k, (String)v));
 		return Collections.unmodifiableMap(parametersMap);
