@@ -26,8 +26,10 @@
 	<property name="dist.files.dir" value="dist-files"/>
 	<property name="xerces.dir" value="${dist.files.dir}/xerces-runtime-jars"/>
 	<property name="samples.dir" value="${dist.files.dir}/samples"/>
+	<property name="templates.dir" value="${resources.dir}/templates"/>
 	<property name="docker.release.dir" value="docker-release"/>
 	<property name="rulesets.dir" value="rulesets"/>
+	<property name="report-template" value="${templates.dir}/cpilint-report-template.gsp"/>
 
 	<path id="classpath.build">
 		<fileset dir="${dependencies.dir}" includes="*.jar"/>
@@ -110,6 +112,7 @@
         <zipfileset dir="${scripts.dir}" prefix="bin"/>
         <zipfileset dir="${logback.dir}" prefix="logback"/>
         <zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
+		<zipfileset dir="${templates.dir}" prefix="templates" />
     </zip>
 </target>
 
