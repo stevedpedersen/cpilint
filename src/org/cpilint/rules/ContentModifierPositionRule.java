@@ -89,14 +89,14 @@ final class ContentModifierPositionRule extends RuleBase {
         // Create issues as needed
         if (!foundContentModifier) {
             consumer.consume(new ContentModifierPositionIssue(
-                ruleId, tag, ContentModifierPositionIssue.IssueType.MISSING));
+                ruleId, tag, getSeverity(), ContentModifierPositionIssue.IssueType.MISSING));
         } else if (!isWithinAllowedPosition) {
             consumer.consume(new ContentModifierPositionIssue(
-                ruleId, tag, ContentModifierPositionIssue.IssueType.WRONG_POSITION, 
+                ruleId, tag, getSeverity(), ContentModifierPositionIssue.IssueType.WRONG_POSITION, 
                 contentModifierName, contentModifierId, contentModifierPosition));
         } else if (!hasProjectNameProperty || !hasIntegrationIDProperty) {
             consumer.consume(new ContentModifierPositionIssue(
-                ruleId, tag, ContentModifierPositionIssue.IssueType.MISSING_PROPERTIES,
+                ruleId, tag, getSeverity(), ContentModifierPositionIssue.IssueType.MISSING_PROPERTIES,
                 contentModifierName, contentModifierId, 
                 !hasProjectNameProperty, !hasIntegrationIDProperty));
         }
@@ -124,5 +124,9 @@ final class ContentModifierPositionRule extends RuleBase {
         }
         
         return positions;
+    }
+
+    public Optional<String> getRuleId() {
+        return Optional.of("content-modifier-position");
     }
 }

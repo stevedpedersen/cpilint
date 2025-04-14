@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -46,6 +47,8 @@ final class NamingConventionsRule extends RuleBase {
 	static {
 		// Initialize the nameableToXpathFunctionMap map.
 		nameableToXpathFunctionMap = new HashMap<>();
+		nameableToXpathFunctionMap.put(Nameable.IFLOW_NAME, m -> "//bpmn2:definitions");
+		nameableToXpathFunctionMap.put(Nameable.IFLOW_ID, m -> "//bpmn2:definitions");
 		nameableToXpathFunctionMap.put(Nameable.CHANNEL_NAME, m -> m.xpathForChannels());
 		nameableToXpathFunctionMap.put(Nameable.SENDER_CHANNEL_NAME, m -> m.xpathForChannels(m.channelPredicateForDirection(ChannelDirection.SENDER)));
 		nameableToXpathFunctionMap.put(Nameable.ADVANCEDEVENTMESH_SENDER_CHANNEL_NAME, m -> m.xpathForSenderChannels(SenderAdapter.ADVANCEDEVENTMESH));
@@ -132,12 +135,41 @@ final class NamingConventionsRule extends RuleBase {
 		nameableToXpathFunctionMap.put(Nameable.XML_VALIDATOR_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForXmlValidatorSteps()));
 		nameableToXpathFunctionMap.put(Nameable.EDI_VALIDATOR_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForEdiValidatorSteps()));
 		nameableToXpathFunctionMap.put(Nameable.DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForDataStoreSteps()));
-		nameableToXpathFunctionMap.put(Nameable.GET_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForDataStoreSteps(), m.stepPredicateForDataStoreOperation(DataStoreOperation.GET)));
-		nameableToXpathFunctionMap.put(Nameable.SELECT_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForDataStoreSteps(), m.stepPredicateForDataStoreOperation(DataStoreOperation.SELECT)));
-		nameableToXpathFunctionMap.put(Nameable.DELETE_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForDataStoreSteps(), m.stepPredicateForDataStoreOperation(DataStoreOperation.DELETE)));
-		nameableToXpathFunctionMap.put(Nameable.WRITE_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForFlowSteps(m.stepPredicateForDataStoreSteps(), m.stepPredicateForDataStoreOperation(DataStoreOperation.WRITE)));
+		nameableToXpathFunctionMap.put(Nameable.GET_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForDataStoreOperationsSteps(DataStoreOperation.GET));
+		nameableToXpathFunctionMap.put(Nameable.SELECT_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForDataStoreOperationsSteps(DataStoreOperation.SELECT));
+		nameableToXpathFunctionMap.put(Nameable.DELETE_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForDataStoreOperationsSteps(DataStoreOperation.DELETE));
+		nameableToXpathFunctionMap.put(Nameable.WRITE_DATA_STORE_OPERATIONS_STEP_NAME, m -> m.xpathForDataStoreOperationsSteps(DataStoreOperation.WRITE));
+		nameableToXpathFunctionMap.put(Nameable.PROCESS_NAME, m -> m.xpathForProcesses());
+		nameableToXpathFunctionMap.put(Nameable.LOCAL_PROCESS_NAME, m -> m.xpathForLocalProcesses());
+		nameableToXpathFunctionMap.put(Nameable.EXCEPTION_SUBPROCESS_NAME, m -> m.xpathForExceptionSubprocesses());
+		nameableToXpathFunctionMap.put(Nameable.ROUTER_STEP_NAME, m -> m.xpathForRouters());
+		nameableToXpathFunctionMap.put(Nameable.ROUTER_ROUTE_STEP_NAME, m -> m.xpathForRouterRoutes());
+		nameableToXpathFunctionMap.put(Nameable.SPLITTER_STEP_NAME, m -> m.xpathForSplitters());
+		nameableToXpathFunctionMap.put(Nameable.MULTICAST_STEP_NAME, m -> m.xpathForMulticasts());
+		nameableToXpathFunctionMap.put(Nameable.JOIN_STEP_NAME, m -> m.xpathForJoins());
+		nameableToXpathFunctionMap.put(Nameable.GATHER_STEP_NAME, m -> m.xpathForGathers());
+		nameableToXpathFunctionMap.put(Nameable.AGGREGATOR_STEP_NAME, m -> m.xpathForAggregators());
+		nameableToXpathFunctionMap.put(Nameable.ID_MAPPING_STEP_NAME, m -> m.xpathForIdMappings());
+		nameableToXpathFunctionMap.put(Nameable.VALUE_MAPPING_STEP_NAME, m -> m.xpathForValueMappings());
+		nameableToXpathFunctionMap.put(Nameable.CONVERTER_STEP_NAME, m -> m.xpathForConverters());
+		nameableToXpathFunctionMap.put(Nameable.ENCODER_STEP_NAME, m -> m.xpathForEncoders());
+		nameableToXpathFunctionMap.put(Nameable.DECODER_STEP_NAME, m -> m.xpathForDecoders());
+		nameableToXpathFunctionMap.put(Nameable.REQUEST_REPLY_STEP_NAME, m -> m.xpathForRequestReplies());
+		nameableToXpathFunctionMap.put(Nameable.SEND_STEP_NAME, m -> m.xpathForSends());
+		nameableToXpathFunctionMap.put(Nameable.ENCRYPTOR_STEP_NAME, m -> m.xpathForEncryptors());
+		nameableToXpathFunctionMap.put(Nameable.DECRYPTOR_STEP_NAME, m -> m.xpathForDecryptors());
+		nameableToXpathFunctionMap.put(Nameable.SIGNER_STEP_NAME, m -> m.xpathForSigners());
+		nameableToXpathFunctionMap.put(Nameable.VERIFIER_STEP_NAME, m -> m.xpathForVerifiers());
+		nameableToXpathFunctionMap.put(Nameable.VALIDATOR_STEP_NAME, m -> m.xpathForValidators());
+		nameableToXpathFunctionMap.put(Nameable.COMMUNICATION_CHANNEL_NAME, m -> m.xpathForCommunicationChannels());
+		nameableToXpathFunctionMap.put(Nameable.MESSAGE_QUEUE_NAME, m -> m.xpathForMessageQueues());
 		// Initialize the nameableToNameFunctionMap map.
 		nameableToNameFunctionMap = new HashMap<>();
+		nameableToNameFunctionMap.put(Nameable.IFLOW_NAME, (n, m) -> {
+			// Get the name from the attribute only - we'll handle the special case in inspect()
+			return n.attribute("name");
+		});
+		nameableToNameFunctionMap.put(Nameable.IFLOW_ID, (n, m) -> n.attribute("id"));
 		nameableToNameFunctionMap.put(Nameable.CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.SENDER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.ADVANCEDEVENTMESH_SENDER_CHANNEL_NAME, (n, m) -> m.getChannelNameFromElement(n));
@@ -228,8 +260,34 @@ final class NamingConventionsRule extends RuleBase {
 		nameableToNameFunctionMap.put(Nameable.SELECT_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.DELETE_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
 		nameableToNameFunctionMap.put(Nameable.WRITE_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.PROCESS_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.LOCAL_PROCESS_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.EXCEPTION_SUBPROCESS_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.ROUTER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.ROUTER_ROUTE_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.SPLITTER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.MULTICAST_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.JOIN_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.GATHER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.AGGREGATOR_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.ID_MAPPING_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.VALUE_MAPPING_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.CONVERTER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.ENCODER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.DECODER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.REQUEST_REPLY_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.SEND_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.ENCRYPTOR_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.DECRYPTOR_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.SIGNER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.VERIFIER_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.VALIDATOR_STEP_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.COMMUNICATION_CHANNEL_NAME, (n, m) -> m.getStepNameFromElement(n));
+		nameableToNameFunctionMap.put(Nameable.MESSAGE_QUEUE_NAME, (n, m) -> m.getStepNameFromElement(n));
 		// Initialize the nameableToIdentFunctionMap map.
 		nameableToIdentFunctionMap = new HashMap<>();
+		nameableToIdentFunctionMap.put(Nameable.IFLOW_NAME, (n, m) -> String.format("iFlow with name '%s'", n.attribute("name")));
+		nameableToIdentFunctionMap.put(Nameable.IFLOW_ID, (n, m) -> String.format("iFlow with ID '%s'", n.attribute("id")));
 		nameableToIdentFunctionMap.put(Nameable.CHANNEL_NAME, (n, m) -> String.format("channel '%s' (ID '%s')", m.getChannelNameFromElement(n), m.getChannelIdFromElement(n)));
 		nameableToIdentFunctionMap.put(Nameable.SENDER_CHANNEL_NAME, (n, m) -> String.format("sender channel '%s' (ID '%s')", m.getChannelNameFromElement(n), m.getChannelIdFromElement(n)));
 		nameableToIdentFunctionMap.put(Nameable.ADVANCEDEVENTMESH_SENDER_CHANNEL_NAME, (n, m) -> String.format("AdvancedEventMesh sender channel '%s' (ID '%s')", m.getChannelNameFromElement(n), m.getChannelIdFromElement(n)));
@@ -320,6 +378,30 @@ final class NamingConventionsRule extends RuleBase {
 		nameableToIdentFunctionMap.put(Nameable.SELECT_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> String.format("Select Data Store Operations step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
 		nameableToIdentFunctionMap.put(Nameable.DELETE_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> String.format("Delete Data Store Operations step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
 		nameableToIdentFunctionMap.put(Nameable.WRITE_DATA_STORE_OPERATIONS_STEP_NAME, (n, m) -> String.format("Write Data Store Operations step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.PROCESS_NAME, (n, m) -> String.format("Process '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.LOCAL_PROCESS_NAME, (n, m) -> String.format("Local Process '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.EXCEPTION_SUBPROCESS_NAME, (n, m) -> String.format("Exception Subprocess '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.ROUTER_STEP_NAME, (n, m) -> String.format("Router step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.ROUTER_ROUTE_STEP_NAME, (n, m) -> String.format("Router Route step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.SPLITTER_STEP_NAME, (n, m) -> String.format("Splitter step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.MULTICAST_STEP_NAME, (n, m) -> String.format("Multicast step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.JOIN_STEP_NAME, (n, m) -> String.format("Join step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.GATHER_STEP_NAME, (n, m) -> String.format("Gather step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.AGGREGATOR_STEP_NAME, (n, m) -> String.format("Aggregator step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.ID_MAPPING_STEP_NAME, (n, m) -> String.format("ID Mapping step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.VALUE_MAPPING_STEP_NAME, (n, m) -> String.format("Value Mapping step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.CONVERTER_STEP_NAME, (n, m) -> String.format("Converter step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.ENCODER_STEP_NAME, (n, m) -> String.format("Encoder step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.DECODER_STEP_NAME, (n, m) -> String.format("Decoder step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.REQUEST_REPLY_STEP_NAME, (n, m) -> String.format("Request-Reply step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.SEND_STEP_NAME, (n, m) -> String.format("Send step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.ENCRYPTOR_STEP_NAME, (n, m) -> String.format("Encryptor step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.DECRYPTOR_STEP_NAME, (n, m) -> String.format("Decryptor step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.SIGNER_STEP_NAME, (n, m) -> String.format("Signer step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.VERIFIER_STEP_NAME, (n, m) -> String.format("Verifier step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.VALIDATOR_STEP_NAME, (n, m) -> String.format("Validator step '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.COMMUNICATION_CHANNEL_NAME, (n, m) -> String.format("Communication Channel '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
+		nameableToIdentFunctionMap.put(Nameable.MESSAGE_QUEUE_NAME, (n, m) -> String.format("Message Queue '%s' (ID '%s')", m.getStepNameFromElement(n), m.getStepIdFromElement(n)));
 		// The keys of the above maps should be identical.
 		assert nameableToXpathFunctionMap.keySet().equals(nameableToNameFunctionMap.keySet());
 		assert nameableToNameFunctionMap.keySet().equals(nameableToIdentFunctionMap.keySet());
@@ -356,7 +438,34 @@ final class NamingConventionsRule extends RuleBase {
 		XmlModel model = XmlModelFactory.getModelFor(iflowXml);
 		IflowArtifactTag tag = iflow.getTag();
 		
+		// Create a copy of applyTo to use locally
+		Set<Nameable> localApplyTo = new HashSet<>(applyTo);
+		
+		// Special handling for IFLOW_NAME
+		if (localApplyTo.contains(Nameable.IFLOW_NAME)) {
+			// Get the name directly from the tag which we know has it
+			String name = tag.getName();
+			if (name != null && !scheme.test(name)) {
+				String ruleIdStr = getId().isPresent() ? getId().get() : "";
+				consumer.consume(new NamingConventionsRuleIssue(
+					ruleIdStr, 
+					tag, 
+					String.format("The iFlow with name '%s' does not follow the naming scheme: %s", name, message),
+					name,
+					getSeverity()
+				));
+			}
+			// Remove from localApplyTo so we don't process it again below
+			localApplyTo.remove(Nameable.IFLOW_NAME);
+			
+			// If that was the only nameable we were checking, exit early
+			if (localApplyTo.isEmpty()) {
+				return;
+			}
+		}
+		
 		// Get source and target from metainfo.properties
+		// These properties aren't used for naming conventions but might be used by other rules
 		Properties props = new Properties();
 		for (ArtifactResource resource : iflow.getResourcesByType(ArtifactResourceType.METAINFO)) {
 			try {
@@ -367,11 +476,8 @@ final class NamingConventionsRule extends RuleBase {
 			break;
 		}
 		
-		String source = props.getProperty("source");
-		String target = props.getProperty("target");
-		
-		// Check each nameable type
-		for (Nameable n : Nameable.values()) {
+		// Check each nameable type that's specified in the apply-to elements
+		for (Nameable n : localApplyTo) {
 			// Skip if the map doesn't contain this nameable type
 			if (!nameableToXpathFunctionMap.containsKey(n) || 
 				!nameableToNameFunctionMap.containsKey(n) || 
@@ -380,24 +486,29 @@ final class NamingConventionsRule extends RuleBase {
 				continue;
 			}
 			
+			// Get component names for the specified nameable type
 			XdmValue names = iflowXml.evaluateXpath(nameableToXpathFunctionMap.get(n).apply(model));
 			for (XdmItem item : names) {
 				XdmNode node = (XdmNode)item;
 				String name = nameableToNameFunctionMap.get(n).apply(node, model);
 				String ident = nameableToIdentFunctionMap.get(n).apply(node, model);
 				
-				// Get the naming scheme for this nameable type
-				String schemeName = props.getProperty("naming.scheme." + n.name().toLowerCase());
-				if (schemeName != null) {
-					NamingScheme scheme = NamingSchemeFactory.create(schemeName);
-					if (!scheme.test(name)) {
-						consumer.consume(new NamingConventionsRuleIssue(
-							ruleId, 
-							tag, 
-							"Name does not match naming scheme: " + name,
-							name
-						));
-					}
+				// Skip null names - can happen if the component exists but has no name attribute
+				if (name == null) {
+					logger.debug("Skipping nameable type {} as its name is null, identifier: {}", n, ident);
+					continue;
+				}
+				
+				// Test the name against the scheme pattern defined in the XML
+				if (!scheme.test(name)) {
+					String ruleIdStr = getId().isPresent() ? getId().get() : "";
+					consumer.consume(new NamingConventionsRuleIssue(
+						ruleIdStr, 
+						tag, 
+						errorMessage(ident),
+						name,
+						getSeverity()
+					));
 				}
 			}
 		}

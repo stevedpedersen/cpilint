@@ -1,144 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <cpilint>
     <rules>
         <naming>
-            <scheme><regex>^[A-Z0-9].*_[A-Z0-9].*$</regex></scheme>
-            <message>Integration flow names should follow [SOURCE]_[TARGET] format</message>
+            <severity>CRITICAL</severity>
+            <rationale>Clear naming conventions improve searchability and integration flow organization.</rationale>
+            <example>IF_Customer_Send_TIME_SFDC, IF_MasterData_Dispatch_S4HANA_AEM</example>
+            <counterExample>MyIntFlow123, S4H_SFDC_Integration</counterExample>
+            <recommendation>Use the established iFlow naming patterns: 
+            - IF_&lt;BusinessObject&gt;_&lt;InterfaceAction&gt;_&lt;Sender&gt;_&lt;Receiver&gt;
+            - IF_&lt;RICEFW_ID&gt;_&lt;BusinessObject&gt;_&lt;InterfaceAction&gt;_&lt;Sender&gt;_&lt;Receiver&gt;
+            - IF_&lt;BusinessObject&gt;_&lt;InterfaceAction&gt;_&lt;Sender&gt;
+            - IF_&lt;StandardObjectType&gt;_&lt;InterfaceAction&gt;_&lt;Sender&gt;
+            - IF_Common_&lt;InterfaceDescription&gt;</recommendation>
+            <scheme><regex>^IF_[A-Za-z0-9]+(_[A-Za-z0-9]+)+$</regex></scheme>
+            <message>Integration flow names must start with IF_ and follow the established naming pattern</message>
             <apply-to>iflow.name</apply-to>
         </naming>
 
-        <!-- <default-names-not-allowed/> -->
+        <default-names-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for iFlow components improve readability and maintainability.</rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </default-names-not-allowed>
 
         <naming>
-            <scheme><or>
-                <starts-with>S_</starts-with>
-                <starts-with>R_</starts-with>
-                <starts-with>OP_</starts-with>
-                <starts-with>B2B_</starts-with>
-                <starts-with>CP_</starts-with>
-            </or></scheme>
-            <message>Participant names must start with S_, R_, OP_, B2B_, or CP_</message>
+            <severity>CRITICAL</severity>
+            <rationale>Standardized sender naming improves integration ecosystem manageability.</rationale>
+            <example>S_CP_SFSF, S_S4HANA (where CP is Cloud Provider)</example>
+            <counterExample>SFSF_Sender, SAP_System</counterExample>
+            <recommendation>Use the S_&lt;IntegrationType&gt;_&lt;SenderSystem&gt; format:
+            - Integration Types:
+            - OP: On Premise System
+            - CP: Cloud Providers
+            - B2B: Business Partners
+            </recommendation>
+            <scheme><regex>^S_(OP|CP|B2B)?_?[A-Za-z0-9]+$</regex></scheme>
+            <message>Sender names must follow the pattern S_[IntegrationType]_[SenderSystem]</message>
             <apply-to>sender.name</apply-to>
+        </naming>
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Standardized receiver naming improves integration ecosystem manageability.</rationale>
+            <example>R_OP_ERP, R_S4HANA (where OP is On Premise)</example>
+            <counterExample>ERP_Receiver, SAP_Target</counterExample>
+            <recommendation>Use the R_&lt;IntegrationType&gt;_&lt;ReceiverSystem&gt; format:
+            - Integration Types:
+            - OP: On Premise System
+            - CP: Cloud Providers
+            - B2B: Business Partners
+            </recommendation>
+            <scheme><regex>^R_(OP|CP|B2B)?_?[A-Za-z0-9]+$</regex></scheme>
+            <message>Receiver names must follow the pattern R_[IntegrationType]_[ReceiverSystem]</message>
             <apply-to>receiver.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Content Modifiers improve readability and maintainability.</rationale>
+            <example>CM_ConvertXML for a Content Modifier that converts XML</example>
+            <counterExample>MyConverter</counterExample>
+            <recommendation>Use the CM_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>CM_</starts-with></scheme>
             <message>Content Modifier step names must start with CM_</message>
             <apply-to>content-modifier.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Avoid using default Content Modifier names to ensure clarity and uniqueness.</rationale>
+            <example>CM_ConvertXML for a Content Modifier that converts XML</example>
+            <counterExample>Content Modifier 1</counterExample>
+            <recommendation>Use a descriptive name instead of the default name.</recommendation>
             <scheme><not><regex>Content Modifier \d+</regex></not></scheme>
             <message>Don't use the default Content Modifier step names</message>
             <apply-to>content-modifier.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for XSLT mappings improve readability and maintainability.</rationale>
+            <example>XSLT_ConvertXML for an XSLT mapping that converts XML</example>
+            <counterExample>MyMapping</counterExample>
+            <recommendation>Use the XSLT_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>XSLT_</starts-with></scheme>
             <message>XSLT mapping step names must start with XSLT_</message>
             <apply-to>xslt-mapping.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Message Mappings improve readability and maintainability.</rationale>
+            <example>MM_ConvertXML for a Message Mapping that converts XML</example>
+            <counterExample>MyMapping</counterExample>
+            <recommendation>Use the MM_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>MM_</starts-with></scheme>
             <message>Message Mapping step names must start with MM_</message>
             <apply-to>message-mapping.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Avoid using default Message Mapping names to ensure clarity and uniqueness.</rationale>
+            <example>MM_ConvertXML for a Message Mapping that converts XML</example>
+            <counterExample>Message Mapping 1</counterExample>
+            <recommendation>Use a descriptive name instead of the default name.</recommendation>
             <scheme><not><regex>Message Mapping \d+</regex></not></scheme>
             <message>Don't use the default Message Mapping step names</message>
             <apply-to>message-mapping.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for scripts improve readability and maintainability.</rationale>
+            <example>SCR_ConvertXML for a script that converts XML</example>
+            <counterExample>MyScript</counterExample>
+            <recommendation>Use the SCR_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>SCR_</starts-with></scheme>
             <message>Groovy or JavaScript script step names must start with SCR_</message>
             <apply-to>groovy-script.name</apply-to>
             <apply-to>js-script.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Avoid using default script names to ensure clarity and uniqueness.</rationale>
+            <example>SCR_ConvertXML for a script that converts XML</example>
+            <counterExample>Groovy Script 1</counterExample>
+            <recommendation>Use a descriptive name instead of the default name.</recommendation>
             <scheme><or>
                 <not><regex>Groovy Script \d+</regex></not>
                 <not><regex>JavaScript Script \d+</regex></not>
             </or></scheme>
-            <message>Don't use the default Groovy Script step names</message>
+            <message>Don't use the default Script step names</message>
             <apply-to>groovy-script.name</apply-to>
             <apply-to>js-script.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for filters improve readability and maintainability.</rationale>
+            <example>FLT_FilterXML for a filter that filters XML</example>
+            <counterExample>MyFilter</counterExample>
+            <recommendation>Use the FLT_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>FLT_</starts-with></scheme>
             <message>Filter step names must start with FLT_</message>
             <apply-to>filter.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for XML validators improve readability and maintainability.</rationale>
+            <example>VAL_ValidateXML for an XML validator that validates XML</example>
+            <counterExample>MyValidator</counterExample>
+            <recommendation>Use the VAL_, VAL_XSD_, or VAL_EDI_ prefix followed by a descriptive name.</recommendation>
             <scheme><or><starts-with>VAL_</starts-with><starts-with>VAL_XSD_</starts-with><starts-with>VAL_EDI_</starts-with></or></scheme>
             <message>XML Validator step names must start with VAL_, VAL_XSD_, or VAL_EDI_</message>
             <apply-to>xml-validator.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Data Store operations improve readability and maintainability.</rationale>
+            <example>DS_StoreData for a Data Store operation that stores data</example>
+            <counterExample>MyDataStore</counterExample>
+            <recommendation>Use the DS_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>DS_</starts-with></scheme>
             <message>Data Store Operations step names must start with DS_</message>
             <apply-to>data-store-operations.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Data Store Get operations improve readability and maintainability.</rationale>
+            <example>DS_GET_RetrieveData for a Data Store Get operation that retrieves data</example>
+            <counterExample>MyDataStoreGet</counterExample>
+            <recommendation>Use the DS_GET_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>DS_GET_</starts-with></scheme>
             <message>Data Store Get step names must start with DS_GET_</message>
             <apply-to>get-data-store-operations.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Data Store Select operations improve readability and maintainability.</rationale>
+            <example>DS_SEL_SelectData for a Data Store Select operation that selects data</example>
+            <counterExample>MyDataStoreSelect</counterExample>
+            <recommendation>Use the DS_SEL_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>DS_SEL_</starts-with></scheme>
             <message>Data Store Select step names must start with DS_SEL_</message>
             <apply-to>select-data-store-operations.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Data Store Delete operations improve readability and maintainability.</rationale>
+            <example>DS_DEL_DeleteData for a Data Store Delete operation that deletes data</example>
+            <counterExample>MyDataStoreDelete</counterExample>
+            <recommendation>Use the DS_DEL_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>DS_DEL_</starts-with></scheme>
             <message>Data Store Delete step names must start with DS_DEL_</message>
             <apply-to>delete-data-store-operations.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Data Store Write operations improve readability and maintainability.</rationale>
+            <example>DS_WRT_WriteData for a Data Store Write operation that writes data</example>
+            <counterExample>MyDataStoreWrite</counterExample>
+            <recommendation>Use the DS_WRT_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>DS_WRT_</starts-with></scheme>
             <message>Data Store Write step names must start with DS_WRT_</message>
             <apply-to>write-data-store-operations.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for ProcessDirect sender channels improve readability and maintainability.</rationale>
+            <example>PD_SND_SendData for a ProcessDirect sender channel that sends data</example>
+            <counterExample>MyProcessDirectSender</counterExample>
+            <recommendation>Use the PD_SND_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>PD_SND_</starts-with></scheme>
             <message>ProcessDirect sender channel names must start with PD_SND_</message>
             <apply-to>processdirect-sender-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for ProcessDirect receiver channels improve readability and maintainability.</rationale>
+            <example>PD_RCV_ReceiveData for a ProcessDirect receiver channel that receives data</example>
+            <counterExample>MyProcessDirectReceiver</counterExample>
+            <recommendation>Use the PD_RCV_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>PD_RCV_</starts-with></scheme>
             <message>ProcessDirect receiver channel names must start with PD_RCV_</message>
             <apply-to>processdirect-receiver-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for SFTP sender channels improve readability and maintainability.</rationale>
+            <example>SFTP_SND_SendData for an SFTP sender channel that sends data</example>
+            <counterExample>MySFTPSender</counterExample>
+            <recommendation>Use the SFTP_SND_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>SFTP_SND_</starts-with></scheme>
             <message>SFTP sender channel names must start with SFTP_SND_</message>
             <apply-to>sftp-sender-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for SFTP receiver channels improve readability and maintainability.</rationale>
+            <example>SFTP_RCV_ReceiveData for an SFTP receiver channel that receives data</example>
+            <counterExample>MySFTPReceiver</counterExample>
+            <recommendation>Use the SFTP_RCV_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>SFTP_RCV_</starts-with></scheme>
             <message>SFTP receiver channel names must start with SFTP_RCV_</message>
             <apply-to>sftp-receiver-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for SOAP sender channels improve readability and maintainability.</rationale>
+            <example>SOAP_SND_SendData for a SOAP sender channel that sends data</example>
+            <counterExample>MySOAPSender</counterExample>
+            <recommendation>Use the SOAP_SND_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>SOAP_SND_</starts-with></scheme>
             <message>SOAP sender channel names must start with SOAP_SND_</message>
             <apply-to>soap-sender-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for SOAP receiver channels improve readability and maintainability.</rationale>
+            <example>SOAP_RCV_ReceiveData for a SOAP receiver channel that receives data</example>
+            <counterExample>MySOAPReceiver</counterExample>
+            <recommendation>Use the SOAP_RCV_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>SOAP_RCV_</starts-with></scheme>
             <message>SOAP receiver channel names must start with SOAP_RCV_</message>
             <apply-to>soap-receiver-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Mail sender channels improve readability and maintainability.</rationale>
+            <example>MAIL_SND_SendData for a Mail sender channel that sends data</example>
+            <counterExample>MyMailSender</counterExample>
+            <recommendation>Use the MAIL_SND_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>MAIL_SND_</starts-with></scheme>
             <message>Mail sender channel names must start with MAIL_SND_</message>
             <apply-to>mail-sender-channel.name</apply-to>
         </naming>
         <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Mail receiver channels improve readability and maintainability.</rationale>
+            <example>MAIL_RCV_ReceiveData for a Mail receiver channel that receives data</example>
+            <counterExample>MyMailReceiver</counterExample>
+            <recommendation>Use the MAIL_RCV_ prefix followed by a descriptive name.</recommendation>
             <scheme><starts-with>MAIL_RCV_</starts-with></scheme>
             <message>Mail receiver channel names must start with MAIL_RCV_</message>
             <apply-to>mail-receiver-channel.name</apply-to>
         </naming>
-        <!-- <naming>
+        
+        <!-- Integration Process -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Integration Processes improves readability and maintainability.</rationale>
+            <example>IPR_PurchaseOrderCreation, IPR_MasterDataRepliction</example>
+            <counterExample>Process1, MainFlow</counterExample>
+            <recommendation>Use the IPR_&lt;Business Process description&gt; format for main process flows that contain integration steps.</recommendation>
+            <scheme><regex>^IPR_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Integration Process names must start with IPR_ followed by a business process description</message>
+            <apply-to>process.name</apply-to>
+        </naming>
+        
+        <!-- Local Integration Process -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Local Integration Processes improves modularity and maintainability.</rationale>
+            <example>LIP_UpdateMasterData, LIP_GetSalesOrder</example>
+            <counterExample>SubProcess1, Helper</counterExample>
+            <recommendation>Use the LIP_&lt;Local business process flow&gt; format for sub-process flows that handle specific business logic.</recommendation>
+            <scheme><regex>^LIP_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Local Integration Process names must start with LIP_ followed by a local business process description</message>
+            <apply-to>local-process.name</apply-to>
+        </naming>
+        
+        <!-- Exception Subprocess -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Exception Subprocesses improves error handling and debugging.</rationale>
+            <example>EXC_SP_Email_Notification</example>
+            <counterExample>ErrorHandler, ExceptionProcess</counterExample>
+            <recommendation>Use the EXC_SP_&lt;Exception process description&gt; format for exception subprocesses that handle error cases.</recommendation>
+            <scheme><regex>^EXC_SP_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Exception Subprocess names must start with EXC_SP_ followed by an exception process description</message>
+            <apply-to>exception-subprocess.name</apply-to>
+        </naming>
+        
+        <!-- Router -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming conventions for Router steps improve readability and maintainability.</rationale>
+            <example>RTR_SalesOrderType, RTR_EmployeeStatus</example>
+            <counterExample>MyRouter, DecisionPoint</counterExample>
+            <recommendation>Use the RTR_ prefix followed by a descriptive name indicating what is being routed.</recommendation>
             <scheme><starts-with>RTR_</starts-with></scheme>
             <message>Router step names must start with RTR_</message>
             <apply-to>router.name</apply-to>
+        </naming>
+
+        <!-- Router Routes/Conditions -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for router routes improves clarity of conditional processing.</rationale>
+            <example>RTE_IsValidPayload, RTE_NewHire, RTE_NotFound</example>
+            <counterExample>Route1, Default</counterExample>
+            <recommendation>Use the format: RTE_&lt;ConditionSymbolicName&gt;</recommendation>
+            <scheme><regex>^RTE_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Router route names must start with RTE_ followed by a symbolic description</message>
+            <apply-to>router-route.name</apply-to>
+        </naming>
+        
+        <!-- Splitter -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Splitters improves traceability of message decomposition.</rationale>
+            <example>SPLIT_OrderItemData</example>
+            <counterExample>Splitter1, SplitMessage</counterExample>
+            <recommendation>Use the format: SPLIT_&lt;SplitPropertyDetails&gt;</recommendation>
+            <scheme><regex>^SPLIT_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Splitter names must start with SPLIT_ followed by property details</message>
+            <apply-to>splitter.name</apply-to>
+        </naming>
+        
+        <!-- Multicast: Parallel and Sequential -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Clear naming of Multicasts helps identify parallel processing patterns.</rationale>
+            <example>PCAST_SalesOrderDetails (Parallel), SCAST_SalesOrderDetails (Sequential)</example>
+            <counterExample>Multicast1, SendToAll</counterExample>
+            <recommendation>Use PCAST_ for Parallel Multicast or SCAST_ for Sequential Multicast, followed by message details</recommendation>
+            <scheme><regex>^(PCAST|SCAST)_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Multicast names must start with PCAST_ (parallel) or SCAST_ (sequential)</message>
+            <apply-to>multicast.name</apply-to>
+        </naming>
+        
+        <!-- Join -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Join steps improves traceability of route reunification.</rationale>
+            <example>JOIN_SalesOrderDetails</example>
+            <counterExample>Join1, Combine</counterExample>
+            <recommendation>Use the format: JOIN_&lt;MessageDetails&gt;</recommendation>
+            <scheme><regex>^JOIN_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Join names must start with JOIN_ followed by message details</message>
+            <apply-to>join.name</apply-to>
+        </naming>
+        
+        <!-- Gather -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Gather steps improves message correlation.</rationale>
+            <example>GAT_SalesOrderDetails</example>
+            <counterExample>Gather1, CollectData</counterExample>
+            <recommendation>Use the format: GAT_&lt;MessageDetails&gt;</recommendation>
+            <scheme><regex>^GAT_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Gather names must start with GAT_ followed by message details</message>
+            <apply-to>gather.name</apply-to>
+        </naming>
+        
+        <!-- Aggregator -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Aggregators improves traceability of message combination.</rationale>
+            <example>AGGR_ItemsWithSameOrderNumber</example>
+            <counterExample>Aggregator1, CombineMessages</counterExample>
+            <recommendation>Use the format: AGGR_&lt;MessageDetails&gt;</recommendation>
+            <scheme><regex>^AGGR_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Aggregator names must start with AGGR_ followed by message details</message>
+            <apply-to>aggregator.name</apply-to>
+        </naming>
+        
+        <!-- ID Mapping -->
+        <!-- <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for ID Mappings improves traceability and message correlation.</rationale>
+            <example>ID_PurchaseOrder_Split, ID_POGUID_XML_to_POGUID_JSON</example>
+            <counterExample>IdMapping1, MapID</counterExample>
+            <recommendation>Use the ID_&lt;SourceMessage&gt;[&lt;Format&gt;]_to_&lt;TargetMessage&gt;[Format] format for ID mappings.</recommendation>
+            <scheme><regex>^ID_[A-Za-z0-9]+(?:_[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>ID Mapping names must start with ID_ followed by appropriate source/target information</message>
+            <apply-to>id-mapping.name</apply-to>
         </naming> -->
+        
+        <!-- Message Mapping -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Message Mappings improves traceability and maintainability.</rationale>
+            <example>MM_PurchaseOrderS4HanaXML_to_PurchaseOrderC4CJson, MM_InspectionLot_TIMEXml_to_ELIMSJson</example>
+            <counterExample>Map1, MessageTransformation</counterExample>
+            <recommendation>Use one of these formats:
+            - Full: MM_&lt;SourceMessage&gt;[&lt;Format&gt;]_to_&lt;TargetMessage&gt;[Format]
+            - Shorthand: MM_&lt;BusinessObject&gt;_&lt;Source&gt;[&lt;Format&gt;]_to_&lt;Target&gt;[&lt;Format&gt;]
+            - Validate Payload: MM_&lt;BusinessObject&gt;_&lt;Source/Sender|Format&gt;_ValidatePayload</recommendation>
+            <scheme><regex>^MM_[A-Za-z0-9]+(?:_[A-Za-z0-9_]+)+$</regex></scheme>
+            <message>Message Mapping names must start with MM_ followed by appropriate source/target information</message>
+            <apply-to>message-mapping.name</apply-to>
+        </naming>
+        
+        <!-- Operation Mapping -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Operation Mappings improves traceability and interface relationships.</rationale>
+            <example>OM_PurchaseOrderIDOC_to_PurchaseOrderRFC</example>
+            <counterExample>OperationMap, Map</counterExample>
+            <recommendation>Use the format: OM_&lt;SourceMessage&gt;[&lt;Format&gt;]_to_&lt;TargetMessage&gt;[Format]</recommendation>
+            <scheme><regex>^OM_[A-Za-z0-9]+(?:_[A-Za-z0-9_]+)+$</regex></scheme>
+            <message>Operation Mapping names must start with OM_ followed by appropriate source/target information</message>
+            <apply-to>operation-mapping.name</apply-to>
+        </naming>
+        
+        <!-- XSLT Mapping -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for XSLT Mappings improves traceability and XML transformations.</rationale>
+            <example>XSLT_PurchaseOrderXML_Split, XSL_InvoiceXML_Transform</example>
+            <counterExample>Transform1, XSLTMapper</counterExample>
+            <recommendation>Use the format: XSLT_&lt;SourceMessage&gt;[&lt;Format&gt;]_&lt;Function&gt; or XSL_&lt;SourceMessage&gt;[&lt;Format&gt;]_&lt;Function&gt;</recommendation>
+            <scheme><regex>^(XSLT|XSL)_[A-Za-z0-9]+(?:_[A-Za-z0-9_]+)+$</regex></scheme>
+            <message>XSLT Mapping names must start with XSLT_ or XSL_ followed by source message and function</message>
+            <apply-to>xslt-mapping.name</apply-to>
+        </naming>
+        
+        <!-- Value Mapping -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Value Mappings improves traceability of value translations.</rationale>
+            <example>VM_Ariba_to_S4Hana_OrderStatus</example>
+            <counterExample>ValueMap, MapValues</counterExample>
+            <recommendation>Use the format: VM_&lt;SourceAgency&gt;_to_&lt;TargetAgency&gt;_&lt;FieldName&gt;</recommendation>
+            <scheme><regex>^VM_[A-Za-z0-9]+_to_[A-Za-z0-9]+_[A-Za-z0-9]+$</regex></scheme>
+            <message>Value Mapping names must follow the pattern VM_[SourceAgency]_to_[TargetAgency]_[FieldName]</message>
+            <apply-to>value-mapping.name</apply-to>
+        </naming>
+        
+        <!-- Converter -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Converters improves traceability of format transformations.</rationale>
+            <example>CONV_CSV_to_XML_OrderDetails, CONV_JSON_XML</example>
+            <counterExample>Converter1, ConvertToXML</counterExample>
+            <recommendation>Use the format: CONV_&lt;SourceFormat&gt;_to_&lt;TargetFormat&gt;_&lt;MessageAdditionalInfo&gt; or CONV_&lt;SourceFormat&gt;_&lt;TargetFormat&gt;</recommendation>
+            <scheme><regex>^CONV_[A-Za-z0-9]+(_to_[A-Za-z0-9]+)?(_[A-Za-z0-9]+)*$</regex></scheme>
+            <message>Converter names must start with CONV_ followed by format conversion details</message>
+            <apply-to>converter.name</apply-to>
+        </naming>
+        
+        <!-- Encoder -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Encoders improves traceability of encoding operations.</rationale>
+            <example>ENC_Base64_UserCreditDetails, ENC_MIME_InvoiceDetails</example>
+            <counterExample>Encoder1, ConvertToBase64</counterExample>
+            <recommendation>Use the format: ENC_&lt;EncodingType&gt;_&lt;EncodedMessageDetails&gt;</recommendation>
+            <scheme><regex>^ENC_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Encoder names must start with ENC_ followed by encoding type and message details</message>
+            <apply-to>encoder.name</apply-to>
+        </naming>
+        
+        <!-- Decoder -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Decoders improves traceability of decoding operations.</rationale>
+            <example>DEC_Base64_UserCreditDetails, DEC_MIME_InvoiceDetails</example>
+            <counterExample>Decoder1, ConvertFromBase64</counterExample>
+            <recommendation>Use the format: DEC_&lt;EncodingType&gt;_&lt;DecodedMessageDetails&gt;</recommendation>
+            <scheme><regex>^DEC_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Decoder names must start with DEC_ followed by encoding type and message details</message>
+            <apply-to>decoder.name</apply-to>
+        </naming>
+        
+        <!-- Request-Reply -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Request-Reply steps improves traceability of external system calls.</rationale>
+            <example>RR_Hybris_GetAccountPayableDetails, RR_TMS_GetPaymentAcknowledgement</example>
+            <counterExample>RequestReply1, CallExternalSystem</counterExample>
+            <recommendation>Use the format: RR_&lt;RequestedSystem&gt;_&lt;RequestedInformationDetails&gt;</recommendation>
+            <scheme><regex>^RR_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Request-Reply names must start with RR_ followed by system name and operation details</message>
+            <apply-to>request-reply.name</apply-to>
+        </naming>
+        
+        <!-- Send -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Send steps improves traceability of one-way calls to external systems.</rationale>
+            <example>SND_UserBankDetails_to_S4Hana, SND_CreditCardData_to_S4Hana</example>
+            <counterExample>Send1, SendToSAP</counterExample>
+            <recommendation>Use the format: SND_&lt;InformationToBeSent&gt;_to_&lt;TargetSystem&gt;</recommendation>
+            <scheme><regex>^SND_[A-Za-z0-9]+_to_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Send step names must start with SND_ followed by information type and target system</message>
+            <apply-to>send.name</apply-to>
+        </naming>
+        
+        <!-- Encryptor -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Encryptors improves traceability of security measures.</rationale>
+            <example>ENC_PGP_BankDetails, ENC_PKCS7_USerCreditCardData</example>
+            <counterExample>Encrypt1, MakeSecure</counterExample>
+            <recommendation>Use the format: ENC_&lt;EncryptionType&gt;_&lt;EncryptedMessageDetails&gt;</recommendation>
+            <scheme><regex>^ENC_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Encryptor names must start with ENC_ followed by encryption type and message details</message>
+            <apply-to>encryptor.name</apply-to>
+        </naming>
+        
+        <!-- Decryptor -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Decryptors improves traceability of security operations.</rationale>
+            <example>DEC_PGP_BankDetails, DEC_PKCS7_UserCreditCardData</example>
+            <counterExample>Decrypt1, MakePlain</counterExample>
+            <recommendation>Use the format: DEC_&lt;DecryptionType&gt;_&lt;DecryptedMessageDetails&gt;</recommendation>
+            <scheme><regex>^DEC_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Decryptor names must start with DEC_ followed by decryption type and message details</message>
+            <apply-to>decryptor.name</apply-to>
+        </naming>
+        
+        <!-- Signer -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Signers improves traceability of message authentication.</rationale>
+            <example>SIG_PKCS7_BankDetails, SIG_XMLDigital_UserCreditCardData</example>
+            <counterExample>Signer1, AddSignature</counterExample>
+            <recommendation>Use the format: SIG_&lt;SignerType&gt;_&lt;SignedMessageDetails&gt;</recommendation>
+            <scheme><regex>^SIG_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Signer names must start with SIG_ followed by signer type and message details</message>
+            <apply-to>signer.name</apply-to>
+        </naming>
+        
+        <!-- Verifier -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for Verifiers improves traceability of signature validation.</rationale>
+            <example>VERI_PKCS7_BankDetails, VERI_XMLDigital_UserCreditCardData</example>
+            <counterExample>Verify1, CheckSignature</counterExample>
+            <recommendation>Use the format: VERI_&lt;VerifyType&gt;_&lt;VerifiedMessageDetails&gt;</recommendation>
+            <scheme><regex>^VERI_[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Verifier names must start with VERI_ followed by verification type and message details</message>
+            <apply-to>verifier.name</apply-to>
+        </naming>
+
+        <!-- Communication Channel -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for communication channels improves protocol identification.</rationale>
+            <example>HTTPS_RCV_PurchaseOrderCreate, ODATA_SND_SalesOrderRead</example>
+            <counterExample>Channel1, HTTPSReceiver</counterExample>
+            <recommendation>Use the format: &lt;Protocol&gt;_&lt;SND/RCV&gt;_&lt;OperationDefinition&gt;</recommendation>
+            <scheme><regex>^[A-Za-z0-9]+_(SND|RCV)_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)?$</regex></scheme>
+            <message>Communication channel names must follow the pattern [Protocol]_[SND/RCV]_[Operation]</message>
+            <apply-to>communication-channel.name</apply-to>
+        </naming>
+        
+        <!-- Message Queues -->
+        <naming>
+            <severity>CRITICAL</severity>
+            <rationale>Consistent naming for message queues improves message tracing and management.</rationale>
+            <example>JMS_Update_SalesOrder_LS_to_S4Hana, JMS_Send_PurchaseOrder_Ariba_to_OpenText</example>
+            <counterExample>Queue1, SalesOrderQueue</counterExample>
+            <recommendation>Use the format: &lt;AdapterType&gt;_&lt;IntegrationFlowID&gt;</recommendation>
+            <scheme><regex>^[A-Za-z0-9]+_[A-Za-z0-9]+(?:[A-Za-z0-9_]+)*$</regex></scheme>
+            <message>Message queue names must start with adapter type followed by descriptive ID</message>
+            <apply-to>message-queue.name</apply-to>
+        </naming>
     </rules>
 </cpilint>

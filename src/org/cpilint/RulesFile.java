@@ -43,6 +43,7 @@ import org.cpilint.rules.IflowNameMatchesRuleFactory;
 import org.cpilint.rules.JavaArchivesRuleFactory;
 import org.cpilint.rules.MappingTypesRuleFactory;
 import org.cpilint.rules.MatchingProcessDirectChannelsRequiredRuleFactory;
+import org.cpilint.rules.MaxProcessStepsRuleFactory;
 import org.cpilint.rules.MultiConditionTypeRoutersNotAllowedRuleFactory;
 import org.cpilint.rules.NamingConventionsRuleFactory;
 import org.cpilint.rules.ReceiverAdaptersRuleFactory;
@@ -93,6 +94,7 @@ public final class RulesFile {
 		ruleFactories.add(new UnusedParametersRuleFactory());
 		ruleFactories.add(new UserRolesRuleFactory());
 		ruleFactories.add(new XsltVersionsRuleFactory());
+		ruleFactories.add(new MaxProcessStepsRuleFactory());
 		Iterator<RuleFactory> extensionRules = loader.iterator();
 		logger.debug("Checking for extensions...");
 		while (extensionRules.hasNext()) {

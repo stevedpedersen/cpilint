@@ -3,74 +3,180 @@
     <rules>
         <!-- ===== DESCRIPTION RULES ===== -->
         <!-- Require that all iflows have a description. -->
-        <iflow-description-required/>
+        <iflow-description-required>
+            <severity>CRITICAL</severity>
+            <rationale>Every iFlow should have a description to provide context and documentation.</rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </iflow-description-required>
 
         <!-- ===== CONTENT MODIFIER RULES ===== -->
         <!-- Check for Content Modifier step within first 1-5 steps with required properties -->
-        <content-modifier-position-rule/>
-        
+        <content-modifier-position-rule>
+            <severity>CRITICAL</severity>
+            <rationale>This rule enforces the ILCD framework standard requiring a Content Modifier step.</rationale>
+            <example>
+                [Sender] -> (Start Message) -> [Content Modifier: integrationID=RICEF_ID, projectName=JNJ_Project] -> [The rest of the iFlow...]
+            </example>
+            <counterExample>
+                [Sender] -> (Start Message) -> [Groovy Script] -> [Content Modifier] -> [The rest of the iFlow...]
+            </counterExample>
+            <recommendation>Add a Content Modifier step immediately after the start message to set required ILCD properties.</recommendation>
+        </content-modifier-position-rule>
+    
+        <max-process-steps>
+            <severity>CRITICAL</severity>
+            <rationale>Processes with too many steps become difficult to debug and maintain.</rationale>
+            <example>Integration Process with 5 steps: [CM] -> [CM] -> [SCR] -> [PC] -> [SCR]</example>
+            <counterExample>Integration Process with 20+ steps without subdivision into Local Integration Processes</counterExample>
+            <recommendation>Break large processes into multiple Local Integration Processes with specific responsibilities.</recommendation>
+            <warning-threshold>7</warning-threshold>
+            <error-threshold>12</error-threshold>
+            <critical-threshold>15</critical-threshold>
+        </max-process-steps>
+
         <!-- Ensure Content Modifier datatypes are properly declared -->
-        <undeclared-content-modifier-datatype-not-allowed/>
+        <undeclared-content-modifier-datatype-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </undeclared-content-modifier-datatype-not-allowed>
 
         <!-- ===== SECURITY RULES ===== -->
         <!-- Disallow cleartext basic authentication -->
-        <cleartext-basic-auth-not-allowed/>
+        <cleartext-basic-auth-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </cleartext-basic-auth-not-allowed>
         
         <!-- Disallow client certificate sender channel authentication -->
-        <client-cert-sender-channel-auth-not-allowed/>
+        <client-cert-sender-channel-auth-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </client-cert-sender-channel-auth-not-allowed>
         
         <!-- Require CSRF protection -->
-        <csrf-protection-required/>
+        <csrf-protection-required>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </csrf-protection-required>
         
         <!-- Disallow unencrypted endpoints -->
-        <unencrypted-endpoints-not-allowed/>
+        <unencrypted-endpoints-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </unencrypted-endpoints-not-allowed>
         
         <!-- Make sure that all data store writes are encrypted. -->
-        <unencrypted-data-store-write-not-allowed/>
+        <unencrypted-data-store-write-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </unencrypted-data-store-write-not-allowed>
 
         <!-- ===== ADAPTER RULES ===== -->
         <!-- Disallow specific receiver adapters -->
         <disallowed-receiver-adapters>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <disallow>facebook</disallow>
             <disallow>twitter</disallow>
             <disallow>ftp</disallow>
         </disallowed-receiver-adapters>
         
-		<disallowed-sender-adapters>
-			<disallow>ftp</disallow>
-		</disallowed-sender-adapters>
+        <disallowed-sender-adapters>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+            <disallow>ftp</disallow>
+        </disallowed-sender-adapters>
         <!-- Disallow specific sender adapters -->
         <!-- <disallowed-sender-adapters>
             <disallow>facebook</disallow>
             <disallow>twitter</disallow>
-        </disallowed-sender-adapters> -->
+        </disallowed-sender-adapters -->
 
 
         <!-- ===== ROUTER RULES ===== -->
         <!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
-        <multi-condition-type-routers-not-allowed/>
+        <multi-condition-type-routers-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </multi-condition-type-routers-not-allowed>
         
         <allowed-mapping-types>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <allow>message-mapping</allow>
             <allow>xslt-mapping</allow>
             <allow>operation-mapping</allow>
         </allowed-mapping-types>
 
         <allowed-xslt-versions>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <allow>1.0</allow>
             <allow>2.0</allow>
         </allowed-xslt-versions>
 
         <!-- ===== CHANNEL RULES ===== -->
-        <matching-process-direct-channels-required/>
+        <matching-process-direct-channels-required>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </matching-process-direct-channels-required>
 
         <!-- ===== RESOURCE RULES ===== -->
         <!-- Disallow duplicate resources -->
         <!-- <duplicate-resources-not-allowed/> -->
 
-        <unused-parameters-not-allowed/>
-
-        <!-- <user-roles>
+        <unused-parameters-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </unused-parameters-not-allowed>
+<!-- 
+        <user-roles>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <allow>ESBMessage.send</allow>
             <allow>Developer</allow>
         </user-roles> -->
@@ -81,16 +187,31 @@
 
 
         <allowed-scripting-languages>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <allow>groovy</allow>
             <!-- <allow>javascript</allow> -->
         </allowed-scripting-languages>
 
 
         <disallowed-java-archives>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <disallow>.*</disallow>
         </disallowed-java-archives>
 
         <duplicate-resources-not-allowed>
+            <severity>WARNING</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
             <resource-type>groovy-script</resource-type>
             <resource-type>javascript-script</resource-type>
             <resource-type>message-mapping</resource-type>
@@ -102,8 +223,12 @@
             <resource-type>xml-schema</resource-type>
         </duplicate-resources-not-allowed>
 
-        <!-- <unused-parameters-not-allowed>
-            <disallow>unused-parameters</disallow>
-        </unused-parameters-not-allowed> -->
+        <!-- <undeclared-content-modifier-datatype-not-allowed>
+            <severity>CRITICAL</severity>
+            <rationale></rationale>
+            <example></example>
+            <counterExample></counterExample>
+            <recommendation></recommendation>
+        </undeclared-content-modifier-datatype-not-allowed> -->
     </rules>
 </cpilint>

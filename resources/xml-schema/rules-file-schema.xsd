@@ -55,6 +55,7 @@
 			<xs:element name="naming-conventions" type="baseRuleType" minOccurs="0"/>
 			<xs:element name="undeclared-content-modifier-datatype-not-allowed" type="baseRuleType" minOccurs="0"/>
 			<xs:element name="unused-parameters-not-allowed" type="baseRuleType" minOccurs="0"/>
+			<xs:element name="max-process-steps" type="maxProcessStepsType" minOccurs="0"/>
 		</xs:all>
 		<!-- At least one rule must be present. -->
 		<xs:assert test="count(*) gt 0"/>
@@ -85,6 +86,22 @@
 	<!-- General types -->
 
 	<xs:complexType name="baseRuleType">
+		<xs:sequence>
+			<xs:element name="severity" minOccurs="0" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="CRITICAL"/>
+						<xs:enumeration value="ERROR"/>
+						<xs:enumeration value="WARNING"/>
+						<xs:enumeration value="INFO"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="rationale" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="example" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="counterExample" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="recommendation" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
 		<xs:attribute name="id" use="optional" type="nonEmptyString"/>
 	</xs:complexType>
 
@@ -93,6 +110,18 @@
 			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
+
+	<xs:complexType name="maxProcessStepsType">
+	  <xs:complexContent>
+		<xs:extension base="baseRuleType">
+		  <xs:sequence>
+			<xs:element name="warning-threshold" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="error-threshold" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="critical-threshold" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+		  </xs:sequence>
+		</xs:extension>
+	  </xs:complexContent>
+	</xs:complexType>
 
 	<!-- Types for rule ReceiverAdapters -->
 
@@ -286,6 +315,7 @@
 			<xs:enumeration value="message-mapping"/>
 			<xs:enumeration value="operation-mapping"/>
 			<xs:enumeration value="xslt-mapping"/>
+			<xs:enumeration value="id-mapping"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -466,6 +496,30 @@
 			<xs:enumeration value="select-data-store-operations.name"/>
 			<xs:enumeration value="delete-data-store-operations.name"/>
 			<xs:enumeration value="write-data-store-operations.name"/>
+			<!-- New component types -->
+			<xs:enumeration value="process.name"/>
+			<xs:enumeration value="local-process.name"/>
+			<xs:enumeration value="exception-subprocess.name"/>
+			<xs:enumeration value="router.name"/>
+			<xs:enumeration value="router-route.name"/>
+			<xs:enumeration value="splitter.name"/>
+			<xs:enumeration value="multicast.name"/>
+			<xs:enumeration value="join.name"/>
+			<xs:enumeration value="gather.name"/>
+			<xs:enumeration value="aggregator.name"/>
+			<xs:enumeration value="id-mapping.name"/>
+			<xs:enumeration value="value-mapping.name"/>
+			<xs:enumeration value="converter.name"/>
+			<xs:enumeration value="encoder.name"/>
+			<xs:enumeration value="decoder.name"/>
+			<xs:enumeration value="request-reply.name"/>
+			<xs:enumeration value="send.name"/>
+			<xs:enumeration value="encryptor.name"/>
+			<xs:enumeration value="decryptor.name"/>
+			<xs:enumeration value="signer.name"/>
+			<xs:enumeration value="verifier.name"/>
+			<xs:enumeration value="communication-channel.name"/>
+			<xs:enumeration value="message-queue.name"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
@@ -535,5 +589,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	
 
 </xs:schema>

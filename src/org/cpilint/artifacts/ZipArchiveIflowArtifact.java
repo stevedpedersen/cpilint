@@ -42,6 +42,7 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	private static final String IFLOW_RESOURCES_BASE_PATH = "src/main/resources/";
 	private static final String EXT_PARAMS_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.prop";
 	private static final String EXT_PARAMS_DEF_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.propdef";
+	private static final String METAINFO_PROP_PATH = "metainfo.prop";
 	private static final Map<ArtifactResourceType, Predicate<String>> typePredicates;
 	
 	static {

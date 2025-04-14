@@ -35,6 +35,30 @@ public final class JsonFileIssueConsumer extends FileIssueConsumer {
             jsonIssue.put("ruleId", issue.getRuleId().orElse(""));
             jsonIssue.put("ruleClass", issue.getClass().getName());
             
+            // Add the new fields
+            jsonIssue.put("severity", issue.getSeverity().name());
+            
+            // Add optional fields only if they're not empty
+            String rationale = issue.getRationale();
+            if (rationale != null && !rationale.isEmpty()) {
+                jsonIssue.put("rationale", rationale);
+            }
+            
+            String example = issue.getExample();
+            if (example != null && !example.isEmpty()) {
+                jsonIssue.put("example", example);
+            }
+            
+            String counterExample = issue.getCounterExample();
+            if (counterExample != null && !counterExample.isEmpty()) {
+                jsonIssue.put("counterExample", counterExample);
+            }
+            
+            String recommendation = issue.getRecommendation();
+            if (recommendation != null && !recommendation.isEmpty()) {
+                jsonIssue.put("recommendation", recommendation);
+            }
+            
             // Add criteria (if available)
             if (issue instanceof IflowDescriptionRequiredIssue) {
                 jsonIssue.put("criteria", "Integration flow must have a description in either the iflow XML or metainfo.properties");

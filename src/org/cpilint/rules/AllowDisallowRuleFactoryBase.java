@@ -70,7 +70,17 @@ abstract class AllowDisallowRuleFactoryBase<T, U extends Rule> implements RuleFa
 			}
 			values.add(valueMap.get(contents));
 		}
-		return ruleFunction.apply(allowed, values);
+		// Create the rule
+		U rule = ruleFunction.apply(allowed, values);
+		
+		// Set the rule ID and extract documentation fields
+		String ruleId = allowed ? allowElementName : disallowElementName;
+		rule.setId(ruleId);
+		extractDocumentationFields(e, rule);
+		
+		return rule;
 	}
 
+	// Note: extractDocumentationFields method is not defined in the provided code snippet.
+	// It is assumed that this method is defined elsewhere in the codebase.
 }

@@ -122,6 +122,32 @@ public final class NamingConventionsRuleFactory implements RuleFactory {
 		applyToValues.put("select-data-store-operations.name", Nameable.SELECT_DATA_STORE_OPERATIONS_STEP_NAME);
 		applyToValues.put("delete-data-store-operations.name", Nameable.DELETE_DATA_STORE_OPERATIONS_STEP_NAME);
 		applyToValues.put("write-data-store-operations.name", Nameable.WRITE_DATA_STORE_OPERATIONS_STEP_NAME);
+		
+		// Add new component mappings
+		applyToValues.put("process.name", Nameable.PROCESS_NAME);
+		applyToValues.put("local-process.name", Nameable.LOCAL_PROCESS_NAME);
+		applyToValues.put("exception-subprocess.name", Nameable.EXCEPTION_SUBPROCESS_NAME);
+		applyToValues.put("router.name", Nameable.ROUTER_STEP_NAME);
+		applyToValues.put("router-route.name", Nameable.ROUTER_ROUTE_STEP_NAME);
+		applyToValues.put("splitter.name", Nameable.SPLITTER_STEP_NAME);
+		applyToValues.put("multicast.name", Nameable.MULTICAST_STEP_NAME);
+		applyToValues.put("join.name", Nameable.JOIN_STEP_NAME);
+		applyToValues.put("gather.name", Nameable.GATHER_STEP_NAME);
+		applyToValues.put("aggregator.name", Nameable.AGGREGATOR_STEP_NAME);
+		applyToValues.put("id-mapping.name", Nameable.ID_MAPPING_STEP_NAME);
+		applyToValues.put("value-mapping.name", Nameable.VALUE_MAPPING_STEP_NAME);
+		applyToValues.put("converter.name", Nameable.CONVERTER_STEP_NAME);
+		applyToValues.put("encoder.name", Nameable.ENCODER_STEP_NAME);
+		applyToValues.put("decoder.name", Nameable.DECODER_STEP_NAME);
+		applyToValues.put("request-reply.name", Nameable.REQUEST_REPLY_STEP_NAME);
+		applyToValues.put("send.name", Nameable.SEND_STEP_NAME);
+		applyToValues.put("encryptor.name", Nameable.ENCRYPTOR_STEP_NAME);
+		applyToValues.put("decryptor.name", Nameable.DECRYPTOR_STEP_NAME);
+		applyToValues.put("signer.name", Nameable.SIGNER_STEP_NAME);
+		applyToValues.put("verifier.name", Nameable.VERIFIER_STEP_NAME);
+		applyToValues.put("validator.name", Nameable.VALIDATOR_STEP_NAME);
+		applyToValues.put("communication-channel.name", Nameable.COMMUNICATION_CHANNEL_NAME);
+		applyToValues.put("message-queue.name", Nameable.MESSAGE_QUEUE_NAME);
 	}
 
 	@Override
@@ -139,6 +165,9 @@ public final class NamingConventionsRuleFactory implements RuleFactory {
 		// In the following, assume that the rules file has been validated.
 		NamingScheme scheme = schemeFromElement(getOnlyChildElement(e.element("scheme")));
 		String message = e.element("message").getText();
+		
+		// Rule ID will be set by the parent extractDocumentationFields method
+		
 		// Determine the nameables the rule applies to.
 		Set<Nameable> applyTo = new HashSet<>();
 		for (Element a : e.elements("apply-to")) {
@@ -146,7 +175,13 @@ public final class NamingConventionsRuleFactory implements RuleFactory {
 			assert applyToValues.containsKey(val);
 			applyTo.add(applyToValues.get(val));
 		}
-		return new NamingConventionsRule(scheme, message, applyTo);
+		
+		NamingConventionsRule rule = new NamingConventionsRule(scheme, message, applyTo);
+		
+		// Extract documentation fields which will also set the rule ID
+		extractDocumentationFields(e, rule);
+		
+		return rule;
 	}
 	
 	private static NamingScheme schemeFromElement(Element e) {

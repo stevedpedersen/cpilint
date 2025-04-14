@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.cpilint.IflowXml;
 import org.cpilint.artifacts.ArtifactResource;
@@ -12,6 +13,7 @@ import org.cpilint.artifacts.IflowArtifact;
 import org.cpilint.artifacts.IflowArtifactTag;
 import org.cpilint.consumers.IssueConsumer;
 import org.cpilint.issues.NameNotDefaultRequiredIssue;
+import org.cpilint.issues.Severity;
 import org.cpilint.util.JarResourceUtil;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmValue;
@@ -136,8 +138,7 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 				String name = resource.getName() != null ? resource.getName() : "";
 				if (name.toLowerCase().matches("script\\d.groovy")) {
 					consumer.consume(
-							new NameNotDefaultRequiredIssue(tag, String.format("Default filename %s for %s was found",
-									name, ArtifactResourceType.GROOVY_SCRIPT.getName())));
+						warningIssue(tag, String.format("Default filename %s for %s was found", name, ArtifactResourceType.GROOVY_SCRIPT.getName())));
 				}
 			}
 		}
@@ -147,7 +148,7 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 				String name = resource.getName() != null ? resource.getName() : "";
 				if (name.toLowerCase().matches("xsltmapping\\d.xsl")||name.toLowerCase().matches("xsltmapping\\d.xslt")) {
 					consumer.consume(
-							new NameNotDefaultRequiredIssue(tag, String.format("Default filename %s for %s was found",
+							warningIssue(tag, String.format("Default filename %s for %s was found",
 									name, ArtifactResourceType.XSLT_MAPPING.getName())));
 				}
 			}
@@ -166,20 +167,17 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 				handled = true;
 				continue;
 			}
-			if (value.id.startsWith("SubProcess")) {
+			if (value.id.contains("SubProcess")) { // ErrorEventSubProcessTemplate
 				if (value.name.matches("Exception Subprocess \\d") && !isExcluded("Exception Subprocess")) {
-					consumer.consume(new NameNotDefaultRequiredIssue(tag,
-							String.format("Default name %s for %s was found", value.name, "Exception")));
+					consumer.consume(errorIssue(tag, String.format("Default name %s for %s was found", value.name, "Exception")));
 				}
 				handled = true;
 			}
 			if (value.id.startsWith("Process")) {
 				if (value.name.matches("(Integration Process \\d)")) {
-					consumer.consume(new NameNotDefaultRequiredIssue(tag,
-							String.format("Default name %s for %s was found", value.name, "Integration Process")));
+					consumer.consume(errorIssue(tag, String.format("Default name %s for %s was found", value.name, "Integration Process")));
 				} else if (value.name.matches("(Local Integration Process|Local Integration Process \\d)")) {
-					consumer.consume(new NameNotDefaultRequiredIssue(tag, String
-							.format("Default name %s for %s was found", value.name, "Local Integration Process")));
+					consumer.consume(errorIssue(tag, String.format("Default name %s for %s was found", value.name, "Local Integration Process")));
 				}
 				handled = true;
 			}
@@ -272,6 +270,17 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 		}
 		for (HandlerXQueryAnswerCallActivity value : result) {
 			boolean handled = false;
+
+			// 
+			if (value.activityType != null && "IDMAPPER".equals(value.activityType)) {
+				// Handle IDMapper with proper naming conventions according to memory
+				if (value.name != null && !value.name.matches("^ID_[A-Za-z0-9]+(?:_[A-Za-z0-9_]+)?$")) {
+					consumer.consume(infoIssue(tag, String.format("IDMapper name '%s' does not follow ID_<SourceMessage>[<Format>]_to_<TargetMessage>[Format] pattern", value.name)));
+				}
+				handled = true;
+				continue;
+			}
+
 			for (String[] activityTypeObj : simpleActivityTypeRules) {
 				if (value.activityType == null || activityTypeObj.length < 3 || isExcluded(value.activityType)) {
 					handled = true;
@@ -279,8 +288,7 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 				}
 				if (value.activityType.equalsIgnoreCase(activityTypeObj[0])) {
 					if (value.name.matches(activityTypeObj[1])) {
-						consumer.consume(new NameNotDefaultRequiredIssue(tag,
-								String.format("Default name %s for %s was found", value.name, activityTypeObj[2])));
+						consumer.consume(errorIssue(tag, String.format("Default name %s for %s was found", value.name, activityTypeObj[2])));
 					}
 					handled = true;
 					break;
@@ -290,8 +298,7 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 				switch (value.activityType) {
 				case "Script":
 					if ("GroovyScript".equals(value.subActivityType) && value.name.matches("Groovy Script \\d")) {
-						consumer.consume(new NameNotDefaultRequiredIssue(tag,
-								String.format("Default name %s for groovy script was found", value.name)));
+						consumer.consume(criticalIssue(tag, String.format("Default name %s for groovy script was found", value.name)));
 					}
 					break;
 				default:
@@ -300,9 +307,7 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 					break;
 				}
 			}
-
 		}
-
 	}
 
 	private List<HandlerXQueryAnswerCallActivity> mapNodeToCallActivityList(XdmValue callActivityNode) {
@@ -336,4 +341,22 @@ final class DefaultNamesNotAllowedRule extends RuleBase {
 		return JarResourceUtil.loadXqueryResource("default-names-not-allowed-rule-process.xquery");
 	}
 
+	private NameNotDefaultRequiredIssue criticalIssue(IflowArtifactTag tag, String message) {
+		return createIssueWithDefault(tag, message, Severity.CRITICAL);
+	}
+	private NameNotDefaultRequiredIssue errorIssue(IflowArtifactTag tag, String message) {
+		return createIssueWithDefault(tag, message, Severity.ERROR);
+	}
+	private NameNotDefaultRequiredIssue warningIssue(IflowArtifactTag tag, String message) {
+		return createIssueWithDefault(tag, message, Severity.WARNING);
+	}
+	private NameNotDefaultRequiredIssue infoIssue(IflowArtifactTag tag, String message) {
+		return createIssueWithDefault(tag, message, Severity.INFO);
+	}
+	private NameNotDefaultRequiredIssue createIssueWithDefault(IflowArtifactTag tag, String message, Severity defaultSeverity) {
+		Severity resolvedValue = getSeverity() != null ? getSeverity() : defaultSeverity;
+		// String name = tag.getName();
+		String ruleIdStr = getId().isPresent() ? getId().get() : "";
+		return new NameNotDefaultRequiredIssue(Optional.ofNullable(ruleIdStr), tag, message, resolvedValue);
+	}
 }
