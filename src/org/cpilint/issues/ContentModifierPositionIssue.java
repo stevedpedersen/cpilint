@@ -219,6 +219,6 @@ public final class ContentModifierPositionIssue extends IssueBase {
     
     @Override
     public String getRecommendation() {
-        return "Place the initializing Content Modifier within the first 1–5 steps of the iFlow.";
+        return "Place the initializing Content Modifier within the first 1-5 steps of the iFlow.";
     }
 }
