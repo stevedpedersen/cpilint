@@ -31,6 +31,7 @@
 	<property name="rulesets.dir" value="rulesets"/>
 	<property name="archive.dir" value="archive"/>
 	<property name="report-template" value="${templates.dir}/cpilint-report-template.gsp"/>
+	<property name="report.template.neutral" value="${templates.dir}/cpilint-report-template-neutral.gsp"/>
 
 	<path id="classpath.build">
 		<fileset dir="${dependencies.dir}" includes="*.jar"/>
@@ -116,8 +117,15 @@
 	<target name="bundle-supplemental" depends="jar" description="Creates an archive with rulesets and templates for external pipeline use">
 		<mkdir dir="${archive.dir}"/>
 		<zip destfile="${archive.dir}/${app.name}-bundle.zip">
-			<zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
-			<zipfileset dir="${templates.dir}" prefix="templates"/>
+			<zipfileset dir="${rulesets.dir}" prefix="rulesets">
+				<include name="jnj-base.xml"/>
+				<include name="jnj-rules.xml"/>
+				<include name="jnj-naming.xml"/>
+			</zipfileset>
+			<zipfileset dir="${templates.dir}" prefix="templates">
+				<include name="cpilint-report-template.gsp"/>
+				<include name="scripts.js"/>
+			</zipfileset>
 		</zip>
 	</target>
 

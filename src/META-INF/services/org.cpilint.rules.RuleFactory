@@ -1,3 +1,4 @@
 org.cpilint.rules.IflowNameMatchesRuleFactory
 org.cpilint.rules.UndeclaredContentModifierDatatypeRuleFactory
 org.cpilint.rules.DefaultNamesNotAllowedRuleFactory
+org.cpilint.rules.UnusedParametersRuleFactory
