@@ -151,18 +151,27 @@
                 </tr>
             </thead>
             <tbody>
-                <% 
-                    def groupedByRule = issues.groupBy { it.ruleClass }
-                    groupedByRule.each { ruleClass, issuesList -> 
-                        def issue = issuesList[0] 
-                %>
-                <tr id="rule-${ruleClass}">
-                    <td>${ruleClass}</td>
-                    <td><strong style="color:red;">Yes</strong> (${issuesList.size()} issue${issuesList.size() > 1 ? 's' : ''})</td>
-                    <td>${issue.example ?: 'N/A'}</td>
-                    <td>${issue.rationale ?: 'N/A'}</td>
-                </tr>
-                <% } %>
+            <% rules.each { rule -> 
+                def isViolated = violatedRuleIds.any { violation -> violation?.startsWith(rule.ruleId) }
+            %>
+            <tr id="rule-${rule.ruleId}">
+                <td>${rule.ruleId}</td>
+                <td>
+                    <% if (isViolated) { %>
+                        <strong style="color:red;">Yes</strong>
+                    <% } else { %>
+                        No
+                    <% } %>
+                </td>
+                <td>
+                    <ul>
+                    <% rule.fields.each { fieldName, fieldValue -> %>
+                        <li><strong>${fieldName}:</strong> <pre>${fieldValue}</pre></li>
+                    <% } %>
+                    </ul>
+                </td>
+            </tr>
+            <% } %>
             </tbody>
         </table>
     </div>
