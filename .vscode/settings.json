@@ -1,0 +1,41 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+        "src/org/cpilint/CliClient.java"
+    ],
+    "java.project.outputPath": "build/classes",
+    "java.project.referencedLibraries": [
+        "lib/compile/Saxon-HE-12.5.jar",
+        "lib/compile/commons-cli-1.8.0.jar",
+        "lib/compile/dom4j-2.1.4.jar",
+        "lib/compile/json-20240303.jar",
+        "lib/compile/logback-classic-1.5.6.jar",
+        "lib/compile/logback-core-1.5.6.jar",
+        "lib/compile/slf4j-api-2.0.13.jar",
+        "lib/runtime/xmlresolver-5.2.2.jar",
+        "lib/runtime/Saxon-HE-12.5.jar",
+        "lib/runtime/commons-cli-1.8.0.jar",
+        "lib/runtime/dom4j-2.1.4.jar",
+        "lib/runtime/json-20240303.jar",
+        "lib/runtime/logback-classic-1.5.6.jar",
+        "lib/runtime/logback-core-1.5.6.jar",
+        "lib/runtime/slf4j-api-2.0.13.jar",
+        "dist-files/xerces-runtime-jars/cupv10k-runtime.jar",
+        "dist-files/xerces-runtime-jars/org.eclipse.wst.xml.xpath2.processor_1.2.1.jar",
+        "dist-files/xerces-runtime-jars/xercesImpl.jar",
+        "logback/logback.xml"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.debug.settings.console": "internalConsole",
+    "java.jdt.ls.java.home": "C:\\Users\\Steve\\.jdks\\jdk-17.0.14",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "C:\\Users\\Steve\\.jdks\\jdk-17.0.14",
+            "default": true
+        }
+    ],
+    "java.search.scope": "all",
+    "DockerRun.DisableAutoGenerateConfig": true,
+}

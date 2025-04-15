@@ -41,6 +41,8 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	private static final String ID_MANIFEST_HEADER = "Bundle-SymbolicName";
 	private static final String IFLOW_RESOURCES_BASE_PATH = "src/main/resources/";
 	private static final String EXT_PARAMS_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.prop";
+	private static final String EXT_PARAMS_DEF_PATH = IFLOW_RESOURCES_BASE_PATH + "parameters.propdef";
+	private static final String METAINFO_PROP_PATH = "metainfo.prop";
 	private static final Map<ArtifactResourceType, Predicate<String>> typePredicates;
 	
 	static {
@@ -56,17 +58,32 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 		typePredicates.put(ArtifactResourceType.EDMX, s -> s.startsWith(IFLOW_RESOURCES_BASE_PATH + "edmx/") && (s.endsWith(".edmx")));
 		typePredicates.put(ArtifactResourceType.OPERATION_MAPPING, s -> s.startsWith(IFLOW_RESOURCES_BASE_PATH + "mapping/") && s.endsWith(".opmap"));
 		typePredicates.put(ArtifactResourceType.JSON, s -> s.startsWith(IFLOW_RESOURCES_BASE_PATH + "json/") && s.endsWith(".json"));
+		typePredicates.put(ArtifactResourceType.METAINFO, s -> !s.contains("/") && s.equals("metainfo.prop"));
+		typePredicates.put(ArtifactResourceType.EXTERNAL_PARAMETERS, s -> s.equals(EXT_PARAMS_PATH) || s.equals(EXT_PARAMS_DEF_PATH));
 	}
 	
 	private final IflowArtifactTag tag;
 	private final IflowXml iflowXml;
 	private final Map<ArtifactResourceType, Collection<ArtifactResource>> resources;
-	
+	private Map<String, String> metainfo;
+
+	private ZipArchiveIflowArtifact(
+		IflowArtifactTag tag, 
+		Map<ArtifactResourceType, Collection<ArtifactResource>> resources, 
+		IflowXml iflowXml,
+		Map<String, String> metainfo
+	) {
+		this.tag = tag;
+		this.resources = resources;
+		this.iflowXml = iflowXml;
+		this.metainfo = metainfo;
+	}
 	private ZipArchiveIflowArtifact(IflowArtifactTag tag, Map<ArtifactResourceType, Collection<ArtifactResource>> resources, IflowXml iflowXml) {
 		// Private, since instances are returned by the static factory methods.
 		this.tag = tag;
 		this.resources = resources;
 		this.iflowXml = iflowXml;
+		this.metainfo = new HashMap<>();
 	}
 
 	@Override
@@ -91,6 +108,35 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	@Override
 	public IflowArtifactTag getTag() {
 		return tag;
+	}
+
+	@Override
+	public Map<String, String> getMetainfo() {
+		return Collections.unmodifiableMap(metainfo);
+	}
+
+	public void setMetainfo(Map<String, String> metainfo) {
+		this.metainfo = new HashMap<>(metainfo);
+	}
+
+	private static Map<String, String> parseMetainfoIfPresent(Map<String, byte[]> contents) throws IOException {
+		if (contents.containsKey("metainfo.prop")) {
+			return parseMetainfo(contents.get("metainfo.prop"));
+		}
+		return Collections.emptyMap();
+	}
+	
+	private static Map<String, String> parseMetainfo(byte[] metainfoContent) throws IOException {
+		Properties props = new Properties();
+		try (InputStream is = new ByteArrayInputStream(metainfoContent)) {
+			props.load(is);
+		}
+		return props.entrySet()
+			.stream()
+			.collect(Collectors.toMap(
+				e -> e.getKey().toString(),
+				e -> e.getValue().toString()
+			));
 	}
 
 	public static IflowArtifact fromArchiveFile(Path file) throws IOException, SaxonApiException {
@@ -129,7 +175,13 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 			// No manifest means that this is not a valid iflow artifact.
 			throw new IflowArtifactError("No manifest found");
 		}
-		IflowArtifactTag tag = createTag(contents.get(MANIFEST_PATH));
+		// IflowArtifactTag tag = createTag(contents.get(MANIFEST_PATH));
+		byte[] manifestcontents = contents.get(MANIFEST_PATH);
+		// If no Manifest in zipfile, not an iflow package;
+		if (manifestcontents == null) {
+			throw new SaxonApiException("Not an iflow zip package");
+		}
+		IflowArtifactTag tag = createTag(manifestcontents);
 		// Replace external parameters in the iflow XML, if this iflow artifact
 		// actually contains an external parameters file (this is not always the case).
 		if (externalParametersPresent(contents)) {
@@ -139,12 +191,14 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 		Map<ArtifactResourceType, Collection<ArtifactResource>> resources = createResourcesMap(tag, contents);
 		// Get an IflowXml object.
 		IflowXml iflowXml = createIflowXml(contents);
+		// iFlow metainfo
+		Map<String, String> metainfo = parseMetainfoIfPresent(contents);
 		// All done.
-		return new ZipArchiveIflowArtifact(tag, resources, iflowXml);
+		return new ZipArchiveIflowArtifact(tag, resources, iflowXml, metainfo);
 	}
 
 	private static boolean externalParametersPresent(Map<String, byte[]> contents) {
-		return contents.containsKey(EXT_PARAMS_PATH);
+		return contents.containsKey(EXT_PARAMS_PATH) || contents.containsKey(EXT_PARAMS_DEF_PATH);
 	}
 
 	private static void replaceExternalParameters(Map<String, byte[]> contents) throws IOException, SaxonApiException {
@@ -184,7 +238,12 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 
 	private static Map<String, String> getExternalParamsMap(Map<String, byte[]> contents) throws IOException {
 		Properties props = new Properties();
-		props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_PATH)));
+		if (contents.containsKey(EXT_PARAMS_PATH)) {
+			props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_PATH)));
+		}
+		if (contents.containsKey(EXT_PARAMS_DEF_PATH)) {
+			props.load(new ByteArrayInputStream(contents.get(EXT_PARAMS_DEF_PATH)));
+		}
 		Map<String, String> parametersMap = new HashMap<>();
 		props.forEach((k, v) -> parametersMap.put((String)k, (String)v));
 		return Collections.unmodifiableMap(parametersMap);
@@ -314,6 +373,9 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 	}
 
 	private static String resourceNameFromResourcePath(String resourcePath) {
+		if (resourcePath.startsWith(ArtifactResourceType.METAINFO.getName())) {
+			return resourcePath.substring(ArtifactResourceType.METAINFO.getName().length());
+		}
 		// All resource paths have the same base path.
 		if (!resourcePath.startsWith(IFLOW_RESOURCES_BASE_PATH)) {
 			throw new IllegalArgumentException("Unexpected base path for resource");
@@ -326,5 +388,4 @@ public final class ZipArchiveIflowArtifact implements IflowArtifact {
 		}
 		return resourcePath.substring(lastSlashIndex + 1);		
 	}
-	
 }

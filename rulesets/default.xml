@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpilint>
+    <rules>
+
+        <!-- The following examples of naming conventions have been borrowed from SAP’s Integration Flow Design Guidelines. -->
+
+        <naming>
+            <scheme>
+                <starts-with>HTTP_RCV_</starts-with>
+            </scheme>
+            <message>HTTP receiver channel names must start with HTTP_RCV_</message>
+            <apply-to>http-receiver-channel.name</apply-to>
+        </naming>
+
+        <naming>
+            <scheme>
+                <starts-with>S_</starts-with>
+            </scheme>
+            <message>Sender Participant names must start with S_</message>
+            <apply-to>sender.name</apply-to>
+        </naming>    
+
+        <naming>
+            <scheme>
+                <or>
+                    <starts-with>R_</starts-with>
+                    <starts-with>Receiver</starts-with>
+                </or>
+            </scheme>
+            <message>Receiver Participant names must start with OP_, B2B_ or CP_</message>
+            <apply-to>receiver.name</apply-to>
+        </naming>        
+
+        <naming>
+            <scheme>
+                <starts-with>XSL_</starts-with>
+            </scheme>
+            <message>XSLT mapping step names must start with XSL_</message>
+            <apply-to>xslt-mapping.name</apply-to>
+        </naming>
+
+        <!-- Require that all iflows have a description. -->
+        <iflow-description-required/>
+
+        <!-- Don't allow the social media receiver adapters. -->
+        <disallowed-receiver-adapters>
+            <disallow>facebook</disallow>
+            <disallow>twitter</disallow>
+        </disallowed-receiver-adapters>
+
+        <!-- Don't allow Router steps configured with both XML and non-XML conditions. -->
+        <multi-condition-type-routers-not-allowed/>
+        
+        <!-- Message Mapping and XSLT are the two allowed mapping types. -->
+        <allowed-mapping-types>
+            <allow>message-mapping</allow>
+            <allow>xslt-mapping</allow>
+        </allowed-mapping-types>
+
+        <!-- Make sure that all data store writes are encrypted. -->
+        <unencrypted-data-store-write-not-allowed/>
+
+    </rules>
+</cpilint>

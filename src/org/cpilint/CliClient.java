@@ -174,41 +174,20 @@ public final class CliClient {
 			consumerType = IssueConsumerType.CONSOLE;
 		}
 		
-		// Determine output filename for JSON output type
-		String outputFilename = "cpilint-results.json";
-		
-		// If packages were specified, use the first package name
-		if (cl.hasOption(CLI_OPTION_PACKAGES)) {
-			String[] packageNames = cl.getOptionValues(CLI_OPTION_PACKAGES);
-			if (packageNames.length > 0) {
-				outputFilename = "cpilint-" + packageNames[0] + ".json";
-				if (packageNames.length > 1) {
-					logger.info("Multiple packages specified, using first package name '{}' for output filename", packageNames[0]);
-				}
-			}
-		} 
-		// If specific iflows were specified, use the first iflow name
-		else if (cl.hasOption(CLI_OPTION_IFLOWS)) {
-			String[] iflowNames = cl.getOptionValues(CLI_OPTION_IFLOWS);
-			if (iflowNames.length > 0) {
-				outputFilename = "cpilint-" + iflowNames[0] + ".json";
-				if (iflowNames.length > 1) {
-					logger.info("Multiple iflows specified, using first iflow name '{}' for output filename", iflowNames[0]);
-				}
-			}
-		}
-		
-		logger.info("Output filename: {}", outputFilename);
-		
+		String outputFilename = "cpilint-results";
 		// Initialize correct consumer based on the enum
 		IssueConsumer consumer;
 		switch (consumerType) {
 			case JSON:
+				outputFilename += ".json";
 				consumer = new JsonFileIssueConsumer(outputFilename);
 				break;
 			default:
 				consumer = new ConsoleIssueConsumer();
+				outputFilename += ".log";
 		}
+		logger.info("Output filename: {}", outputFilename);
+
 		/*
 		 * If there are any exemptions, use the IssueConsumer that filters out
 		 * issues based on exemptions. Otherwise use the default IssueConsumer.

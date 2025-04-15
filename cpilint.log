@@ -1,0 +1,47 @@
+17:55:28.469 INFO  org.cpilint.CliClient - CPILint version 1.0.5
+17:55:28.487 DEBUG org.cpilint.CliClient - java.version = 17.0.14
+17:55:28.488 DEBUG org.cpilint.CliClient - java.vendor = OpenLogic
+17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.version = 17.0.14+7-adhoc..jdk17u
+17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.vendor = OpenLogic
+17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.name = OpenJDK 64-Bit Server VM
+17:55:28.488 DEBUG org.cpilint.CliClient - os.name = Windows 10
+17:55:28.488 DEBUG org.cpilint.CliClient - os.arch = amd64
+17:55:28.488 DEBUG org.cpilint.CliClient - os.version = 10.0
+17:55:28.488 INFO  org.cpilint.CliClient - Launching CliClient
+17:55:28.488 DEBUG org.cpilint.CliClient - Command line arguments provided: '-debug' '-skipvercheck' '-output' 'json' '-rules' 'rulesets\jnj-base.xml' '-unpacked-files' '.\resources\IF_LINT_NAMES'
+17:55:28.492 INFO  org.cpilint.CliClient - Command line arguments parsed successfully
+17:55:28.494 INFO  org.cpilint.CliClient - Run mode detected: UNPACKED_FILE_SUPPLIER_MODE
+17:55:28.502 DEBUG org.cpilint.RulesFile - Checking for extensions...
+17:55:28.502 INFO  org.cpilint.RulesFile - Processing rules file 'rulesets\jnj-base.xml'
+17:55:28.503 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-base.xml
+17:55:28.683 INFO  org.cpilint.RulesFile - Rules file XML is valid
+17:55:28.683 DEBUG org.cpilint.RulesFile - Rules file contains 2 import(s)
+17:55:28.683 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-naming.xml
+17:55:28.684 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml
+17:55:28.684 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml'
+17:55:28.684 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml'
+17:55:28.684 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml
+17:55:28.742 INFO  org.cpilint.RulesFile - Rules file XML is valid
+17:55:28.932 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-rules.xml
+17:55:28.932 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml
+17:55:28.932 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml'
+17:55:28.932 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml'
+17:55:28.933 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml
+17:55:28.961 INFO  org.cpilint.RulesFile - Rules file XML is valid
+17:55:28.977 DEBUG o.c.rules.JavaArchivesRuleFactory - Generated pattern '\Q.\E.*' for glob '.*'
+17:55:28.984 DEBUG org.cpilint.RulesFile - RulesFile created with 70 rule(s) and 0 exemption(s)
+17:55:28.991 INFO  org.cpilint.CliClient - Output filename: cpilint-results.json
+17:55:28.993 INFO  org.cpilint.CliClient - Skipping version check
+17:55:28.994 INFO  org.cpilint.CpiLint - Starting inspection of iflow artifacts
+17:55:29.582 DEBUG org.cpilint.CpiLint - Iflow artifact supplied: IflowArtifactTag[id=IF_LINT_NAMES,name=IF_LINT_NAMES,packageinfo=Optional.empty]
+17:55:29.790 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
+17:55:29.793 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+17:55:29.796 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+17:55:29.859 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+17:55:29.861 INFO  org.cpilint.model.DefaultXmlModel - MappingType:OPERATION_MAPPINGPropertyKey: mappingType, PropertyValue: OperationMapping
+17:55:29.863 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
+17:55:30.075 INFO  org.cpilint.model.DefaultXmlModel - MappingType:ID_MAPPINGPropertyKey: null, PropertyValue: null
+17:55:30.132 INFO  org.cpilint.CpiLint - Inspection completed
+17:55:30.143 INFO  org.cpilint.CliClient - Iflow artifacts supplied: 1
+17:55:30.143 INFO  org.cpilint.CliClient - Issues found: 56
+17:55:30.144 INFO  org.cpilint.CliClient - Exiting CliClient with status 1

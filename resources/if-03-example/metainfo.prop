@@ -1,0 +1,4 @@
+#Store metainfo properties
+description=Base ruleset test
+source=Jenkins
+target=Bitbucket

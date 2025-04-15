@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,12 +34,16 @@ import org.xml.sax.SAXParseException;
 
 import org.cpilint.rules.CleartextBasicAuthNotAllowedRuleFactory;
 import org.cpilint.rules.ClientCertSenderChannelAuthNotAllowedRuleFactory;
+import org.cpilint.rules.ContentModifierPositionRuleFactory;
 import org.cpilint.rules.CsrfProtectionRequiredRuleFactory;
+import org.cpilint.rules.DefaultNamesNotAllowedRuleFactory;
 import org.cpilint.rules.DuplicateResourcesNotAllowedRuleFactory;
 import org.cpilint.rules.IflowDescriptionRequiredRuleFactory;
+import org.cpilint.rules.IflowNameMatchesRuleFactory;
 import org.cpilint.rules.JavaArchivesRuleFactory;
 import org.cpilint.rules.MappingTypesRuleFactory;
 import org.cpilint.rules.MatchingProcessDirectChannelsRequiredRuleFactory;
+import org.cpilint.rules.MaxProcessStepsRuleFactory;
 import org.cpilint.rules.MultiConditionTypeRoutersNotAllowedRuleFactory;
 import org.cpilint.rules.NamingConventionsRuleFactory;
 import org.cpilint.rules.ReceiverAdaptersRuleFactory;
@@ -45,8 +51,10 @@ import org.cpilint.rules.Rule;
 import org.cpilint.rules.RuleFactory;
 import org.cpilint.rules.ScriptingLanguagesRuleFactory;
 import org.cpilint.rules.SenderAdaptersRuleFactory;
+import org.cpilint.rules.UndeclaredContentModifierDatatypeRuleFactory;
 import org.cpilint.rules.UnencryptedDataStoreWriteNotAllowedRuleFactory;
 import org.cpilint.rules.UnencryptedEndpointsNotAllowedRuleFactory;
+import org.cpilint.rules.UnusedParametersRuleFactory;
 import org.cpilint.rules.UserRolesRuleFactory;
 import org.cpilint.rules.XsltVersionsRuleFactory;
 
@@ -57,29 +65,43 @@ public final class RulesFile {
 
 	private static final Logger logger = LoggerFactory.getLogger(RulesFile.class);
 	private static final Collection<RuleFactory> ruleFactories;
+	private static final ServiceLoader<RuleFactory> loader = ServiceLoader.load(RuleFactory.class);
 
 	private final Collection<Rule> rules;
 	private final Set<Exemption> exemptions;
 
 	static {
 		ruleFactories = new ArrayList<>();
+		ruleFactories.add(new CleartextBasicAuthNotAllowedRuleFactory());
+		ruleFactories.add(new ClientCertSenderChannelAuthNotAllowedRuleFactory());
+		ruleFactories.add(new ContentModifierPositionRuleFactory());
 		ruleFactories.add(new CsrfProtectionRequiredRuleFactory());
+		ruleFactories.add(new DefaultNamesNotAllowedRuleFactory());
+		ruleFactories.add(new DuplicateResourcesNotAllowedRuleFactory());
+		ruleFactories.add(new IflowDescriptionRequiredRuleFactory());
+		ruleFactories.add(new IflowNameMatchesRuleFactory());
 		ruleFactories.add(new JavaArchivesRuleFactory());
 		ruleFactories.add(new MappingTypesRuleFactory());
+		ruleFactories.add(new MatchingProcessDirectChannelsRequiredRuleFactory());
+		ruleFactories.add(new MultiConditionTypeRoutersNotAllowedRuleFactory());
+		ruleFactories.add(new NamingConventionsRuleFactory());
 		ruleFactories.add(new ReceiverAdaptersRuleFactory());
 		ruleFactories.add(new ScriptingLanguagesRuleFactory());
 		ruleFactories.add(new SenderAdaptersRuleFactory());
-		ruleFactories.add(new UnencryptedEndpointsNotAllowedRuleFactory());
-		ruleFactories.add(new CleartextBasicAuthNotAllowedRuleFactory());
-		ruleFactories.add(new XsltVersionsRuleFactory());
-		ruleFactories.add(new IflowDescriptionRequiredRuleFactory());
+		ruleFactories.add(new UndeclaredContentModifierDatatypeRuleFactory());
 		ruleFactories.add(new UnencryptedDataStoreWriteNotAllowedRuleFactory());
-		ruleFactories.add(new ClientCertSenderChannelAuthNotAllowedRuleFactory());
-		ruleFactories.add(new MultiConditionTypeRoutersNotAllowedRuleFactory());
-		ruleFactories.add(new MatchingProcessDirectChannelsRequiredRuleFactory());
-		ruleFactories.add(new DuplicateResourcesNotAllowedRuleFactory());
-		ruleFactories.add(new NamingConventionsRuleFactory());
+		ruleFactories.add(new UnencryptedEndpointsNotAllowedRuleFactory());
+		ruleFactories.add(new UnusedParametersRuleFactory());
 		ruleFactories.add(new UserRolesRuleFactory());
+		ruleFactories.add(new XsltVersionsRuleFactory());
+		ruleFactories.add(new MaxProcessStepsRuleFactory());
+		Iterator<RuleFactory> extensionRules = loader.iterator();
+		logger.debug("Checking for extensions...");
+		while (extensionRules.hasNext()) {
+			RuleFactory extensionRule = extensionRules.next();
+			logger.debug(String.format("Found new extension: %s", extensionRule.getClass().getName()));
+			ruleFactories.add(extensionRule);
+		}
 	}
 	
 	private RulesFile(Collection<Rule> rules, Set<Exemption> exemptions) {
@@ -283,7 +305,7 @@ public final class RulesFile {
 				}
 				private void failValidation(SAXParseException e) {
 					logger.error("Rules file schema validation error: {}", e.getMessage());
-					throw new RulesFileError("The rules file format is not valid.");
+					throw new RulesFileError("The rules file format is not valid.\n"+e.getMessage());
 				}
 			});
 			validator.validate(new DocumentSource(document));
@@ -295,5 +317,47 @@ public final class RulesFile {
 			throw new RulesFileError("There was an I/O error while validating the rules file.");
 		}
 	}
-
+	
+	public static Collection<Rule> fromInputStream(InputStream is) throws SAXException {
+		// Parse the rules document.
+		Document doc;
+		try {
+			doc = parseRulesFile(is);
+		} catch (DocumentException e) {
+			throw new RulesFileError("Error parsing rules file XML", e);
+		}
+		/*
+		 *  Get a List of all rule elements, i.e. elements below 
+		 *  /cpilint/rules.
+		 */
+		List<Element> ruleElements = doc.getRootElement().element("rules").elements();
+		/*
+		 * Now, for each rule element, get a Set of RuleFactory instances that
+		 * are able to process that element. We expect exactly one RuleFactory
+		 * to be able to do so. Zero factories and more than one factory is
+		 * an error, and results in a RulesFileError being thrown. If exactly
+		 * one factory can create a Rule object from the element, do so and
+		 * add that Rule to the collection, that will be returned from this
+		 * method.
+		 */
+		Collection<Rule> rules = new ArrayList<>();
+		for (Element ruleElement : ruleElements) {
+			Set<RuleFactory> factories = ruleFactories
+				.stream()
+				.filter(f -> f.canCreateFrom(ruleElement))
+				.collect(Collectors.toSet());
+			if (factories.isEmpty()) {
+				throw new RulesFileError(String.format("No factory available to process rule '%s'. Please check your classpath", ruleElement.getName()));
+			}
+			if (factories.size() > 1) {
+				logger.debug("Multiple RuleFactory instances available for element {}: {}",
+					ruleElement.getName(),
+					factories.stream().map(f -> f.getClass().getName()).collect(Collectors.joining(",")));
+				throw new RulesFileError(String.format("More than one factory available to process rule '%s'", ruleElement.getName()));
+			}
+			RuleFactory factory = factories.iterator().next();
+			rules.add(factory.createFrom(ruleElement));
+		}
+		return rules;
+	}
 }

@@ -6,7 +6,8 @@ public enum MappingType {
 	
 	MESSAGE_MAPPING,
 	XSLT_MAPPING,
-	OPERATION_MAPPING;
+	OPERATION_MAPPING,
+	ID_MAPPING;
 	
 	public static Set<MappingType> allValuesExcept(Set<MappingType> mappingTypes) {
 		return ModelUtil.allValuesExcept(mappingTypes);
