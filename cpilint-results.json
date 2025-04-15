@@ -519,7 +519,7 @@
         "iflowId": "IF_LINT_NAMES",
         "severity": "INFO",
         "iflowName": "IF_LINT_NAMES",
-        "recommendation": "Place the initializing Content Modifier within the first 1â\u20ac\u201c5 steps of the iFlow.",
+        "recommendation": "Place the initializing Content Modifier within the first 1-5 steps of the iFlow.",
         "counterExample": "Content Modifier setting integrationID and projectName after several steps.",
         "message": "Content Modifier with properties required to link Value Map data to iFlow logs.",
         "ruleId": "content-modifier-position-rule",

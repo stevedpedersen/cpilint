@@ -7,17 +7,21 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            line-height: 1.5;
+            line-height: 1.2;
             background-color: #f9f9f9;
+            font-size: 14px;
         }
         h1, h2, h3 {
             color: #0056b3;
         }
+        /* h3 {
+            color: #B41601;
+        } */
         .summary-box {
-            background: #ffffff;
-            padding: 20px;
+            background: #fff;
+            padding: 12px 20px;
             border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
             margin-bottom: 20px;
         }
         table {
@@ -26,58 +30,80 @@
             margin-top: 10px;
             margin-bottom: 30px;
         }
-        table, th, td {
+        th, td {
             border: 1px solid #ccc;
+            padding: 6px 8px;
+            vertical-align: top;
+            text-align: left;
+        }
+        pre {
+            background-color: #eee;
+            padding: 4px;
+            border-radius: 3px;
+            overflow-x: auto;
         }
         th {
             background: #0056b3;
             color: white;
-            padding: 10px;
-        }
-        td {
-            padding: 8px;
+            cursor: pointer;
         }
         tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        pre {
-            background-color: #eee;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
+            background-color: #f7f7f7;
         }
         .critical {
             background-color: #ffe5e5;
         }
         .error {
-            background-color: #ffeccc;
+            background-color: #fff3cd;
         }
         .warning {
-            background-color: #ffffcc;
+            background-color: #fffdd0;
         }
         .info {
             background-color: #e6f2ff;
+        }
+        .recommendation-toggle {
+            cursor: pointer;
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        .recommendation-details {
+            display: none;
+            margin-top: 5px;
+            background: #f2f2f2;
+            padding: 5px;
+            border-left: 3px solid #ccc;
         }
         .tab-nav {
             margin-bottom: 20px;
         }
         .tab-nav button {
-            padding: 10px 15px;
+            padding: 9px 12px;
             margin-right: 5px;
             cursor: pointer;
-            background: #ddd;
+            background: #d3d3d3;
             border: none;
-            border-radius: 5px 5px 0 0;
+            border-radius: 3px 3px 0 0;
         }
         .tab-nav button.active {
-            background: #ffffff;
-            font-weight: bold;
+            background: #B41601;
+            font-weight:bold;
+            color: #fff;
+            transition: all .2s ease-out;
+        }
+        .tab-nav button:hover {
+            box-shadow: #6d6d6d 1px 1px 3px;
+            transition: all .1s ease-in-out;
         }
         .tab-content {
             display: none;
+            opacity: 0;
+            transition: all .2s ease-out;
         }
         .tab-content.active {
             display: block;
+            opacity: 1;
+            transition: all .2s ease-out;
         }
         a {
             color: #0077cc;
@@ -85,6 +111,22 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        .rule-field-toggle {
+            cursor: pointer;
+            color: #0056b3;
+            font-size: 13px;
+            padding: 2px;
+            text-decoration: underline;
+        }
+        .rule-field-content {
+            display: none;
+            margin: 3px 0 8px 0;
+            padding: 5px;
+            background: #f0f0f0;
+            border-left: 3px solid #ccc;
+            white-space: pre-wrap;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -111,6 +153,21 @@
 
     <div id="issues" class="tab-content active">
         <h2>All Issues</h2>
+        <div style="margin-bottom: 10px;">
+            <input id="filter-iflow" type="text" placeholder="Filter by iFlow..." oninput="filterTable()" style="margin-right: 5px;">
+            
+            <select id="filter-severity" onchange="filterTable()" style="margin-right: 5px;">
+                <option value="">All Severities</option>
+                <option value="critical">Critical</option>
+                <option value="error">Error</option>
+                <option value="warning">Warning</option>
+                <option value="info">Info</option>
+            </select>
+            
+            <input id="filter-text" type="text" placeholder="Search message or rule..." oninput="filterTable()" style="margin-right: 5px;">
+
+            <button onclick="resetFilters()">Reset</button>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -128,8 +185,13 @@
                     <td>${issue.severity}</td>
                     <td>${issue.message}</td>
                     <td>
-                        ${issue.recommendation ?: 'N/A'}<br/>
-                        <small><strong>Counter Example:</strong> ${issue.counterExample ?: 'N/A'}</small>
+                        <span class="recommendation-toggle" onclick="toggleDetails(this)">
+                            Show Recommendation
+                        </span>
+                        <div class="recommendation-details">
+                            ${issue.recommendation ?: 'N/A'}<br/>
+                            <small><strong>Counter Example:</strong> ${issue.counterExample ?: 'N/A'}</small>
+                        </div>
                     </td>
                     <td><a href="#rule-${issue.ruleClass}">${issue.ruleClass ?: 'N/A'}</a></td>
                 </tr>
@@ -151,18 +213,37 @@
                 </tr>
             </thead>
             <tbody>
-                <% 
-                    def groupedByRule = issues.groupBy { it.ruleClass }
-                    groupedByRule.each { ruleClass, issuesList -> 
-                        def issue = issuesList[0] 
-                %>
-                <tr id="rule-${ruleClass}">
-                    <td>${ruleClass}</td>
-                    <td><strong style="color:red;">Yes</strong> (${issuesList.size()} issue${issuesList.size() > 1 ? 's' : ''})</td>
-                    <td>${issue.example ?: 'N/A'}</td>
-                    <td>${issue.rationale ?: 'N/A'}</td>
-                </tr>
-                <% } %>
+            <% rules.each { rule -> 
+                def isViolated = violatedRuleIds.any { violation -> violation?.startsWith(rule.ruleId) }
+            %>
+            <tr id="rule-${rule.ruleId}">
+                <td>${rule.ruleId}</td>
+                <td>
+                    <% if (isViolated) { %>
+                        <strong style="color:red;">Yes</strong>
+                    <% } else { %>
+                        No
+                    <% } %>
+                </td>
+                <td>
+                    <ul style="margin: 0; padding-left: 16px;">
+                        <% rule.fields.each { fieldName, fieldValue -> 
+                            def isVerbose = ['or', 'scheme', 'not'].contains(fieldName)
+                        %>
+                            <li>
+                                <strong>${fieldName}:</strong>
+                                <% if (isVerbose) { %>
+                                    <div class="rule-field-toggle" onclick="toggleRuleField(this)">Show</div>
+                                    <div class="rule-field-content">${fieldValue}</div>
+                                <% } else { %>
+                                    <pre style="margin: 2px 0;">${fieldValue}</pre>
+                                <% } %>
+                            </li>
+                        <% } %>
+                    </ul>
+                </td>
+            </tr>
+            <% } %>
             </tbody>
         </table>
     </div>
@@ -174,15 +255,78 @@
 
     <script>
         function showTab(tabId) {
-            var tabs = document.getElementsByClassName('tab-content');
-            var buttons = document.getElementsByClassName('tab-btn');
-            for (var i = 0; i < tabs.length; i++) {
+            const tabs = document.getElementsByClassName('tab-content');
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabs.length; i++) {
                 tabs[i].classList.remove('active');
                 buttons[i].classList.remove('active');
             }
             document.getElementById(tabId).classList.add('active');
             event.target.classList.add('active');
+            localStorage.setItem('selectedTab', tabId);
         }
+
+        window.onload = function () {
+            const tabId = localStorage.getItem('selectedTab') || 'issues';
+            const tabBtn = document.querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`);
+            if (tabBtn) tabBtn.click();
+        }
+        function filterTable() {
+            const iflowVal = document.getElementById('filter-iflow').value.toLowerCase();
+            const severityVal = document.getElementById('filter-severity').value.toLowerCase();
+            const textVal = document.getElementById('filter-text').value.toLowerCase();
+
+            const rows = document.querySelectorAll('#issues table tbody tr');
+            rows.forEach(row => {
+                const iflow = row.children[0].innerText.toLowerCase();
+                const severity = row.children[1].innerText.toLowerCase();
+                const message = row.children[2].innerText.toLowerCase();
+                const recommendation = row.children[3].innerText.toLowerCase();
+                const rule = row.children[4].innerText.toLowerCase();
+
+                const matches =
+                    (!iflowVal || iflow.includes(iflowVal)) &&
+                    (!severityVal || severity.includes(severityVal)) &&
+                    (!textVal || message.includes(textVal) || rule.includes(textVal) || recommendation.includes(textVal));
+
+                row.style.display = matches ? '' : 'none';
+            });
+        }
+        function resetFilters() {
+            document.getElementById('filter-iflow').value = '';
+            document.getElementById('filter-severity').value = '';
+            document.getElementById('filter-text').value = '';
+            filterTable();
+        }
+        function toggleDetails(el) {
+            var box = el.nextElementSibling;
+            if (box.style.display === "block") {
+                box.style.display = "none";
+                el.innerText = "Show Recommendation";
+            } else {
+                box.style.display = "block";
+                el.innerText = "Hide Recommendation";
+            }
+        }
+        function toggleRuleField(el) {
+            const content = el.nextElementSibling;
+            const isVisible = content.style.display === "block";
+            content.style.display = isVisible ? "none" : "block";
+            el.innerText = isVisible ? "Show" : "Hide";
+        }
+        document.querySelectorAll('th').forEach(header => {
+            header.addEventListener('click', () => {
+                const table = header.closest('table');
+                const rows = Array.from(table.querySelectorAll('tbody > tr'));
+                const index = Array.from(header.parentElement.children).indexOf(header);
+                const sortedRows = rows.sort((a, b) => {
+                    const cellA = a.children[index].textContent.trim().toLowerCase();
+                    const cellB = b.children[index].textContent.trim().toLowerCase();
+                    return cellA.localeCompare(cellB);
+                });
+                table.querySelector('tbody').append(...sortedRows);
+            });
+        });
     </script>
 </body>
 </html>

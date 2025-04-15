@@ -29,6 +29,7 @@
 	<property name="templates.dir" value="${resources.dir}/templates"/>
 	<property name="docker.release.dir" value="docker-release"/>
 	<property name="rulesets.dir" value="rulesets"/>
+	<property name="archive.dir" value="archive"/>
 	<property name="report-template" value="${templates.dir}/cpilint-report-template.gsp"/>
 
 	<path id="classpath.build">
@@ -68,10 +69,8 @@
 		</jar>
 	</target>
 
-   	<target name="release" depends="jar" description="Generates a release archive for distribution">
-		<!-- Create temporary directory. -->
+    <target name="release" depends="jar" description="Generates a release archive for distribution">
 		<mkdir dir="${temp.dir}"/>
-		<!-- Create an archive containing the source. -->
 		<zip destfile="${temp.dir}/${source.archive}">
 			<fileset dir="." includes="${3rd.party.licenses.dir}/*"/>
 			<fileset dir="." includes="${dist.files.dir}/*"/>
@@ -86,7 +85,6 @@
 			<fileset dir="." includes="build.xml"/>
 			<fileset dir="." includes="ivy.xml"/>
 		</zip>
-		<!-- Create a release archive. -->
 		<zip destfile="${release.dir}/${release.archive}">
 			<zipfileset dir="${build.lib}" includes="${jar}" prefix="${release.root}/lib"/>
 			<zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="${release.root}/lib"/>
@@ -99,21 +97,28 @@
 			<zipfileset dir="${dist.files.dir}" includes="README.txt" prefix="${release.root}/"/>
 			<zipfileset dir="${samples.dir}" prefix="${release.root}/samples"/>
 		</zip>
-		<!-- Clean up. -->
 		<delete dir="${temp.dir}"/>
 	</target>
 
-<target name="docker-release" depends="jar" description="Creates a Docker release archive with runtime artifacts">
-    <mkdir dir="${docker.release.dir}"/>
-    <zip destfile="${docker.release.dir}/${app.name.versioned}.zip">
-        <zipfileset dir="${build.lib}" includes="${jar}" prefix="lib"/>
-        <zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="lib"/>
-        <zipfileset dir="${xerces.dir}" includes="*.jar" prefix="lib"/> 
-        <zipfileset dir="${scripts.dir}" prefix="bin"/>
-        <zipfileset dir="${logback.dir}" prefix="logback"/>
-        <zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
-		<zipfileset dir="${templates.dir}" prefix="templates" />
-    </zip>
-</target>
+	<target name="docker-release" depends="jar" description="Creates a Docker release archive with runtime artifacts">
+		<mkdir dir="${docker.release.dir}"/>
+		<zip destfile="${docker.release.dir}/${app.name.versioned}.zip">
+			<zipfileset dir="${build.lib}" includes="${jar}" prefix="lib"/>
+			<zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="lib"/>
+			<zipfileset dir="${xerces.dir}" includes="*.jar" prefix="lib"/>
+			<zipfileset dir="${scripts.dir}" prefix="bin"/>
+			<zipfileset dir="${logback.dir}" prefix="logback"/>
+			<zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
+			<zipfileset dir="${templates.dir}" prefix="templates"/>
+		</zip>
+	</target>
+
+	<target name="bundle-supplemental" depends="jar" description="Creates an archive with rulesets and templates for external pipeline use">
+		<mkdir dir="${archive.dir}"/>
+		<zip destfile="${archive.dir}/${app.name}-bundle.zip">
+			<zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
+			<zipfileset dir="${templates.dir}" prefix="templates"/>
+		</zip>
+	</target>
 
 </project>

@@ -1,47 +1,185 @@
-17:55:28.469 INFO  org.cpilint.CliClient - CPILint version 1.0.5
-17:55:28.487 DEBUG org.cpilint.CliClient - java.version = 17.0.14
-17:55:28.488 DEBUG org.cpilint.CliClient - java.vendor = OpenLogic
-17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.version = 17.0.14+7-adhoc..jdk17u
-17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.vendor = OpenLogic
-17:55:28.488 DEBUG org.cpilint.CliClient - java.vm.name = OpenJDK 64-Bit Server VM
-17:55:28.488 DEBUG org.cpilint.CliClient - os.name = Windows 10
-17:55:28.488 DEBUG org.cpilint.CliClient - os.arch = amd64
-17:55:28.488 DEBUG org.cpilint.CliClient - os.version = 10.0
-17:55:28.488 INFO  org.cpilint.CliClient - Launching CliClient
-17:55:28.488 DEBUG org.cpilint.CliClient - Command line arguments provided: '-debug' '-skipvercheck' '-output' 'json' '-rules' 'rulesets\jnj-base.xml' '-unpacked-files' '.\resources\IF_LINT_NAMES'
-17:55:28.492 INFO  org.cpilint.CliClient - Command line arguments parsed successfully
-17:55:28.494 INFO  org.cpilint.CliClient - Run mode detected: UNPACKED_FILE_SUPPLIER_MODE
-17:55:28.502 DEBUG org.cpilint.RulesFile - Checking for extensions...
-17:55:28.502 INFO  org.cpilint.RulesFile - Processing rules file 'rulesets\jnj-base.xml'
-17:55:28.503 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-base.xml
-17:55:28.683 INFO  org.cpilint.RulesFile - Rules file XML is valid
-17:55:28.683 DEBUG org.cpilint.RulesFile - Rules file contains 2 import(s)
-17:55:28.683 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-naming.xml
-17:55:28.684 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml
-17:55:28.684 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml'
-17:55:28.684 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml'
-17:55:28.684 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-naming.xml
-17:55:28.742 INFO  org.cpilint.RulesFile - Rules file XML is valid
-17:55:28.932 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-rules.xml
-17:55:28.932 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml
-17:55:28.932 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml'
-17:55:28.932 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml'
-17:55:28.933 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\bundle_jpm_cpilint\cpilint\rulesets\jnj-rules.xml
-17:55:28.961 INFO  org.cpilint.RulesFile - Rules file XML is valid
-17:55:28.977 DEBUG o.c.rules.JavaArchivesRuleFactory - Generated pattern '\Q.\E.*' for glob '.*'
-17:55:28.984 DEBUG org.cpilint.RulesFile - RulesFile created with 70 rule(s) and 0 exemption(s)
-17:55:28.991 INFO  org.cpilint.CliClient - Output filename: cpilint-results.json
-17:55:28.993 INFO  org.cpilint.CliClient - Skipping version check
-17:55:28.994 INFO  org.cpilint.CpiLint - Starting inspection of iflow artifacts
-17:55:29.582 DEBUG org.cpilint.CpiLint - Iflow artifact supplied: IflowArtifactTag[id=IF_LINT_NAMES,name=IF_LINT_NAMES,packageinfo=Optional.empty]
-17:55:29.790 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
-17:55:29.793 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
-17:55:29.796 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
-17:55:29.859 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
-17:55:29.861 INFO  org.cpilint.model.DefaultXmlModel - MappingType:OPERATION_MAPPINGPropertyKey: mappingType, PropertyValue: OperationMapping
-17:55:29.863 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
-17:55:30.075 INFO  org.cpilint.model.DefaultXmlModel - MappingType:ID_MAPPINGPropertyKey: null, PropertyValue: null
-17:55:30.132 INFO  org.cpilint.CpiLint - Inspection completed
-17:55:30.143 INFO  org.cpilint.CliClient - Iflow artifacts supplied: 1
-17:55:30.143 INFO  org.cpilint.CliClient - Issues found: 56
-17:55:30.144 INFO  org.cpilint.CliClient - Exiting CliClient with status 1
+12:57:53.858 INFO  org.cpilint.CliClient - CPILint version 1.0.5
+12:57:53.877 DEBUG org.cpilint.CliClient - java.version = 17.0.14
+12:57:53.877 DEBUG org.cpilint.CliClient - java.vendor = OpenLogic
+12:57:53.877 DEBUG org.cpilint.CliClient - java.vm.version = 17.0.14+7-adhoc..jdk17u
+12:57:53.877 DEBUG org.cpilint.CliClient - java.vm.vendor = OpenLogic
+12:57:53.877 DEBUG org.cpilint.CliClient - java.vm.name = OpenJDK 64-Bit Server VM
+12:57:53.877 DEBUG org.cpilint.CliClient - os.name = Windows 10
+12:57:53.877 DEBUG org.cpilint.CliClient - os.arch = amd64
+12:57:53.877 DEBUG org.cpilint.CliClient - os.version = 10.0
+12:57:53.877 INFO  org.cpilint.CliClient - Launching CliClient
+12:57:53.877 DEBUG org.cpilint.CliClient - Command line arguments provided: '-debug' '-skipvercheck' '-output' 'json' '-rules' 'rulesets\jnj-base.xml' '-unpacked-files' '.\resources\IF_LINT_NAMES\'
+12:57:53.882 INFO  org.cpilint.CliClient - Command line arguments parsed successfully
+12:57:53.884 INFO  org.cpilint.CliClient - Run mode detected: UNPACKED_FILE_SUPPLIER_MODE
+12:57:53.893 DEBUG org.cpilint.RulesFile - Checking for extensions...
+12:57:53.893 INFO  org.cpilint.RulesFile - Processing rules file 'rulesets\jnj-base.xml'
+12:57:53.894 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-base.xml
+12:57:54.074 INFO  org.cpilint.RulesFile - Rules file XML is valid
+12:57:54.074 DEBUG org.cpilint.RulesFile - Rules file contains 2 import(s)
+12:57:54.075 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-naming.xml
+12:57:54.075 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-naming.xml
+12:57:54.075 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-naming.xml'
+12:57:54.075 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-naming.xml'
+12:57:54.076 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-naming.xml
+12:57:54.136 INFO  org.cpilint.RulesFile - Rules file XML is valid
+12:57:54.331 DEBUG org.cpilint.RulesFile - Value of src attribute: jnj-rules.xml
+12:57:54.332 DEBUG org.cpilint.RulesFile - Canonical import path: D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-rules.xml
+12:57:54.332 INFO  org.cpilint.RulesFile - Recursively processing import 'D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-rules.xml'
+12:57:54.332 INFO  org.cpilint.RulesFile - Processing rules file 'D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-rules.xml'
+12:57:54.332 DEBUG org.cpilint.RulesFile - Canonical rules file path: D:\workspace\cpilint_project\CPILint_With_JPM\cpilint\rulesets\jnj-rules.xml
+12:57:54.361 INFO  org.cpilint.RulesFile - Rules file XML is valid
+12:57:54.377 DEBUG o.c.rules.JavaArchivesRuleFactory - Generated pattern '\Q.\E.*' for glob '.*'
+12:57:54.382 DEBUG org.cpilint.RulesFile - RulesFile created with 70 rule(s) and 0 exemption(s)
+12:57:54.388 INFO  org.cpilint.CliClient - Output filename: cpilint-results.json
+12:57:54.391 INFO  org.cpilint.CliClient - Skipping version check
+12:57:54.391 INFO  org.cpilint.CpiLint - Starting inspection of iflow artifacts
+12:57:54.992 DEBUG org.cpilint.CpiLint - Iflow artifact supplied: IflowArtifactTag[id=IF_LINT_NAMES,name=IF_LINT_NAMES,packageinfo=Optional.empty]
+12:57:55.214 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Enricher']]]
+12:57:55.216 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.217 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Enricher']]
+12:57:55.222 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Enricher']]
+12:57:55.223 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Enricher']]
+12:57:55.224 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Enricher']]
+12:57:55.226 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
+12:57:55.226 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Mapping']] and [bpmn2:extensionElements/ifl:property[key = 'subActivityType'][value = 'XSLTMapping']]]
+12:57:55.227 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.227 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'XSLTMapping']]]
+12:57:55.229 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'XSLTMapping']]]
+12:57:55.230 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+12:57:55.230 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Mapping']] and [bpmn2:extensionElements/ifl:property[key = 'mappingType'][value = 'MessageMapping']]]
+12:57:55.230 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.230 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.232 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.232 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+12:57:55.232 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.234 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.234 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Script']] and [bpmn2:extensionElements/ifl:property[key = 'subActivityType'][value = 'JavaScript']]]
+12:57:55.234 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.234 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.235 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.236 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Script']] and [bpmn2:extensionElements/ifl:property[key = 'subActivityType'][value = 'GroovyScript']]]
+12:57:55.236 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.236 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'GroovyScript']]]
+12:57:55.237 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'GroovyScript']]]
+12:57:55.237 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.239 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.239 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'GroovyScript']]]
+12:57:55.240 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'GroovyScript']]]
+12:57:55.240 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Filter']]]
+12:57:55.240 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.241 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Filter']]
+12:57:55.241 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Filter']]
+12:57:55.242 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XmlValidator']]]
+12:57:55.242 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.242 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'XmlValidator']]
+12:57:55.243 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'XmlValidator']]
+12:57:55.244 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']]]
+12:57:55.244 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.245 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage']]
+12:57:55.245 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage']]
+12:57:55.246 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']] and [bpmn2:extensionElements/ifl:property[key = 'operation'][value = 'get']]]
+12:57:55.246 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.246 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'get']]]
+12:57:55.248 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'get']]]
+12:57:55.248 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']] and [bpmn2:extensionElements/ifl:property[key = 'operation'][value = 'select']]]
+12:57:55.248 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.248 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'select']]]
+12:57:55.249 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'select']]]
+12:57:55.249 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']] and [bpmn2:extensionElements/ifl:property[key = 'operation'][value = 'delete']]]
+12:57:55.250 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.250 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'delete']]]
+12:57:55.251 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'delete']]]
+12:57:55.251 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']] and [bpmn2:extensionElements/ifl:property[key = 'operation'][value = 'put']]]
+12:57:55.251 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.251 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'put']]]
+12:57:55.253 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'put']]]
+12:57:55.267 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'LocalIntegrationProcess']]]
+12:57:55.267 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.267 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'LocalIntegrationProcess']]
+12:57:55.268 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'LocalIntegrationProcess']]
+12:57:55.268 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'ErrorEventSubProcessTemplate']]]
+12:57:55.268 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.268 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ErrorEventSubProcessTemplate']]
+12:57:55.269 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ErrorEventSubProcessTemplate']]
+12:57:55.270 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Router']]]
+12:57:55.270 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.270 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Router']]
+12:57:55.271 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Router']]
+12:57:55.284 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Splitter']]]
+12:57:55.284 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.285 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Splitter']]
+12:57:55.286 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Splitter']]
+12:57:55.291 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Multicast']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'SequentialMulticast']])]
+12:57:55.296 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Multicast']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'SequentialMulticast']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.297 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Join']]]
+12:57:55.297 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.297 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Join']]
+12:57:55.298 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Join']]
+12:57:55.298 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Gather']]]
+12:57:55.298 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.298 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Gather']]
+12:57:55.299 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Gather']]
+12:57:55.299 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Aggregator']]]
+12:57:55.300 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.300 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Aggregator']]
+12:57:55.301 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Aggregator']]
+12:57:55.301 INFO  org.cpilint.model.DefaultXmlModel - MappingType:MESSAGE_MAPPINGPropertyKey: mappingType, PropertyValue: MessageMapping
+12:57:55.301 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.302 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'MessageMapping']]]
+12:57:55.303 INFO  org.cpilint.model.DefaultXmlModel - MappingType:OPERATION_MAPPINGPropertyKey: mappingType, PropertyValue: OperationMapping
+12:57:55.303 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Mapping']] and [bpmn2:extensionElements/ifl:property[key = 'mappingType'][value = 'OperationMapping']]]
+12:57:55.303 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.303 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'OperationMapping']]]
+12:57:55.304 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'mappingType' and value = 'OperationMapping']]]
+12:57:55.304 INFO  org.cpilint.model.DefaultXmlModel - MappingType:XSLT_MAPPINGPropertyKey: subActivityType, PropertyValue: XSLTMapping
+12:57:55.304 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'XSLTMapping']]]
+12:57:55.305 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'XSLTMapping']]]
+12:57:55.305 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'ValueMapping']]]
+12:57:55.306 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.306 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ValueMapping']]
+12:57:55.306 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ValueMapping']]
+12:57:55.307 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XmlToJsonConverter']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XmlToCsvConverter']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Converter']])]
+12:57:55.308 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XmlToJsonConverter']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XmlToCsvConverter']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Converter']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.308 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'Base64 Encode']]) or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'ZIP Compress']]))]
+12:57:55.309 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'Base64 Encode']]) or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'ZIP Compress']]))], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.310 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'Base64 Decode']]) or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'ZIP Decompress']]))]
+12:57:55.311 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'Base64 Decode']]) or ([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decoder']] and [bpmn2:extensionElements/ifl:property[key = 'encoderType'][value = 'ZIP Decompress']]))], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.311 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'RequestReply']]]
+12:57:55.311 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.311 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'RequestReply']]
+12:57:55.312 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'RequestReply']]
+12:57:55.312 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Send']]]
+12:57:55.312 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.312 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Send']]
+12:57:55.313 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Send']]
+12:57:55.313 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encrypt']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'PgpEncrypt']])]
+12:57:55.314 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Encrypt']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'PgpEncrypt']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.314 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decrypt']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'PgpDecrypt']])]
+12:57:55.315 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Decrypt']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'PgpDecrypt']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.315 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Signer']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'SimpleSignMessage']])]
+12:57:55.315 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Signer']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'SimpleSignMessage']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.316 WARN  org.cpilint.IflowXml - XPath returned an array instead of boolean: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Verifier']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XMLDigitalVerifySign']])]
+12:57:55.316 WARN  org.cpilint.IflowXml - count() workaround also failed for XPath: //bpmn2:callActivity[([bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Verifier']] or [bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'XMLDigitalVerifySign']])], error: Effective boolean value is defined only for sequences containing booleans, strings, numbers, URIs, or nodes
+12:57:55.330 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'MessageQueue']]]
+12:57:55.330 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.330 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'MessageQueue']]
+12:57:55.333 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'MessageQueue']]
+12:57:55.334 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'ContentModifier']]]
+12:57:55.335 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.335 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ContentModifier']]
+12:57:55.335 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'ContentModifier']]
+12:57:55.473 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'DBstorage']] and [bpmn2:extensionElements/ifl:property[key = 'operation'][value = 'put']] and [bpmn2:extensionElements/ifl:property[key = 'encrypt'][value = 'false']]]
+12:57:55.473 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.473 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'put' and bpmn2:extensionElements/ifl:property[key = 'encrypt' and value = 'false']]]]
+12:57:55.474 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'DBstorage' and bpmn2:extensionElements/ifl:property[key = 'operation' and value = 'put' and bpmn2:extensionElements/ifl:property[key = 'encrypt' and value = 'false']]]]
+12:57:55.505 INFO  org.cpilint.model.DefaultXmlModel - MappingType:ID_MAPPINGPropertyKey: null, PropertyValue: null
+12:57:55.507 WARN  org.cpilint.IflowXml - Fixing malformed XPath: //bpmn2:callActivity[[bpmn2:extensionElements/ifl:property[key = 'activityType'][value = 'Mapping']] and [bpmn2:extensionElements/ifl:property[key = 'null'][value = 'null']]]
+12:57:55.507 WARN  org.cpilint.IflowXml - Detected unbalanced brackets after fix, trying to auto-close
+12:57:55.507 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'null' and value = 'null']]]
+12:57:55.508 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Mapping' and bpmn2:extensionElements/ifl:property[key = 'null' and value = 'null']]]
+12:57:55.552 DEBUG org.cpilint.IflowXml - DEBUG: Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.554 DEBUG org.cpilint.IflowXml - Final sanitized XPath: //bpmn2:callActivity[bpmn2:extensionElements/ifl:property[key = 'activityType' and value = 'Script' and bpmn2:extensionElements/ifl:property[key = 'subActivityType' and value = 'JavaScript']]]
+12:57:55.565 INFO  org.cpilint.CpiLint - Inspection completed
+12:57:55.609 INFO  org.cpilint.CliClient - Iflow artifacts supplied: 1
+12:57:55.610 INFO  org.cpilint.CliClient - Issues found: 56
+12:57:55.610 INFO  org.cpilint.CliClient - Exiting CliClient with status 1

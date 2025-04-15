@@ -1,9 +1,12 @@
 package org.cpilint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,8 @@ public final class IflowXml {
 	private XPathCompiler xpathCompiler;
 	private XQueryCompiler xqueryCompiler;
 	private static final Set<String> alreadyWarnedXpaths = new HashSet<>();
+	private static final Map<String, Integer> bracketFixWarningCounts = new HashMap<>();
+	private static final Logger logger = LoggerFactory.getLogger(IflowXml.class);
 
 	private IflowXml(byte[] rawDocument, XdmNode docRoot, XPathCompiler xpathCompiler, XQueryCompiler xqueryCompiler) {
 		this.rawDocument = rawDocument;
@@ -45,62 +50,76 @@ public final class IflowXml {
 		return new ByteArrayInputStream(rawDocument);
 	}
 
-	public XdmValue evaluateXpath(String xpath) {
-		XdmValue value;
-		try {
-			value = xpathCompiler.evaluate(sanitizeMalformedXpath(xpath), docRoot);
-		} catch (SaxonApiException e) {
-			if (e.getMessage().contains("Effective boolean value is defined only for sequences")) {
-				System.out.println("WARNING: XPath returned an array instead of boolean: " + xpath);
-				// Retry with exists() wrapped around it
-				String existsXpath = String.format("exists(%s)", xpath);
-				try {
-					value = xpathCompiler.evaluate(existsXpath, docRoot);
-				} catch (SaxonApiException ex) {
-					System.out.println("WARNING: exists() workaround failed for XPath: " + xpath + ", error: " + ex.getMessage());
-					return XdmValue.makeSequence(new ArrayList<XdmItem>());
-				}
-			} else {
-				throw new IflowXmlError("Error while processing iflow XML: " + e.getMessage(), e);
-			}
+	private static void debugLog(String message, Object... args) {
+		if (logger.isDebugEnabled()) {
+			logger.debug(message, args);
 		}
-		return value;
 	}
-	
-	public static String sanitizeMalformedXpath(String originalXpath) {
-		String xpath = originalXpath;
-		if (xpath.contains("[[")) {
+
+    public XdmValue evaluateXpath(String xpath) {
+        XdmValue value;
+        try {
+            if (!xpath.contains("[[")) {
+                return xpathCompiler.evaluate(xpath, docRoot);
+            }
+            String sanitized = sanitizeMalformedXpath(xpath);
+            value = xpathCompiler.evaluate(sanitized, docRoot);
+            debugLog("Final sanitized XPath: {}", sanitized);
+        } catch (SaxonApiException e) {
+            if (e.getMessage().contains("Effective boolean value is defined only for sequences")) {
+                logger.warn("XPath returned an array instead of boolean: {}", xpath);
+                String countWrapped = "count(" + xpath + ") > 0";
+                try {
+                    value = xpathCompiler.evaluate(countWrapped, docRoot);
+                } catch (SaxonApiException ex) {
+                    logger.warn("count() workaround also failed for XPath: {}, error: {}", xpath, ex.getMessage());
+                    return XdmValue.makeSequence(new ArrayList<XdmItem>());
+                }
+            } else {
+                throw new IflowXmlError("Error while processing iflow XML: " + e.getMessage(), e);
+            }
+        }
+        return value;
+    }
+
+    public static String sanitizeMalformedXpath(String originalXpath) {
+        String xpath = originalXpath;
+        if (xpath.contains("[[")) {
             if (!alreadyWarnedXpaths.contains(xpath)) {
-                System.out.println("WARNING: Fixing malformed XPath: " + xpath);
+                logger.warn("Fixing malformed XPath: {}", xpath);
                 alreadyWarnedXpaths.add(xpath);
             }
 
             xpath = xpath.replaceAll("\\[\\[", "[");
             xpath = xpath.replaceAll("]]", "]");
 
-            // REPEAT flattening until stable
             while (xpath.contains("][") || xpath.matches(".*\\][\\s\\r\\n]*\\[.*")) {
                 xpath = xpath.replaceAll("\\]\\s*\\[", " and ");
                 xpath = xpath.replaceAll("\\] and \\[", " and ");
             }
 
-            // Extra cleaning, just in case
             xpath = xpath.replaceAll("\\[\\[", "[");
             xpath = xpath.replaceAll("]]", "]");
 
-            // Count open and close brackets
             long openBrackets = xpath.chars().filter(ch -> ch == '[').count();
             long closeBrackets = xpath.chars().filter(ch -> ch == ']').count();
 
             if (openBrackets > closeBrackets) {
-                System.out.println("WARNING: Detected unbalanced brackets after fix, trying to auto-close");
-
+                int count = bracketFixWarningCounts.getOrDefault(xpath, 0);
+                if (count < 1) {
+                    logger.warn("Detected unbalanced brackets after fix, trying to auto-close");
+                    bracketFixWarningCounts.put(xpath, count + 1);
+                }
                 long bracketsToAdd = openBrackets - closeBrackets;
                 for (long i = 0; i < bracketsToAdd; i++) {
                     xpath += "]";
                 }
             } else if (closeBrackets > openBrackets) {
-                System.out.println("WARNING: More closing than opening brackets, trimming extras");
+                int count = bracketFixWarningCounts.getOrDefault(xpath, 0);
+                if (count < 1) {
+                    logger.warn("More closing than opening brackets, trimming extras");
+                    bracketFixWarningCounts.put(xpath, count + 1);
+                }
                 for (long i = 0; i < (closeBrackets - openBrackets); i++) {
                     int lastCloseIndex = xpath.lastIndexOf(']');
                     if (lastCloseIndex != -1) {
@@ -108,51 +127,43 @@ public final class IflowXml {
                     }
                 }
             }
-		}
+        }
+        xpath = xpath.trim();
+        debugLog("DEBUG: Final sanitized XPath: {}", xpath);
+        return xpath;
+    }
 
-		return xpath;
-	}
+    public XdmValue executeXquery(String query) {
+        XdmValue result;
+        try {
+            XQueryExecutable exe = xqueryCompiler.compile(query);
+            XQueryEvaluator eval = exe.load();
+            eval.setSource(docRoot.asSource());
+            result = eval.evaluate();
+        } catch (SaxonApiException e) {
+            throw new IflowXmlError("Error executing XQuery query", e);
+        }
+        return result;
+    }
 
-	
-	public XdmValue executeXquery(String query) {
-		XdmValue result;
-		try {
-			XQueryExecutable exe = xqueryCompiler.compile(query);
-			XQueryEvaluator eval = exe.load();
-			eval.setSource(docRoot.asSource());
-			result = eval.evaluate();
-		} catch (SaxonApiException e) {
-			throw new IflowXmlError("Error executing XQuery query", e);
-		}
-		return result;
-	}
-	
-	public static IflowXml fromInputStream(InputStream is) {
-		// Read the document into a byte array.
-		byte[] rawDocument;
-		try {
-			rawDocument = is.readAllBytes();
-		} catch (IOException e) {
-			throw new IflowXmlError("I/O error when reading iflow XML document", e);
-		}
-		// Parse the document.
-		Processor p = new Processor(false);
-		XdmNode docRoot;
-		try {
-			docRoot = p.newDocumentBuilder().build(new StreamSource(new ByteArrayInputStream(rawDocument)));
-		} catch (SaxonApiException e) {
-			throw new IflowXmlError("Error while processing iflow XML", e);
-		}
-		XPathCompiler xpathCompiler = p.newXPathCompiler();
-		namespacePrefixes.forEach((prefix, ns) -> xpathCompiler.declareNamespace(prefix, ns));
-		/*
-		 *  To use an XdmNode (the document node, specifically) as a source in
-		 *  XQuery evaluation, the node and the XQueryCompiler must originate
-		 *  from the same Processor object. Otherwise the evaluation will fail
-		 *  at runtime. 
-		 */
-		return new IflowXml(rawDocument, docRoot, xpathCompiler, p.newXQueryCompiler());
-	}
+    public static IflowXml fromInputStream(InputStream is) {
+        byte[] rawDocument;
+        try {
+            rawDocument = is.readAllBytes();
+        } catch (IOException e) {
+            throw new IflowXmlError("I/O error when reading iflow XML document", e);
+        }
+        Processor p = new Processor(false);
+        XdmNode docRoot;
+        try {
+            docRoot = p.newDocumentBuilder().build(new StreamSource(new ByteArrayInputStream(rawDocument)));
+        } catch (SaxonApiException e) {
+            throw new IflowXmlError("Error while processing iflow XML", e);
+        }
+        XPathCompiler xpathCompiler = p.newXPathCompiler();
+        namespacePrefixes.forEach((prefix, ns) -> xpathCompiler.declareNamespace(prefix, ns));
+        return new IflowXml(rawDocument, docRoot, xpathCompiler, p.newXQueryCompiler());
+    }
 	
 
 	// public XdmValue evaluateXpath(String xpath) {
