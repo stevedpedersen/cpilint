@@ -37,7 +37,7 @@ abstract class IteratorIflowArtifactSupplierBase implements IflowArtifactSupplie
 				throw new AssertionError("Current Path is neither a file nor a directory: " + p.toString());
 			}
 		} catch (IOException | SaxonApiException e) {
-			throw new IflowArtifactSupplierError("Error while processing iflow artifact", e);
+			throw new IflowArtifactSupplierError("Error while processing iflow artifactn"+e.getMessage(), e);
 		}
 		artifactsSupplied++;
 		return iflow;

@@ -110,6 +110,61 @@ public interface XmlModel {
 	
 	public String xqueryForMultiConditionTypeRouters();
 	
+	/**
+	 * Gets XPath expression to return all steps in process order.
+	 * @return XPath expression string
+	 */
+	public String xpathForAllStepsInProcessOrder();
+	
+	/**
+	 * Gets XPath expression to return all steps regardless of order.
+	 * @return XPath expression string
+	 */
+	public String xpathForAllSteps();
+	
+	/**
+	 * Gets XPath expression to find steps of a specific type.
+	 * @param stepType The type of the step to find
+	 * @return XPath expression string
+	 */
+	public String xpathForStepsByType(String stepType);
+	
+	/**
+	 * Gets XPath expression to find properties in a specific step.
+	 * @param stepId The ID of the step to search properties in
+	 * @return XPath expression string
+	 */
+	public String xpathForPropertiesInStep(String stepId);
+	
+	/**
+	 * Gets the property name from a property element node.
+	 * @param propertyNode The property node
+	 * @return The property name
+	 */
+	public String getPropertyNameFromElement(XdmNode propertyNode);
+	
+	/**
+	 * Gets the property value from a property element node.
+	 * @param propertyNode The property node
+	 * @return The property value
+	 */
+	public String getPropertyValueFromElement(XdmNode propertyNode);
+	
+	// ContentModifierPositionRule related methods
+	
+	/**
+	 * Gets XPath expression to find Content Modifier steps with position.
+	 * @return XPath expression string
+	 */
+	public String xpathForContentModifierStepsWithPositionPredicate();
+	
+	/**
+	 * Gets XPath expression to find Content Modifier steps in a specific position.
+	 * @param position The position of the Content Modifier step
+	 * @return XPath expression string
+	 */
+	public String xpathForContentModifierStepsWithPositionPredicate(String position);
+	
 	// Participant related.
 
 	public String xpathForSenderParticipants();
@@ -123,5 +178,63 @@ public interface XmlModel {
 	// Other iflow content.
 	
 	public String xpathForIflowDescription();
+
+	public String xpathForProcesses();
+
+	public String xpathForLocalProcesses();
+
+	public String xpathForExceptionSubprocesses();
+	
+	public String xpathForRouters();
+	
+	public String xpathForRouterRoutes();
+	
+	public String xpathForSplitters();
+	
+	public String xpathForMulticasts();
+	
+	public String xpathForJoins();
+	
+	public String xpathForGathers();
+	
+	public String xpathForAggregators();
+	
+	public String xpathForIdMappings();
+	
+	/* Placeholder for when adding VMs */
+	public String xpathForValueMappings();
+	
+	public String xpathForConverters();
+	
+	public String xpathForEncoders();
+	
+	public String xpathForDecoders();
+	
+	public String xpathForRequestReplies();
+	
+	public String xpathForSends();
+	
+	public String xpathForEncryptors();
+	
+	public String xpathForDecryptors();
+	
+	public String xpathForSigners();
+
+	public String xpathForVerifiers();
+
+	public String xpathForValidators();
+
+	/* Probably redundant */
+	public String xpathForCommunicationChannels();
+
+	/* Placeholder to check for references to queues */
+	public String xpathForMessageQueues();
+	
+	/**
+	 * Gets XPath expression to find Data Store Operations elements by operation type.
+	 * @param operation The type of data store operation (GET, SELECT, DELETE, WRITE)
+	 * @return XPath expression string
+	 */
+	public String xpathForDataStoreOperationsSteps(DataStoreOperation operation);
 
 }

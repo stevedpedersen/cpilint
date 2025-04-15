@@ -13,6 +13,7 @@ import org.cpilint.artifacts.ArtifactResource;
 import org.cpilint.artifacts.ArtifactResourceType;
 import org.cpilint.artifacts.IflowArtifact;
 import org.cpilint.issues.DuplicateResourcesNotAllowedIssue;
+import org.cpilint.issues.Severity;
 
 final class DuplicateResourcesNotAllowedRule extends RuleBase {
 	
@@ -70,13 +71,14 @@ final class DuplicateResourcesNotAllowedRule extends RuleBase {
 			// No iflows were inspected.
 			return;
 		}
+		Severity severity = getSeverity() != null ? getSeverity() : Severity.ERROR;
 		for (ArtifactResourceType type : typesToInspect) {
 			assert resources.containsKey(type);
 			Map<BigInteger, Set<ArtifactResource>> digests = resources.get(type);
 			digests.values()
 				.stream()
 				.filter(s -> s.size() > 1)
-				.map(s -> new DuplicateResourcesNotAllowedIssue(ruleId, type, s))
+				.map(s -> new DuplicateResourcesNotAllowedIssue(ruleId, type, s, severity))
 				.forEach(consumer::consume);
 		}
 	}

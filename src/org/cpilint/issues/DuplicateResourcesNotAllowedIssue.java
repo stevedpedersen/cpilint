@@ -10,13 +10,18 @@ import org.cpilint.artifacts.ArtifactResourceType;
 
 public final class DuplicateResourcesNotAllowedIssue extends IssueBase {
 	
+	public static final String RULE_ID = "duplicate-resources-not-allowed";
 	private final ArtifactResourceType type;
 	private final Set<ArtifactResource> duplicateResources;
 	
-	public DuplicateResourcesNotAllowedIssue(Optional<String> ruleId, ArtifactResourceType type, Set<ArtifactResource> duplicateResources) {
-		super(ruleId,
+	public DuplicateResourcesNotAllowedIssue(Optional<String> ruleId, ArtifactResourceType type, Set<ArtifactResource> duplicateResources, Severity severity) {
+		super(Optional.ofNullable(ruleId.isPresent() ? ruleId.get() : RULE_ID),
 			duplicateResources.stream().map(r -> r.getTag()).collect(Collectors.toSet()),
-			buildMessage(type, duplicateResources));
+			buildMessage(type, duplicateResources), severity);
+
+		if (ruleId.isPresent() && !ruleId.get().equals(RULE_ID)) {
+			System.out.println("Unexpected Rule Identifier being used: " + ruleId.get());
+		} 
 		this.type = type;
 		this.duplicateResources = duplicateResources;
 	}
@@ -42,4 +47,23 @@ public final class DuplicateResourcesNotAllowedIssue extends IssueBase {
 		return sb.toString();
 	}
 	
+	@Override
+	public String getRationale() {
+		return "Duplicate resources create confusion and increase the risk of avoidable errors.";
+	}
+	
+	@Override
+	public String getExample() {
+		return "Reuse a logging script at both the start and end of an iFlow.";
+	}
+	
+	@Override
+	public String getCounterExample() {
+		return "Create separate, identical Groovy scripts for XML namespace removal.";
+	}
+	
+	@Override
+	public String getRecommendation() {
+		return "Reuse existing resources instead of creating new copies.";
+	}
 }

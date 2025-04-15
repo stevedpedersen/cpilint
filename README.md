@@ -41,3 +41,21 @@ ant dependencies: Retrieves dependencies with Ivy
 ant compile: Compiles all source files
 ant jar: Generates a JAR archive containing all classes
 ant release: Generates a release archive for distribution
+```
+
+**Structure needed for gsp template file**
+```
+def reportData = [
+    metadata: [
+        packageId: config.packageId,
+        ruleset: config.ruleset,
+        command: "${baseCmd} -unpacked-files ${iFlows}",
+        timestamp: new Date().format('yyyyMMddHHmmss'),
+        version: "1.0.5",
+        reportHtmlFile: "${result.reportFile.replace('.json', '.html')}",
+        reportJsonFile: result.reportFile
+    ],
+    issues: parsedJsonIssues,
+    consoleLogs: consoleLogContent
+]
+```

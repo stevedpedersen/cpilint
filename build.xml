@@ -26,8 +26,13 @@
 	<property name="dist.files.dir" value="dist-files"/>
 	<property name="xerces.dir" value="${dist.files.dir}/xerces-runtime-jars"/>
 	<property name="samples.dir" value="${dist.files.dir}/samples"/>
+	<property name="templates.dir" value="${resources.dir}/templates"/>
+	<property name="docker.release.dir" value="docker-release"/>
+	<property name="rulesets.dir" value="rulesets"/>
+	<property name="report-template" value="${templates.dir}/cpilint-report-template.gsp"/>
 
 	<path id="classpath.build">
+		<fileset dir="${dependencies.dir}" includes="*.jar"/>
 		<fileset dir="${compile.dependencies.dir}" includes="*.jar"/>
 	</path>
 
@@ -97,5 +102,18 @@
 		<!-- Clean up. -->
 		<delete dir="${temp.dir}"/>
 	</target>
+
+<target name="docker-release" depends="jar" description="Creates a Docker release archive with runtime artifacts">
+    <mkdir dir="${docker.release.dir}"/>
+    <zip destfile="${docker.release.dir}/${app.name.versioned}.zip">
+        <zipfileset dir="${build.lib}" includes="${jar}" prefix="lib"/>
+        <zipfileset dir="${runtime.dependencies.dir}" includes="*.jar" prefix="lib"/>
+        <zipfileset dir="${xerces.dir}" includes="*.jar" prefix="lib"/> 
+        <zipfileset dir="${scripts.dir}" prefix="bin"/>
+        <zipfileset dir="${logback.dir}" prefix="logback"/>
+        <zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
+		<zipfileset dir="${templates.dir}" prefix="templates" />
+    </zip>
+</target>
 
 </project>

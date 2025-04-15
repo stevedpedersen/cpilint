@@ -326,7 +326,7 @@ public final class CloudIntegrationOdataApi implements CloudIntegrationApi {
 		 * OK at this point is an error.
 		 */
 		if (httpStatus != HttpUtil.HTTP_OKAY_STATUS_CODE) {
-			String message = String.format("API responded with unexpected HTTP status code %d", httpStatus);
+			String message = String.format("API responded with unexpected HTTP status code %d at %s", httpStatus, uri);
 			throw new CloudIntegrationApiError(message);
 		}
 		return apiResponse;
