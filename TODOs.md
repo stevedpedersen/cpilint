@@ -1,4 +1,27 @@
 # TODOs for CPILint Enhancements
+## Naming
+https://help.sap.com/docs/cloud-integration/sap-cloud-integration/naming-conventions
+# iFlow Memory
+https://help.sap.com/docs/cloud-integration/sap-cloud-integration/consider-basic-layout-principles
+An integration flow can handle:
+1 Main Integration Process pool
+
+5 Local Integration Process pool
+
+25 flow steps per pool
+
+## JnJ/SAP Avoiding Common Pitfalls:
+If you use * as a value for Allowed Headers, all the HTTP headers from the sender are passed to the receiver. This way you will not have any control over what was sent and sometimes it may even confuse the receiver.
+
+Use of Byte instead of String reduces the memory consumption: mappingByteVSString
+
+Do not access or set a datastore (local variable, global variable or aggregator) from within a parallel multicast. The parallel multicast spawns multiple threads, but a database transaction cannot be shared over multiple threads. Check if a sequential multicast can be used instead.
+
+Global variables make use of headers to perform db persist. Memory to these headers remain allocated even after the flow ends. In case the header is holding a large amount of data, it may fail the integration flow processing. It is important to release the memory allocated to the header (having the same name as the global variable) before the integration flow exits. This however cannot be performed from a content modifier - it will need to be done via a script.
+
+Local variables are alive even after the integration flow execution is over. Even though the local variable is visible only to the integration flow, it is important to note that the memory allocated to the variable is not variable is not released when the integration flow execution is over. It is important to reset the local variable in the beginning of the flow to avoid any values getting used from the previous flow. It is specifically relevant when the previous flow ended abruptly and the variable may be holding invalid data. For better memory management, it also makes sense to reset the local variables before exiting the integration flow.
+
+Never use an Aggregator step in a sub-process. The moment the sub-process exits the handle to the Aggregator is lost but the Aggregator stays allocated. It appears in Message Monitoring. Undeploying the corresponding integration flow does not release the Aggregator. Since Aggregator stores its data in the database, it poses stability and performance threats to the usage of database.
 
 ## Core CPILint Improvements
 
