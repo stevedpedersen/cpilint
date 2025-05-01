@@ -4,35 +4,24 @@
         "version": "3.2.0"
     },
     "report": {
-        "timestamp": "Apr 30, 2025, 6:07:35 PM"
+        "timestamp": "May 1, 2025, 3:47:52 PM"
     },
     "project": {
         "title": "iFlow Governance",
         "sourceDirectories": [
-            "resources\\"
+            "resources\\if-02-example\\src\\main\\"
         ]
     },
     "summary": {
-        "totalFiles": 5,
-        "filesWithViolations": 5,
+        "totalFiles": 3,
+        "filesWithViolations": 3,
         "priority1": 0,
-        "priority2": 15,
-        "priority3": 41
+        "priority2": 5,
+        "priority3": 33
     },
     "packages": [
         {
             "path": "",
-            "totalFiles": 5,
-            "filesWithViolations": 5,
-            "priority1": 0,
-            "priority2": 15,
-            "priority3": 41,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "if-02-example",
             "totalFiles": 3,
             "filesWithViolations": 3,
             "priority1": 0,
@@ -43,7 +32,7 @@
             ]
         },
         {
-            "path": "if-02-example/src",
+            "path": "resources",
             "totalFiles": 3,
             "filesWithViolations": 3,
             "priority1": 0,
@@ -54,29 +43,7 @@
             ]
         },
         {
-            "path": "if-02-example/src/main",
-            "totalFiles": 3,
-            "filesWithViolations": 3,
-            "priority1": 0,
-            "priority2": 5,
-            "priority3": 33,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "if-02-example/src/main/resources",
-            "totalFiles": 3,
-            "filesWithViolations": 3,
-            "priority1": 0,
-            "priority2": 5,
-            "priority3": 33,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "if-02-example/src/main/resources/script",
+            "path": "resources/script",
             "totalFiles": 3,
             "filesWithViolations": 3,
             "priority1": 0,
@@ -361,196 +328,6 @@
                             "lineNumber": 9,
                             "sourceLine": "return message",
                             "message": "The statement on line 9 in class None is at the incorrect indent level: Expected column 5 but was 2"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "path": "IF_LINT_NAMES",
-            "totalFiles": 2,
-            "filesWithViolations": 2,
-            "priority1": 0,
-            "priority2": 10,
-            "priority3": 8,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "IF_LINT_NAMES/src",
-            "totalFiles": 2,
-            "filesWithViolations": 2,
-            "priority1": 0,
-            "priority2": 10,
-            "priority3": 8,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "IF_LINT_NAMES/src/main",
-            "totalFiles": 2,
-            "filesWithViolations": 2,
-            "priority1": 0,
-            "priority2": 10,
-            "priority3": 8,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "IF_LINT_NAMES/src/main/resources",
-            "totalFiles": 2,
-            "filesWithViolations": 2,
-            "priority1": 0,
-            "priority2": 10,
-            "priority3": 8,
-            "files": [
-                
-            ]
-        },
-        {
-            "path": "IF_LINT_NAMES/src/main/resources/script",
-            "totalFiles": 2,
-            "filesWithViolations": 2,
-            "priority1": 0,
-            "priority2": 10,
-            "priority3": 8,
-            "files": [
-                {
-                    "name": "script1.groovy",
-                    "violations": [
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 9,
-                            "sourceLine": "def body = message.getBody();",
-                            "message": "The type is not specified for variable \"body\""
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 13,
-                            "sourceLine": "def headers = message.getHeaders();",
-                            "message": "The type is not specified for variable \"headers\""
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 14,
-                            "sourceLine": "def value = headers.get(\"oldHeader\");",
-                            "message": "The type is not specified for variable \"value\""
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 15,
-                            "sourceLine": "message.setHeader(\"oldHeader\", value + \" modified\");",
-                            "message": "Duplicate String Literal: oldHeader"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 16,
-                            "sourceLine": "message.setHeader(\"newHeader\", \"newHeader\");",
-                            "message": "Duplicate String Literal: newHeader"
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 18,
-                            "sourceLine": "def properties = message.getProperties();",
-                            "message": "The type is not specified for variable \"properties\""
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 20,
-                            "sourceLine": "message.setProperty(\"oldProperty\", value + \" modified\");",
-                            "message": "Duplicate String Literal: oldProperty"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 20,
-                            "sourceLine": "message.setProperty(\"oldProperty\", value + \" modified\");",
-                            "message": "Duplicate String Literal:  modified"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 21,
-                            "sourceLine": "message.setProperty(\"newProperty\", \"newProperty\");",
-                            "message": "Duplicate String Literal: newProperty"
-                        }
-                    ]
-                },
-                {
-                    "name": "script2.groovy",
-                    "violations": [
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 9,
-                            "sourceLine": "def body = message.getBody();",
-                            "message": "The type is not specified for variable \"body\""
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 13,
-                            "sourceLine": "def headers = message.getHeaders();",
-                            "message": "The type is not specified for variable \"headers\""
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 14,
-                            "sourceLine": "def value = headers.get(\"oldHeader\");",
-                            "message": "The type is not specified for variable \"value\""
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 15,
-                            "sourceLine": "message.setHeader(\"oldHeader\", value + \" modified\");",
-                            "message": "Duplicate String Literal: oldHeader"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 16,
-                            "sourceLine": "message.setHeader(\"newHeader\", \"newHeader\");",
-                            "message": "Duplicate String Literal: newHeader"
-                        },
-                        {
-                            "ruleName": "VariableTypeRequired",
-                            "priority": 3,
-                            "lineNumber": 18,
-                            "sourceLine": "def properties = message.getProperties();",
-                            "message": "The type is not specified for variable \"properties\""
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 20,
-                            "sourceLine": "message.setProperty(\"oldProperty\", value + \" modified\");",
-                            "message": "Duplicate String Literal: oldProperty"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 20,
-                            "sourceLine": "message.setProperty(\"oldProperty\", value + \" modified\");",
-                            "message": "Duplicate String Literal:  modified"
-                        },
-                        {
-                            "ruleName": "DuplicateStringLiteral",
-                            "priority": 2,
-                            "lineNumber": 21,
-                            "sourceLine": "message.setProperty(\"newProperty\", \"newProperty\");",
-                            "message": "Duplicate String Literal: newProperty"
                         }
                     ]
                 }
