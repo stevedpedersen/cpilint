@@ -1,3 +1,4 @@
+(: iflow-artifact-ids-from-api-response.xquery :)
 (:
     The external variable $skipDrafts, which is set from Java, determines
     whether draft iflows are skipped. The default behaviour is to not

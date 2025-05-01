@@ -1,3 +1,4 @@
+(: process-direct-sender-channel-addresses.xquery :)
 (:
     This query returns a sequence of strings, containing the addresses of all
     sender ProcessDirect channels.

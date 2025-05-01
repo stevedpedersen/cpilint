@@ -1,3 +1,4 @@
+(: cleartext-basic-auth-not-allowed.xquery :)
 (:
     The query returns the name, id and component type of all receiver channels doing
     basic authentication over unencrypted HTTP (i.e. the username and password

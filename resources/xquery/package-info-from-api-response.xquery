@@ -1,3 +1,4 @@
+(: package-info-from-api-response.xquery :)
 (:
     This query returns the ID and name of all packages in the response
     from the IntegrationPackages OData API. Note that since XQuery

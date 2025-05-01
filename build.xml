@@ -32,6 +32,7 @@
 	<property name="archive.dir" value="archive"/>
 	<property name="report-template" value="${templates.dir}/cpilint-report-template.gsp"/>
 	<property name="report.template.neutral" value="${templates.dir}/cpilint-report-template-neutral.gsp"/>
+	<property name="codenarc.dir" value="${dist.files.dir}/codenarc"/>
 
 	<path id="classpath.build">
 		<fileset dir="${dependencies.dir}" includes="*.jar"/>
@@ -97,6 +98,7 @@
 			<zipfileset dir="${3rd.party.licenses.dir}" prefix="${release.root}/3rd-party-licenses"/>
 			<zipfileset dir="${dist.files.dir}" includes="README.txt" prefix="${release.root}/"/>
 			<zipfileset dir="${samples.dir}" prefix="${release.root}/samples"/>
+			<zipfileset dir="${codenarc.dir}" includes="*.jar" prefix="${release.root}/lib"/>
 		</zip>
 		<delete dir="${temp.dir}"/>
 	</target>
@@ -111,6 +113,7 @@
 			<zipfileset dir="${logback.dir}" prefix="logback"/>
 			<zipfileset dir="${rulesets.dir}" prefix="rulesets"/>
 			<zipfileset dir="${templates.dir}" prefix="templates"/>
+			<zipfileset dir="${codenarc.dir}" includes="*.jar" prefix="lib"/>
 		</zip>
 	</target>
 
@@ -121,6 +124,7 @@
 				<include name="jnj-base.xml"/>
 				<include name="jnj-rules.xml"/>
 				<include name="jnj-naming.xml"/>
+				<include name="codenarc_rules.groovy"/>
 			</zipfileset>
 			<zipfileset dir="${templates.dir}" prefix="templates">
 				<include name="cpilint-report-template.gsp"/>
@@ -128,5 +132,29 @@
 			</zipfileset>
 		</zip>
 	</target>
+
+	<!-- <path id="codenarc.path" >
+		<pathelement location="${dist.files.dir}/codenarc/CodeNarc-3.2.0-all.jar"/>
+		<pathelement location="${dependencies.dir}/slf4j-simple-2.0.13.jar"/>
+		<pathelement location="${basedir}/rulesets"/>
+	</path>
+
+    <taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask">
+		<classpath refid="codenarc.path"/>
+	</taskdef>
+
+    <target name="run-codenarc" description="Run CodeNarc linting on Groovy scripts">
+        <codenarc ruleSetFiles="file:${rulesets.dir}/codenarc_rules.groovy">
+			<classpath refid="codenarc.path"/>
+            
+            <fileset dir="resources">
+                <include name="**/*.groovy"/>
+            </fileset>
+			<report type="json">
+				<option name="outputFile" value="codenarc-report.json" />
+				<option name="title" value="iFlow Groovy Script Report" />
+			</report>
+        </codenarc>
+    </target> -->
 
 </project>

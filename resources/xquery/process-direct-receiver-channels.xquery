@@ -1,3 +1,4 @@
+(: process-direct-receiver-channels.xquery :)
 (:
     This query returns the name, id and address of all receiver ProcessDirect channels.
     Note that since XQuery does not support nested sequences, the returned sequence

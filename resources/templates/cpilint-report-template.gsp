@@ -138,8 +138,12 @@
         <ul>
             <li><strong>Package ID:</strong> ${metadata.packageId}</li>
             <li><strong>Ruleset:</strong> ${metadata.ruleset}</li>
-            <li><strong>Total Issues Found:</strong> ${issues.size()}</li>
-            <li><strong>Command Executed:</strong> ${metadata.command}</li>
+            <li><strong>Total CPILint Issues:</strong> ${cpilintIssues?.size() ?: 0}</li>
+            <li><strong>Total CodeNarc Violations:</strong> ${codenarcViolations?.size() ?: 0}</li>
+            <li>
+                <strong>Command Executed:</strong>
+                <code class="bash">${metadata.command}</code>
+            </li>
             <li><strong>Report Timestamp:</strong> ${metadata.timestamp}</li>
             <li><strong>Version:</strong> ${metadata.version}</li>
         </ul>
@@ -147,6 +151,7 @@
 
     <div class="tab-nav">
         <button class="tab-btn active" onclick="showTab('issues')">Issues</button>
+        <button class="tab-btn" onclick="showTab('codenarc')">CodeNarc</button>
         <button class="tab-btn" onclick="showTab('ruleset')">Ruleset Rules</button>
         <button class="tab-btn" onclick="showTab('logs')">Logs</button>
     </div>
@@ -198,6 +203,35 @@
                 <% } %>
             </tbody>
         </table>
+    </div>
+
+    <div id="codenarc" class="tab-content">
+        <h2>CodeNarc Violations</h2>
+        <% codenarc.groupedByFile.each { fileName, violations -> %>
+            <h3>File: <%= fileName %></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>iFlow</th>
+                        <th>Rule</th>
+                        <th>Priority</th>
+                        <th>Line</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% violations.each { v -> %>
+                        <tr>
+                            <td><%= v.iflow ?: 'Unknown' %></td>
+                            <td><%= v.ruleName %></td>
+                            <td><%= v.priority %></td>
+                            <td><%= v.lineNumber %></td>
+                            <td><%= v.message %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } %>
     </div>
 
     <div id="ruleset" class="tab-content">

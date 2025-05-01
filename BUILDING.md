@@ -18,3 +18,15 @@ The Ant buildfile (build.xml) contains the following targets:
 * release: Generates a release archive for distribution
 
 The Ivy file (ivy.xml) differentiates between compile time and run time dependencies, but at the moment all dependent libraries are needed at both compile and run time.
+
+```bash
+ant clean prepare dependencies compile jar release docker-release bundle-supplemental
+```
+
+```bash
+java -jar .\lib\CodeNarc-3.6.0-groovy-4.0.jar -basedir=resources\if-02-example\src\main\resources\script -rulesetfiles=rulesets\codenarc_rulesets.groovy -report=html:codenarc-report.html -failOnError=false -title="iFlow Governance"
+
+java -cp ".\lib\CodeNarc-3.2.0-all.jar" org.codenarc.CodeNarc  -basedir="resources\if-02-example\src\main\resources\script" -rulesetfiles="file:rulesets/codenarc_rules.groovy" -report=html:codenarc-report.html -failOnError=false -title="iFlow Governance"
+
+java -cp ".\lib\CodeNarc-3.2.0-all.jar" org.codenarc.CodeNarc  -basedir="resources\if-02-example\src\main\" -rulesetfiles="file:rulesets/codenarc_rules.groovy" -report=json:codenarc-report.json -failOnError=false -title="iFlow Governance"
+```
