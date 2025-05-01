@@ -1,3 +1,4 @@
+(: default-names-not-allowed-rule-callactivity.xquery :)
 xquery version "3.1";
 
 declare namespace bpmn2 = "http://www.omg.org/spec/BPMN/20100524/MODEL";

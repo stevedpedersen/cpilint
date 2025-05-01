@@ -1,3 +1,4 @@
+(: sender-channel-user-roles.xquery :)
 (:
     This query returns the name, id, component type and user role of all sender
     channels that are configured with user role authorization.

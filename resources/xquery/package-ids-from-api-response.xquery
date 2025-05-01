@@ -1,3 +1,4 @@
+(: package-ids-from-api-response.xquery :)
 (:
     Please note that this version of the query skips read-only packages AND packages
     where the vendor is SAP. 
