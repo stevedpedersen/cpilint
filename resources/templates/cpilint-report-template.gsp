@@ -207,31 +207,36 @@
 
     <div id="codenarc" class="tab-content">
         <h2>CodeNarc Violations</h2>
-        <% codenarc.groupedByFile.each { fileName, violations -> %>
-            <h3>File: <%= fileName %></h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>iFlow</th>
-                        <th>Rule</th>
-                        <th>Priority</th>
-                        <th>Line</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% violations.each { v -> %>
-                        <tr>
-                            <td><%= v.iflow ?: 'Unknown' %></td>
-                            <td><%= v.ruleName %></td>
-                            <td><%= v.priority %></td>
-                            <td><%= v.lineNumber %></td>
-                            <td><%= v.message %></td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        <% } %>
+        <table>
+            <thead>
+                <tr>
+                    <th>iFlow</th>
+                    <th>File</th>
+                    <th>Rule</th>
+                    <th>Priority</th>
+                    <th>Line</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% reportData.codenarcResults.packages.each { pkg -> 
+                pkg.files.each { file ->
+                    file.violations.each { v -> %>
+                <tr>
+                    <% // derive iFlow from the file path, e.g. first segment %>
+                    <td><%= file.name.tokenize('/\\')[0] %></td>
+                    <td><%= file.name %></td>
+                    <td><%= v.ruleName %></td>
+                    <td><%= v.priority %></td>
+                    <td><%= v.lineNumber %></td>
+                    <td><%= v.message %></td>
+                </tr>
+            <%     }
+                }
+            }
+            %>
+            </tbody>
+        </table>
     </div>
 
     <div id="ruleset" class="tab-content">
