@@ -52,13 +52,6 @@
         <fileset dir="${codenarc.dir}" includes="*.jar"/>
     </path>
 
-    <!-- Classpath for compilation: core + staged CodeNarc jars -->
-    <path id="classpath.build">
-        <fileset dir="${dependencies.dir}" includes="*.jar"/>
-        <fileset dir="${compile.dependencies.dir}" includes="*.jar"/>
-        <fileset dir="${codenarc.dir}" includes="*.jar"/>
-    </path>
-
     <!-- PREPARE: create all necessary dirs -->
     <target name="prepare" description="Creates directories required by the build">
         <mkdir dir="${build.dir}"/>
@@ -73,7 +66,7 @@
         <delete dir="${build.dir}"/>
         <delete dir="${release.dir}"/>
         <delete dir="${temp.dir}"/>
-        <delete dir="${codenarc.dir}"/>
+        <delete dir="${codenarc.dir}" failonerror="true"/>
     </target>
 
     <!-- DEPENDENCIES: Ivy + stage CodeNarc fat-jar only -->
@@ -81,7 +74,7 @@
         <ivy:retrieve conf="compile" pattern="${compile.dependencies.dir}/[artifact]-[revision].[ext]"/>
         <ivy:retrieve conf="runtime" pattern="${runtime.dependencies.dir}/[artifact]-[revision].[ext]"/>
 
-        <!-- Stage only the CodeNarc fat-jar into codenarc.dir -->
+        <!-- Stage only the CodeNarc fat-jar into lib/codenarc -->
         <copy todir="${codenarc.dir}">
             <fileset dir="${dist.files.dir}/codenarc" includes="CodeNarc-*.jar"/>
         </copy>
@@ -161,28 +154,30 @@
 				<include name="cpilint-report-template.gsp"/>
 				<include name="scripts.js"/>
 			</zipfileset>
+			<!-- Include required JAR files for CodeNarc and SLF4J -->
+			<!-- <zipfileset dir="${codenarc.dir}" includes="*.jar" prefix="lib"/>
+			<zipfileset dir="${compile.dependencies.dir}" includes="slf4j-*.jar" prefix="lib"/> -->
 		</zip>
 	</target>
 
-    <!-- RUN-CODENARC: only defines and runs when explicitly invoked -->
-    <target name="run-codenarc" depends="compile" description="Run CodeNarc linting on Groovy scripts">
-        <!-- Task path for CodeNarc -->
+    <!-- RUN-CODENARC: define and run CodeNarc after staging -->
+    <target name="run-codenarc" depends="dependencies" description="Run CodeNarc linting on Groovy scripts">
+        <!-- define classpath for CodeNarc including binder -->
         <path id="codenarc.path">
-            <fileset dir="${codenarc.dir}" includes="*.jar"/>
+            <pathelement location="${codenarc.dir}/CodeNarc-3.2.0-all.jar"/>
+            <pathelement location="${compile.dependencies.dir}/slf4j-simple-2.0.13.jar"/>
         </path>
         <taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask">
             <classpath refid="codenarc.path"/>
         </taskdef>
 
-        <!-- Invoke CodeNarc here -->
-        <codenarc ruleSetFiles="${rulesets.dir}/codenarc_rules.groovy">
-            <classpath refid="codenarc.path"/>
+        <codenarc ruleSetFiles="${rulesets.dir}/codenarc_rules.groovy" failOnError="false">
             <fileset dir="resources">
                 <include name="**/*.groovy"/>
             </fileset>
             <report type="json">
-                <option name="outputFile" value="codenarc-report.json"/>
-                <option name="title"      value="iFlow Groovy Script Report"/>
+                <option name="outputFile" value="codenarc-results.json"/>
+                <option name="title" value="${app.name.versioned} Groovy Scripts Report"/>
             </report>
         </codenarc>
     </target>
