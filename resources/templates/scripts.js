@@ -1,13 +1,23 @@
-function showTab(tabId) {
-    const tabs = document.getElementsByClassName('tab-content');
-    const buttons = document.getElementsByClassName('tab-btn');
-    for (let i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-        buttons[i].classList.remove('active');
+function showTab(tabId, e) {
+    try {
+        // Use the event parameter passed to the function instead of the global event
+        const evt = e || window.event;
+        const target = evt?.currentTarget || evt?.target;
+        
+        const tabs = document.getElementsByClassName('tab-content');
+        const buttons = document.getElementsByClassName('tab-btn');
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+            buttons[i].classList.remove('active');
+        }
+        document.getElementById(tabId).classList.add('active');
+        if (target) {
+            target.classList.add('active');
+        }
+        localStorage.setItem('selectedTab', tabId);
+    } catch (e) {
+        console.error("Error in showTab:", e);
     }
-    document.getElementById(tabId).classList.add('active');
-    event.target.classList.add('active');
-    localStorage.setItem('selectedTab', tabId);
 }
 
 window.onload = function () {

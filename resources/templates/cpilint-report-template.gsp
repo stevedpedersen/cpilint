@@ -150,10 +150,10 @@
     </div>
 
     <div class="tab-nav">
-        <button class="tab-btn active" onclick="showTab('issues')">Issues</button>
-        <button class="tab-btn" onclick="showTab('codenarc')">CodeNarc</button>
-        <button class="tab-btn" onclick="showTab('ruleset')">Ruleset Rules</button>
-        <button class="tab-btn" onclick="showTab('logs')">Logs</button>
+        <button class="tab-btn active" onclick="showTab('issues', event)">Issues</button>
+        <button class="tab-btn" onclick="showTab('codenarc', event)">CodeNarc</button>
+        <button class="tab-btn" onclick="showTab('ruleset', event)">Ruleset Rules</button>
+        <button class="tab-btn" onclick="showTab('logs', event)">Logs</button>
     </div>
 
     <div id="issues" class="tab-content active">
@@ -219,9 +219,12 @@
                 </tr>
             </thead>
             <tbody>
-            <% reportData.codenarcResults.packages.each { pkg -> 
-                pkg.files.each { file ->
-                    file.violations.each { v -> %>
+            <% if (reportData?.codenarcResults?.packages) { %>
+                <% reportData.codenarcResults.packages.each { pkg -> 
+                    if (pkg?.files) {
+                        pkg.files.each { file ->
+                            if (file?.violations) {
+                                file.violations.each { v -> %>
                 <tr>
                     <% // derive iFlow from the file path, e.g. first segment %>
                     <td><%= file.name.tokenize('/\\')[0] %></td>
@@ -231,10 +234,16 @@
                     <td><%= v.lineNumber %></td>
                     <td><%= v.message %></td>
                 </tr>
-            <%     }
-                }
-            }
-            %>
+                <%          }
+                            }
+                        }
+                    }
+                } %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6">No CodeNarc results available or no violations found.</td>
+                </tr>
+            <% } %>
             </tbody>
         </table>
     </div>
