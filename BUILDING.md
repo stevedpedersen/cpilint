@@ -21,7 +21,8 @@ The Ivy file (ivy.xml) differentiates between compile time and run time dependen
 
 ```bash
 ant clean prepare dependencies compile jar release docker-release bundle-supplemental
-ant clean prepare dependencies compile jar docker-release
+ant clean prepare dependencies compile jar docker-release bundle-supplemental
+ant clean prepare dependencies compile jar docker-release 
 ```
 
 ```bash

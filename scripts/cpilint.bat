@@ -17,7 +17,19 @@ rem * files are in the lib directory, and the Logback   *
 rem * configuration file is in the logback directory.   *
 rem *****************************************************
 
-set CPILINT_CP=%HOME%\lib\*;%HOME%\logback
+rem Exclude CodeNarc JAR files from CPILint classpath to prevent conflicts
+set CPILINT_CP=
+for %%f in ("%HOME%\\lib\\*.jar") do (
+    echo %%f | findstr /i "CodeNarc" > nul
+    if errorlevel 1 (
+        if defined CPILINT_CP (
+            set CPILINT_CP=!CPILINT_CP!;%%f
+        ) else (
+            set CPILINT_CP=%%f
+        )
+    )
+)
+set CPILINT_CP=%CPILINT_CP%;%HOME%\\logback
 
 rem *****************************************************
 rem * Use the CPILINT_JAVA_HOME environment variable to *
