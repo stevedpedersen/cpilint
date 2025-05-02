@@ -152,11 +152,8 @@
 			</zipfileset>
 			<zipfileset dir="${templates.dir}" prefix="templates">
 				<include name="cpilint-report-template.gsp"/>
-				<include name="scripts.js"/>
+				<!-- <include name="scripts.js"/> -->
 			</zipfileset>
-			<!-- Include required JAR files for CodeNarc and SLF4J -->
-			<!-- <zipfileset dir="${codenarc.dir}" includes="*.jar" prefix="lib"/>
-			<zipfileset dir="${compile.dependencies.dir}" includes="slf4j-*.jar" prefix="lib"/> -->
 		</zip>
 	</target>
 
