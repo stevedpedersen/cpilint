@@ -26,13 +26,13 @@ fi
 # Exclude CodeNarc JAR files from CPILint classpath to prevent conflicts
 # cpilint_cp="$home/lib/*:$home/logback"
 for jar in "$home"/lib/*.jar; do
-    if [[ "$jar" != *"CodeNarc"* ]]; then
-        if [ -z "$cpilint_cp" ]; then
-            cpilint_cp="$jar"
-        else
-            cpilint_cp="$cpilint_cp:$jar"
-        fi
-    fi
+   if [[ "$jar" != *"CodeNarc"* ]]; then
+      if [ -z "$cpilint_cp" ]; then
+         cpilint_cp="$jar"
+      else
+         cpilint_cp="$cpilint_cp:$jar"
+      fi
+   fi
 done
 
 # Add logback directory to classpath
